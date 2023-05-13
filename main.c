@@ -6,7 +6,7 @@
 /*   By: mimoreir <mimoreir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 14:06:29 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/05/13 15:32:04 by mimoreir         ###   ########.fr       */
+/*   Updated: 2023/05/13 18:14:29 by mimoreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,20 @@ int	main(int argc, char **argv, char **env)
 	init_signals();
 	while (1)
 	{
-		shell->cmd = readline("prompt% ");
-		if (shell->cmd == NULL)
+		shell->input = readline("prompt% ");
+		if (shell->input == NULL)
 		{
-			free(shell->cmd);
+			free(shell->input);
 			ft_printf("exit\n"); //substituir por uma funcao de exit
 			free(shell);
 			return (0);
 		}
 		if (!(verify_input(shell) == 2))
 		{
-			ft_printf("%s\n", shell->cmd);
+			ft_printf("%s\n", shell->input);
 		}
-		add_history(shell->cmd);
-		free(shell->cmd);
+		add_history(shell->input);
+		free(shell->input);
 	}
 	free(shell);
 	return (0);

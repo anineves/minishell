@@ -6,7 +6,7 @@
 /*   By: mimoreir <mimoreir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:19:40 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/05/13 15:30:24 by mimoreir         ###   ########.fr       */
+/*   Updated: 2023/05/13 18:14:42 by mimoreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@
 
 typedef struct s_data
 {
-	char	*cmd;
+	char	*input;
+	char	**spl_in;
+	//int		flag; //0-normal //1-commando e argumentos //2-pipes //3-redirect
 }			t_data;
 
 void	init_signals(void);

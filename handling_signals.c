@@ -6,7 +6,7 @@
 /*   By: mimoreir <mimoreir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 14:06:20 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/05/13 15:29:35 by mimoreir         ###   ########.fr       */
+/*   Updated: 2023/05/13 18:25:13 by mimoreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	init_signals(void)
 	struct termios		termios_save;
 	struct termios		termios_new;
 
-	sigact.sa_flags = 0;
+	sigact.sa_flags = SA_SIGINFO;
 	sigact.sa_handler = sig_handler;
 	sigaction(SIGINT, &sigact, NULL);
 	sigaction(SIGQUIT, &sigact, NULL);
