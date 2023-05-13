@@ -3,40 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mimoreir <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/31 14:19:32 by asousa-n          #+#    #+#             */
-/*   Updated: 2022/10/31 14:20:22 by asousa-n         ###   ########.fr       */
+/*   Created: 2022/11/05 10:23:44 by mimoreir          #+#    #+#             */
+/*   Updated: 2022/11/05 10:23:46 by mimoreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-  #include "libft.h"
+#include "libft.h"
 
 char	*ft_strrchr(const char *s, int c)
 {
-	int	i;
+	char	*tmp;
+	char	*it;
+	char	a;
 
-	i = ft_strlen(s);
-	if (c == '\0')
-		return ((char *)&s[i]);
-	while (i >= 0)
+	it = (char *)s;
+	a = (char)c;
+	tmp = NULL;
+	while (*it)
 	{
-		if (s[i] == (char)c)
-			return ((char *)&s[i]);
-		i--;
+		if (*it == a)
+			tmp = it;
+		it++;
 	}
-	return (NULL);
+	if (*it == '\0' && a == '\0')
+		tmp = it;
+	return (tmp);
 }
-//Retorna ultima ocorrencia de um c
-/* int main()
-{
-    const char *s = "uOlaa";
-    char  c;
-
-    c = 'b';
-    printf("letra :%s\n", ft_strrchr(s, c));
-    printf("letra :%s\n", strrchr(s, c));
-    return (0);
-}
-*/

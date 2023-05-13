@@ -3,35 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mimoreir <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/28 15:49:00 by asousa-n          #+#    #+#             */
-/*   Updated: 2022/10/28 16:03:22 by asousa-n         ###   ########.fr       */
+/*   Created: 2022/11/02 15:22:44 by mimoreir          #+#    #+#             */
+/*   Updated: 2022/11/02 15:22:46 by mimoreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include <stdio.h>
+#include "libft.h"
 
 void	*ft_memset(void *s, int c, size_t n)
 {
-	size_t	i;
-	char	*string;
+	void	*aux;
 
-	string = (char *)s;
-	i = 0;
-	while (i < n)
+	aux = s;
+	while (n)
 	{
-		string[i] = c;
-		i++;
+		*(char *)s = (unsigned char)c;
+		n--;
+		s++;
 	}
-	return (s);
+	return (aux);
 }
-/* int main ()
-{
-	int arr1[] = {3, 4};
-	int arr2[] = {1, 2};
-	printf("%d %d", arr1[0], arr1[1]);
-	ft_memset(arr1, 0, 2 * sizeof(int));
-	printf("%d %d\n", arr1[0], arr1[1]);
-	return (0);
-} */

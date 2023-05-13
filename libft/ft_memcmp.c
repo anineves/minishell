@@ -3,36 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mimoreir <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/28 14:41:18 by asousa-n          #+#    #+#             */
-/*   Updated: 2022/10/28 15:42:26 by asousa-n         ###   ########.fr       */
+/*   Created: 2022/11/05 10:15:14 by mimoreir          #+#    #+#             */
+/*   Updated: 2022/11/05 10:15:16 by mimoreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include "libft.h"
 
 int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
+	unsigned char	*a;
+	unsigned char	*b;
 	size_t			i;
-	unsigned char	*pt_string1;
-	unsigned char	*pt_string2;
+	int				res;
 
-	pt_string1 = (unsigned char *)s1;
-	pt_string2 = (unsigned char *)s2;
+	a = (unsigned char *)s1;
+	b = (unsigned char *)s2;
 	i = 0;
-	while (i < n && pt_string1[i] == pt_string2[i])
+	res = 0;
+	while (i < n)
+	{
+		if (*a != *b)
+		{
+			res = *a - *b;
+			break ;
+		}
+		a++;
+		b++;
 		i++;
-	if (i == n)
-		return (0);
-	return (pt_string1[i] - pt_string2[i]);
+	}
+	return (res);
 }
-/*
-int main ()
-{
-	int arr1[] = {1, 2};
-	int arr2[] = {1, 3};
-	
-	printf("%d", ft_memcmp(arr1, arr2, 2 * sizeof(int)));
-	return (0);
-} */
