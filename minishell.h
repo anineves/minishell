@@ -6,7 +6,7 @@
 /*   By: mimoreir <mimoreir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:19:40 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/05/13 15:20:37 by mimoreir         ###   ########.fr       */
+/*   Updated: 2023/05/13 15:30:24 by mimoreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,6 @@ typedef struct s_data
 
 void	init_signals(void);
 void	sig_handler(int sig);
+int		verify_input(t_data *shell);
 
 #endif

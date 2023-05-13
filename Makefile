@@ -6,7 +6,7 @@ CFLAGS = -Werror -Wall -Wextra -fsanitize=address
 
 LIBFT = ./libft/libft.a
 
-SRC = main.c handling_signals.c
+SRC = main.c handling_signals.c valid_input.c
 
 OBJ = $(SRC:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: mimoreir <mimoreir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 14:06:29 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/05/13 15:17:27 by mimoreir         ###   ########.fr       */
+/*   Updated: 2023/05/13 15:32:04 by mimoreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,14 @@ int	main(int argc, char **argv, char **env)
 		if (shell->cmd == NULL)
 		{
 			free(shell->cmd);
-			ft_printf("exit\n");
+			ft_printf("exit\n"); //substituir por uma funcao de exit
 			free(shell);
 			return (0);
 		}
-
-		ft_printf("%s\n", shell->cmd);
+		if (!(verify_input(shell) == 2))
+		{
+			ft_printf("%s\n", shell->cmd);
+		}
 		add_history(shell->cmd);
 		free(shell->cmd);
 	}
