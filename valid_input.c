@@ -23,11 +23,13 @@ void	rmv_spaces(t_data *shell)
 	free(aux);
 }
 
+
 int	verify_input(t_data *shell)
 {
 	char	*it;
-	char	**spl;
-
+	//char	**spl;
+	char	*token;
+	
 	it = shell->input;
 	while (*it == ' ' || *it == '\t')
 		it++;
@@ -36,14 +38,14 @@ int	verify_input(t_data *shell)
 	rmv_spaces(shell);
 	if (ft_strchr(shell->input, '|'))
 	{
-		spl = ft_split(shell->input, '|');
-		shell->spl_in = spl;
-		int i = 0;
-		while (shell->spl_in[i])
+		token = ft_strtok(shell->input, "|");
+		//shell->spl_in = spl;
+		//int i = 0;
+		while (token != NULL) 
 		{
-			printf("%s\n", shell->spl_in[i]);
-			i++;
-		}
+        		printf("%s \n", token);
+        		token = ft_strtok(NULL, "|");
+   		}
 	}
 	return (0);
 }
