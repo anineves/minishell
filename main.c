@@ -14,6 +14,18 @@
 
 int	g_exit_status = 0;
 
+t_data	*init_data(void)
+{
+	t_data	*shell;
+
+	shell = malloc(sizeof(t_data));
+	if (!shell)
+		return (NULL);
+	shell->input = NULL;
+	shell->spl_in = NULL;
+	return (shell);
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	(void)argv;
@@ -21,7 +33,7 @@ int	main(int argc, char **argv, char **env)
 	(void)env;
 	t_data	*shell;
 
-	shell = malloc(sizeof(t_data*));
+	shell = init_data();
 	init_signals();
 	while (1)
 	{
