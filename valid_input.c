@@ -13,32 +13,43 @@
 #include "minishell.h"
 #include <stdbool.h>
 
-int	closed_quotes(t_data *shell)
+bool closed_quotes2(int single_quote, int double_quote)
 {
-	int		i;
-	char	d_quote;
-	bool	open;
+	if (single_quote == 1 || double_quote == 1) 
+	{
+        	printf("unclosed quotes\n");
+        	return (0);
+    	}
+    	else
+        	return (1);
+}
 
-	i = 0;
-	d_quote = '\"';
-	open = false;
-	while (shell->input[i])
-	{
-		if (open && shell->input[i] == d_quote)
-			open = false;
-		else if (!open && ft_strchr("\"", shell->input[i]))
-		{
-			d_quote = shell->input[i];
-			open = true;
-		}
-		i++;
-	}
-	if (open)
-	{
-		printf("unclosed quotes \n");
-		return (0);
-	}
-	return (1);
+bool closed_quotes(t_data *shell) 
+{
+    int tam;
+    int single_quote = 0;
+    int double_quote = 0;
+    int i;
+    
+    i = 0;
+    single_quote = 0;
+    double_quote = 0;
+    tam = ft_strlen(shell->input);
+    while (i < tam) 
+    {
+        if (shell->input[i] == '\'') 
+        {
+            if (double_quote % 2 == 0)
+                single_quote = !single_quote;
+        }
+        else if (shell->input[i] == '\"') 
+        {
+            if (single_quote % 2 == 0) 
+                double_quote = !double_quote;
+        }
+        i++;
+    }
+    return (closed_quotes2(single_quote, double_quote));
 }
 
 void	rmv_spaces(t_data *shell)
