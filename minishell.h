@@ -38,5 +38,6 @@ typedef struct s_data
 void	init_signals(void);
 void	sig_handler(int sig);
 int		verify_input(t_data *shell);
+char *ft_strtok(char *str, const char *delim);
 
 #endif
