@@ -12,7 +12,9 @@
 
 #include "minishell.h"
 
-static size_t	nstrings(char const *s, char c, int count)
+#include <stdlib.h>
+
+static size_t	nstrings(char const *s, char c)
 {
 	size_t	n;
 
@@ -23,39 +25,45 @@ static size_t	nstrings(char const *s, char c, int count)
 		n++;
 	while (*s)
 	{
-		if (*s == c && count == 0)
+		if (*s == c)
 		{
-			count = verify_quotes(*s);
 			n++;
 			while (*s && *s == c)
 				s++;
-			continue ;
+			continue;
 		}
 		s++;
 	}
 	return (n);
 }
 
-static size_t	strsize(char const *s, char c, int count)
+static size_t	strsize(char const *s, char c)
 {
 	size_t	len;
+	int		inQuotes = 0;
 
 	len = 0;
 	while (*s && *s == c)
 		s++;
-	while (*s && *s != c && count == 1)
+	while (*s)
 	{
-		count = verify_quotes(*s);
+		if ((*s == '"' || *s == '\'') && (*(s - 1) != '\\' || *(s - 2) == '\\'))
+			inQuotes = !inQuotes;
+		if (*s == c && !inQuotes)
+			break;
 		s++;
 		len++;
 	}
 	return (len);
 }
 
-static char	*copyword(char const *s, char c, size_t len, int count)
+static char	*copyword(char const *s, char c, size_t len)
 {
 	char	*str;
 	char	*tmp;
+	int	inQuotes;
+	
+	inQuotes = 0;
 
 	if (!*s)
 		return (NULL);
@@ -65,9 +73,12 @@ static char	*copyword(char const *s, char c, size_t len, int count)
 	tmp = str;
 	while (*s && *s == c)
 		s++;
-	while (*s && *s != c && count == 1)
+	while (*s)
 	{
-		count = verify_quotes(*s);
+		if ((*s == '"' || *s == '\'') && (*(s - 1) != '\\' || (*(s - 1) == '\\' && *(s - 2) == '\\')))
+			inQuotes = !inQuotes;
+		if (*s == c && !inQuotes)
+			break;
 		*tmp = *s;
 		tmp++;
 		s++;
@@ -82,26 +93,23 @@ char	**ft_split2(char const *s, char c)
 	size_t	nstr;
 	size_t	strlen;
 	size_t	i;
-	int count;
 
-	count = 0;
 	i = 0;
-	nstr = nstrings(s, c, count);
+	nstr = nstrings(s, c);
 	arr = malloc(sizeof(char *) * (nstr + 1));
 	if (!arr)
 		return (NULL);
-	while (i < nstr)
+	while (*s)
 	{
-		while (*s)
-		{
-			count = verify_quotes(*s);
-			while (*s && *s == c && count == 1)
-					s++;
-			strlen = strsize(s, c, count);
-			arr[i++] = copyword(s, c, strlen, count);
-			s = s + strlen;
-		}
+		while (*s && *s == c)
+			s++;
+		if (!*s)
+			break;
+		strlen = strsize(s, c);
+		arr[i++] = copyword(s, c, strlen);
+		s += strlen;
 	}
 	arr[i] = NULL;
 	return (arr);
 }
+

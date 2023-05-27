@@ -40,19 +40,57 @@ void	free_global(t_global *global)
 		free(global->args);
 }
 
-t_global	*init_global(void)
+size_t	size_env(char **env)
+{
+	size_t		len;
+	int		i;
+
+	i = 0;
+	len = 0;
+	while (env[i])
+	{
+		len+= ft_strlen(env[i]);
+		i++;
+	}
+	return (len + i);
+}
+
+
+int	init_env(t_global *global, char **env)
+{
+	int		i;
+	size_t		len;
+	
+	i = 0;
+	len = 0;
+	len = size_env(env);
+	global->len_env = len;
+	global->copy_env = malloc(sizeof(char *) * (len + 1));
+	if (!global->copy_env)
+		return (0);
+	i = 0;
+	while (env[i])
+	{
+		global->copy_env[i] = ft_strdup(env[i]);
+		if (!global->copy_env[i])
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+t_global	*init_global(char **env)
 {
 	t_global	*new;
 
 	new = (t_global*)malloc(sizeof(t_global));
 	if (!new)
 		return (NULL);
-
+	if(!init_env(new, env))	
+		return (0);
 	new->shell = NULL;
 	new->cwd = getcwd(NULL, 4096);
 	new->old_path = getenv("HOME");
-	new->len_env = 0;
-	new->copy_env = NULL;
 	return (new);
 }
 
@@ -60,11 +98,10 @@ int	main(int argc, char **argv, char **env)
 {
 	(void)argv;
 	(void)argc;
-	(void)env;
 	t_global	*global;
 	char	*input;
 
-	global = init_global();
+	global = init_global(env);
 	init_signals();
 	while (1)
 	{

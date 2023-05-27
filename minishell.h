@@ -75,6 +75,11 @@ void	lst_add_back(t_data **shell, t_data *new);
 t_data	*new_node(char *start, size_t len, int red);
 int		verify_quotes(char c);
 void	execute(t_global *global);
-void	ft_echo(char *args);
+void    ft_echo(t_global *global);
+void	ft_pwd();
+void 	ft_env(t_global *global);
+void	ft_cd(t_global *global);
+void	ft_exit(t_global *global);
 char	**ft_split2(char const *s, char c);
+int	ft_strcmp(char *str1, char *str2);
 #endif
