@@ -1,19 +1,23 @@
 #include "../minishell.h"
 
-void	ft_echo(char **args)
+
+void	ft_echo(char *args)
 {
 	int		i;
-
+	char **arg;
 	i = 1;
-	if (ft_strncmp(args[1], "-n", 2) == 0)
+
+	rmvQuotes(args);
+	arg = ft_split2(args, ' ');
+	if (ft_strncmp(arg[1], "-n", 2) == 0)
 		i++;
-	while (args[i])
+	while (arg[i])
 	{
-		printf("%s", args[i]);
+		printf("%s", arg[i]);
 		i++;
-		if (args[i])
+		if (arg[i])
 			printf(" ");
 	}
-	if (ft_strncmp(args[1], "-n", 2))
+	if (ft_strncmp(arg[1], "-n", 2))
 		printf("\n");
 }

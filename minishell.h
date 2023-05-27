@@ -6,7 +6,7 @@
 /*   By: mimoreir <mimoreir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:19:40 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/05/27 13:59:18 by mimoreir         ###   ########.fr       */
+/*   Updated: 2023/05/27 15:57:27 by mimoreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,7 @@ void	create_data(t_data **shell, char *input);
 void	lst_add_back(t_data **shell, t_data *new);
 t_data	*new_node(char *start, size_t len, int red);
 int		verify_quotes(char c);
-
+void	execute(t_global *global);
+void	ft_echo(char *args);
+char	**ft_split2(char const *s, char c);
 #endif

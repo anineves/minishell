@@ -6,7 +6,7 @@
 /*   By: mimoreir <mimoreir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 14:06:29 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/05/27 15:34:45 by mimoreir         ###   ########.fr       */
+/*   Updated: 2023/05/27 15:50:00 by mimoreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	main(int argc, char **argv, char **env)
 		{
 			create_data(&global->shell, input);
 			execute(global);
-			ft_printf("%s\n", global->shell->cmd);
+			//ft_printf("%s\n", global->shell->cmd);
 		}
 		free(input);
 		free_data(&global->shell);

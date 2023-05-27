@@ -30,7 +30,7 @@ int	verify_quotes(char c)
 		count++;
 		quotes = c;
 	}
-	else if (quotes != '\0' && (c == '"' || c == '\'')) // tentat meter isto numa cena a parte para ficar com o tamanho permitido
+	else if (quotes != '\0' && (c == '"' || c == '\''))
 	{
 		if (quotes == c)
 		{
