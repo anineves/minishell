@@ -6,7 +6,7 @@
 /*   By: mimoreir <mimoreir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:19:40 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/05/13 18:14:42 by mimoreir         ###   ########.fr       */
+/*   Updated: 2023/05/27 13:48:00 by mimoreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,52 @@
 # include <errno.h>
 # include <fcntl.h>
 # include <termios.h>
+# include <stdbool.h>
+
+typedef enum
+{
+	EMPTY,
+	PIPE,    // |
+	HEREDOC,  // <<
+	APPEND,  // >>
+	RD_OUT,      // >
+	RD_IN       // <
+}		op_type;
+
+typedef struct s_env
+{
+	char *key;
+	char *value;
+	struct s_env *next;
+}	t_env;
 
 typedef struct s_data
 {
-	char	*input;
-	char	**spl_in;
-	//int		flag; //0-normal //1-commando e argumentos //2-pipes //3-redirect
-}			t_data;
+	char	*cmd;
+	int		flag;
+	struct s_data *next;
+}	t_data;
+
+typedef struct s_global
+{
+	t_data	*shell;
+	char	**args;
+	char	**copy_env;
+	char	*old_path;
+	int		len_env;
+	char	*cwd;
+}	t_global;
 
 void	init_signals(void);
 void	sig_handler(int sig);
-int		verify_input(t_data *shell);
-char *ft_strtok(char *str, const char *delim);
+int		verify_input(t_data **shell, char *input);
+char	*ft_strtok(char *str, const char *delim);
+char	*copy_len(char *src, size_t len);
+bool	closed_quotes(char *input);
+void	rmvQuotes(char* str);
+void	create_data(t_data **shell, char *input);
+void	lst_add_back(t_data **shell, t_data *new);
+t_data	*new_node(char *start, size_t len, int red);
+int		verify_quotes(char c);
 
 #endif

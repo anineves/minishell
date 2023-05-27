@@ -6,7 +6,7 @@
 /*   By: mimoreir <mimoreir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 14:06:29 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/05/13 18:14:29 by mimoreir         ###   ########.fr       */
+/*   Updated: 2023/05/27 13:48:37 by mimoreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,27 @@
 
 int	g_exit_status = 0;
 
-t_data	*init_data(void)
+/*void	free_data(t_data *shell)
 {
-	t_data	*shell;
+	//depois tens de alterar por causa da lista
+	free(shell->cmd);
+	free(shell);
+}*/
 
-	shell = malloc(sizeof(t_data));
-	if (!shell)
+t_global	*init_global(void)
+{
+	t_global	*new;
+
+	new = (t_global*)malloc(sizeof(t_global));
+	if (!new)
 		return (NULL);
-	shell->input = NULL;
-	shell->spl_in = NULL;
-	return (shell);
+
+	new->shell = NULL;
+	new->cwd = getcwd(NULL, 4096);
+	new->old_path = getenv("HOME");
+	new->len_env = 0;
+	new->copy_env = NULL;
+	return (new);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -31,28 +42,34 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	(void)argc;
 	(void)env;
-	t_data	*shell;
+	t_global	*global;
+	char	*input;
 
-	shell = init_data();
+	global = init_global();
 	init_signals();
 	while (1)
 	{
-		shell->input = readline("prompt% ");
-		if (shell->input == NULL)
+		input = readline("prompt% ");
+		if (input == NULL)
 		{
-			free(shell->input);
-			ft_printf("exit\n"); //substituir por uma funcao de exit
-			free(shell);
+			//free_data(shell);
 			return (0);
 		}
-		if (!(verify_input(shell) == 2))
+		add_history(input);
+		if (!(verify_input(&global->shell, input) == 2))
 		{
-			ft_printf("%s\n", shell->input);
-		}
-		add_history(shell->input);
-		free(shell->input);
+			t_data *i;
+	i = global->shell;
+	while (i != NULL)
+	{
+		//rmvQuotes(shell->cmd);
+		ft_printf("----------------\ncmd: %s\nflag:%d\n-------------\n", i->cmd, i->flag);
+		i = i->next;
 	}
-	free(shell);
+		}
+		free(input);
+	}
+	free(global);
 	return (0);
 }
 

@@ -6,88 +6,102 @@
 /*   By: mimoreir <mimoreir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:24:16 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/05/13 18:20:49 by mimoreir         ###   ########.fr       */
+/*   Updated: 2023/05/27 13:42:09 by mimoreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdbool.h>
 
-bool closed_quotes2(int single_quote, int double_quote)
-{
-	if (single_quote == 1 || double_quote == 1) 
-	{
-        	printf("unclosed quotes\n");
-        	return (0);
-    	}
-    	else
-        	return (1);
-}
+#include "minishell.h"
+#include <stdbool.h>
 
-bool closed_quotes(t_data *shell) 
+void rmvSpaces(char *str)
 {
-    int tam;
-    int single_quote = 0;
-    int double_quote = 0;
     int i;
-    
+    int j;
+    int len;
+    int inDquotes;
+    int inSquotes;
+    int space;
+
     i = 0;
-    single_quote = 0;
-    double_quote = 0;
-    tam = ft_strlen(shell->input);
-    while (i < tam) 
+    j = 0;
+    inSquotes = 0;
+    inDquotes = 0;
+    space = 0;
+    len = ft_strlen(str);
+    while (i < len)
     {
-        if (shell->input[i] == '\'') 
+        if (str[i] == '\"')
+            inDquotes = !inDquotes;
+        else if (str[i] == '\'')
+            inSquotes = !inSquotes;
+        if ((str[i] == ' ' && !space) || inDquotes || inSquotes)
         {
-            if (double_quote % 2 == 0)
-                single_quote = !single_quote;
+            str[j++] = str[i];
+            space = (str[i] == ' ');
         }
-        else if (shell->input[i] == '\"') 
+        else if (str[i] != ' ')
         {
-            if (single_quote % 2 == 0) 
-                double_quote = !double_quote;
+            str[j++] = str[i];
+            space = 0;
         }
         i++;
     }
-    return (closed_quotes2(single_quote, double_quote));
+    str[j] = '\0';
 }
 
-void	rmv_spaces(t_data *shell)
+/*bool last_char(t_data *shell)
 {
-	char	*new;
-	char	*aux;
+	char *input;
+	int i;
 
-	aux = shell->input;
-	new = ft_strtrim(shell->input, " \t");
-	shell->input = new;
-	free(aux);
+	input = shell->input;
+	i = 0;
+	while(input[i] != '\0')
+		i++;
+	i--;
+	while(input[i] == 32)
+		i--;
+	if((input[i] == '|') || (input[i] == '<') || (input[i] == '>'))
+	{
+		printf("Unexpected last char \n");
+		return(0);
+	}
+	return(1);
 }
 
+bool first_char(t_data *shell)
+{
+	char *input;
+	int i;
 
-int	verify_input(t_data *shell)
+	input = shell->input;
+	i = 0;
+	while(input[i] == 32)
+		i++;
+	if((input[i] == '|') || (input[i] == '<'))
+	{
+		printf("Unexpected first char \n");
+		return(0);
+	}
+	return(1);
+}
+*/
+
+int	verify_input(t_data **shell, char *input)
 {
 	char	*it;
-	//char	**spl;
-	char	*token;
-	
-	it = shell->input;
+
+	it = input;
 	while (*it == ' ' || *it == '\t')
 		it++;
 	if (*it == '\0')
-		return (2);
-	rmv_spaces(shell);
-	if(!closed_quotes(shell))
-		return(1);
-	if (ft_strchr(shell->input, '|'))
-	{
-		token = ft_strtok(shell->input, "|");
-		//shell->spl_in = spl;
-		//int i = 0;
-		while (token != NULL) 
-		{
-        		printf("%s \n", token);
-        		token = ft_strtok(NULL, "|");
-   		}
-	}
+		return (1);
+	if (!closed_quotes(input))
+		return (1);
+	rmvSpaces(input);
+	create_data(shell, input);
 	return (0);
 }
