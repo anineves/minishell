@@ -6,7 +6,7 @@
 /*   By: mimoreir <mimoreir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 14:06:29 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/05/27 13:48:37 by mimoreir         ###   ########.fr       */
+/*   Updated: 2023/05/27 15:34:45 by mimoreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,31 @@
 
 int	g_exit_status = 0;
 
-/*void	free_data(t_data *shell)
+void	free_data(t_data **shell)
 {
-	//depois tens de alterar por causa da lista
-	free(shell->cmd);
-	free(shell);
-}*/
+	t_data	*it;
+
+	it = (*shell);
+	while (it != NULL)
+	{
+		it = it->next;
+		free((*shell)->cmd);
+		free(*shell);
+		(*shell) = it;
+	}
+}
+
+void	free_global(t_global *global)
+{
+	if (global->shell != NULL)
+		free_data(&global->shell);
+	if (global->cwd != NULL)
+		free(global->cwd);
+	if (global->copy_env != NULL)
+		free(global->copy_env);
+	if (global->args != NULL)
+		free(global->args);
+}
 
 t_global	*init_global(void)
 {
@@ -52,24 +71,20 @@ int	main(int argc, char **argv, char **env)
 		input = readline("prompt% ");
 		if (input == NULL)
 		{
-			//free_data(shell);
+			free_global(global);
+			free(global);
 			return (0);
 		}
 		add_history(input);
-		if (!(verify_input(&global->shell, input) == 2))
+		if (verify_input(input))
 		{
-			t_data *i;
-	i = global->shell;
-	while (i != NULL)
-	{
-		//rmvQuotes(shell->cmd);
-		ft_printf("----------------\ncmd: %s\nflag:%d\n-------------\n", i->cmd, i->flag);
-		i = i->next;
-	}
+			create_data(&global->shell, input);
+			execute(global);
+			ft_printf("%s\n", global->shell->cmd);
 		}
 		free(input);
+		free_data(&global->shell);
 	}
-	free(global);
+	free_global(global);
 	return (0);
 }
-

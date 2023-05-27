@@ -6,7 +6,7 @@
 /*   By: mimoreir <mimoreir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:19:40 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/05/27 13:48:00 by mimoreir         ###   ########.fr       */
+/*   Updated: 2023/05/27 13:59:18 by mimoreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ typedef struct s_global
 
 void	init_signals(void);
 void	sig_handler(int sig);
-int		verify_input(t_data **shell, char *input);
+int		verify_input(char *input);
 char	*ft_strtok(char *str, const char *delim);
 char	*copy_len(char *src, size_t len);
 bool	closed_quotes(char *input);
