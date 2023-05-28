@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mimoreir <mimoreir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 14:06:29 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/05/27 15:50:00 by mimoreir         ###   ########.fr       */
+/*   Updated: 2023/05/28 19:09:47 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,69 +14,36 @@
 
 int	g_exit_status = 0;
 
-void	free_data(t_data **shell)
-{
-	t_data	*it;
-
-	it = (*shell);
-	while (it != NULL)
-	{
-		it = it->next;
-		free((*shell)->cmd);
-		free(*shell);
-		(*shell) = it;
-	}
-}
-
-void	free_global(t_global *global)
-{
-	if (global->shell != NULL)
-		free_data(&global->shell);
-	if (global->cwd != NULL)
-		free(global->cwd);
-	if (global->copy_env != NULL)
-		free(global->copy_env);
-	if (global->args != NULL)
-		free(global->args);
-}
-
 size_t	size_env(char **env)
 {
 	size_t		len;
-	int		i;
 
-	i = 0;
 	len = 0;
-	while (env[i])
+	while (env[len])
 	{
-		len+= ft_strlen(env[i]);
-		i++;
+		len++;
 	}
-	return (len + i);
+	return (len);
 }
 
-
-int	init_env(t_global *global, char **env)
+char	**init_env(char **env)
 {
-	int		i;
+	int			i;
 	size_t		len;
-	
+	char		**copy_env;
+
 	i = 0;
-	len = 0;
 	len = size_env(env);
-	global->len_env = len;
-	global->copy_env = malloc(sizeof(char *) * (len + 1));
-	if (!global->copy_env)
+	copy_env = malloc(sizeof(char*) * (len + 1));
+	if (!copy_env)
 		return (0);
-	i = 0;
 	while (env[i])
 	{
-		global->copy_env[i] = ft_strdup(env[i]);
-		if (!global->copy_env[i])
-			return (0);
+		copy_env[i] = ft_strdup(env[i]);
 		i++;
 	}
-	return (1);
+	copy_env[i] = NULL;
+	return (copy_env);
 }
 
 t_global	*init_global(char **env)
@@ -86,11 +53,12 @@ t_global	*init_global(char **env)
 	new = (t_global*)malloc(sizeof(t_global));
 	if (!new)
 		return (NULL);
-	if(!init_env(new, env))	
-		return (0);
 	new->shell = NULL;
 	new->cwd = getcwd(NULL, 4096);
 	new->old_path = getenv("HOME");
+	new->copy_env = init_env(env);
+	new->len_env = size_env(env);
+	new->args = NULL;
 	return (new);
 }
 
@@ -117,10 +85,11 @@ int	main(int argc, char **argv, char **env)
 		{
 			create_data(&global->shell, input);
 			execute(global);
-			//ft_printf("%s\n", global->shell->cmd);
 		}
 		free(input);
 		free_data(&global->shell);
+		if (global->args)
+			free_args(global->args);
 	}
 	free_global(global);
 	return (0);

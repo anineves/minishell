@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mimoreir <mimoreir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:19:40 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/05/27 15:57:27 by mimoreir         ###   ########.fr       */
+/*   Updated: 2023/05/28 19:08:34 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,16 @@ void	lst_add_back(t_data **shell, t_data *new);
 t_data	*new_node(char *start, size_t len, int red);
 int		verify_quotes(char c);
 void	execute(t_global *global);
-void    ft_echo(t_global *global);
+void	ft_echo(t_global *global);
 void	ft_pwd();
 void 	ft_env(t_global *global);
 void	ft_cd(t_global *global);
 void	ft_exit(t_global *global);
 char	**ft_split2(char const *s, char c);
-int	ft_strcmp(char *str1, char *str2);
+int		ft_strcmp(char *str1, char *str2);
+void	free_data(t_data **shell);
+void	free_global(t_global *global);
+size_t	size_env(char **env);
+char	**init_env(char **env);
+void	free_args(char	**args);
 #endif

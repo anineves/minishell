@@ -17,7 +17,8 @@ SRC = main.c \
 	builtins/pwd.c \
 	builtins/env.c \
 	builtins/exit.c \
- 	utils_split.c
+ 	utils_split.c \
+	free.c
 
 OBJ = $(SRC:.c=.o)
 
