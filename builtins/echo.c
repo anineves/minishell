@@ -42,8 +42,8 @@ void	ft_echo(t_global *global)
 		i++;
 	while (global->args[i])
 	{
-		printf("%s",global->args[i]);
-		//print_for_echo(global->args[i]);
+		//printf("%s",global->args[i]);
+		print_for_echo(global->args[i]);
 		i++;
 		if (global->args[i])
 			printf(" ");

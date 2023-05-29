@@ -19,6 +19,8 @@ void	execute(t_global *global)
 		ft_export(global);
 	//else
 		//ft_executable(global);
+	free_args(global->args);
+	free(global->args);
 	return;
 }
 

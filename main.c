@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 14:06:29 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/05/28 19:09:47 by marvin           ###   ########.fr       */
+/*   Updated: 2023/05/29 21:50:24 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ int	main(int argc, char **argv, char **env)
 		}
 		free(input);
 		free_data(&global->shell);
-		if (global->args)
-			free_args(global->args);
+		/*if (global->args)
+			free_args(global->args);*/
 	}
 	free_global(global);
 	return (0);
