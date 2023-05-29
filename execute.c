@@ -15,6 +15,10 @@ void	execute(t_global *global)
 		ft_exit(global);
 	else if (ft_strcmp(global->args[0], "cd") == 0)
 		ft_cd(global);
+	else if (ft_strcmp(global->args[0], "export") == 0)
+		ft_export(global);
+	//else
+		//ft_executable(global);
 	return;
 }
 

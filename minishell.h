@@ -60,6 +60,8 @@ typedef struct s_global
 	char	**copy_env;
 	char	*old_path;
 	int		len_env;
+	int	fd_input;
+	int	fd_output;
 	char	*cwd;
 }	t_global;
 
@@ -80,6 +82,7 @@ void	ft_pwd();
 void 	ft_env(t_global *global);
 void	ft_cd(t_global *global);
 void	ft_exit(t_global *global);
+void	ft_export(t_global *global);
 char	**ft_split2(char const *s, char c);
 int		ft_strcmp(char *str1, char *str2);
 void	free_data(t_data **shell);

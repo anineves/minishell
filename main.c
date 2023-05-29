@@ -59,6 +59,8 @@ t_global	*init_global(char **env)
 	new->copy_env = init_env(env);
 	new->len_env = size_env(env);
 	new->args = NULL;
+	new->fd_input = 0;
+	new->fd_output = 1;
 	return (new);
 }
 

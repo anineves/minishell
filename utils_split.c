@@ -12,29 +12,40 @@
 
 #include "minishell.h"
 
-#include <stdlib.h>
-
 static size_t	nstrings(char const *s, char c)
 {
-	size_t	n;
+	int i;
+        int n;
+        int inDquotes;
+        int inSquotes;
 
-	n = 0;
-	while (*s && *s == c)
-		s++;
-	if (*s)
-		n++;
-	while (*s)
-	{
-		if (*s == c)
-		{
-			n++;
-			while (*s && *s == c)
-				s++;
-			continue;
-		}
-		s++;
-	}
-	return (n);
+	inDquotes = 0;
+	inSquotes = 0;
+        i = 0;
+        n = 0;
+        while (s && s[i])
+        {
+        	if (s[i] == '"')
+			inDquotes = !inDquotes;
+		if (s[i] == '\'')
+			inSquotes = !inSquotes;
+                if (s[i] != c && s[i] != '"' && s[i] != '\'')
+                {
+                        n++;
+                        while (s[i] != '\0' && (s[i] != c || (s[i] == c && (inDquotes || inSquotes))))
+                        {
+				if (s[i] == '"')
+					inDquotes = !inDquotes;
+				if (s[i] == '\'')
+					inSquotes = !inSquotes;
+				i++;
+                        }
+                }
+                else
+                        i++;
+        }
+        //printf("%d\n", n);
+        return (n);
 }
 
 static size_t	strsize(char const *s, char c)
@@ -43,11 +54,12 @@ static size_t	strsize(char const *s, char c)
 	int		inQuotes = 0;
 
 	len = 0;
+	inQuotes = 0;
 	while (*s && *s == c)
 		s++;
 	while (*s)
 	{
-		if ((*s == '"' || *s == '\'') && (*(s - 1) != '\\' || *(s - 2) == '\\'))
+		if (*s == '"' || *s == '\'')
 			inQuotes = !inQuotes;
 		if (*s == c && !inQuotes)
 			break;
@@ -75,7 +87,7 @@ static char	*copyword(char const *s, char c, size_t len)
 		s++;
 	while (*s)
 	{
-		if ((*s == '"' || *s == '\'') && (*(s - 1) != '\\' || (*(s - 1) == '\\' && *(s - 2) == '\\')))
+		if (*s == '"' || *s == '\'')
 			inQuotes = !inQuotes;
 		if (*s == c && !inQuotes)
 			break;
