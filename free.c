@@ -42,4 +42,5 @@ void	free_global(t_global *global)
 		free_args(global->args);
 		free(global->args);
 	}
+
 }

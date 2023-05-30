@@ -62,6 +62,8 @@ typedef struct s_global
 	int		len_env;
 	int	fd_input;
 	int	fd_output;
+	char 	*path;
+	char	**split_path;
 	char	*cwd;
 }	t_global;
 
@@ -90,4 +92,5 @@ void	free_global(t_global *global);
 size_t	size_env(char **env);
 char	**init_env(char **env);
 void	free_args(char	**args);
+void ft_executable(t_global *global);
 #endif

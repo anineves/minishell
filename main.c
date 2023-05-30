@@ -14,6 +14,23 @@
 
 int	g_exit_status = 0;
 
+char	*get_path(char **copy_env, char *path)
+{
+	int	i;
+
+	i = 0;
+	while (copy_env[i])
+	{
+		if (!ft_strncmp(copy_env[i], "PATH", 4))
+		{
+			path = copy_env[i];
+			return (path);
+		}
+		i++;
+	}
+	return (NULL);
+}
+
 size_t	size_env(char **env)
 {
 	size_t		len;
@@ -61,6 +78,8 @@ t_global	*init_global(char **env)
 	new->args = NULL;
 	new->fd_input = 0;
 	new->fd_output = 1;
+	new->path = get_path(new->copy_env, new->path);
+	new->split_path = ft_split(new->path, ':');
 	return (new);
 }
 
