@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mimoreir <mimoreir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 10:16:48 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/05/27 16:18:46 by mimoreir         ###   ########.fr       */
+/*   Updated: 2023/05/30 18:43:08 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,49 +19,55 @@ static size_t	nstrings(char const *s, char c)
         int inDquotes;
         int inSquotes;
 
-	inDquotes = 0;
-	inSquotes = 0;
+		inDquotes = 0;
+		inSquotes = 0;
         i = 0;
         n = 0;
         while (s && s[i])
         {
-        	if (s[i] == '"')
-			inDquotes = !inDquotes;
-		if (s[i] == '\'')
-			inSquotes = !inSquotes;
-                if (s[i] != c && s[i] != '"' && s[i] != '\'')
+        	if (s[i] == '"' && !inSquotes)
+				inDquotes = !inDquotes;
+			if (s[i] == '\'' && !inDquotes)
+				inSquotes = !inSquotes;
+            if (s[i] != c )
+            {
+                n++;
+                while (s[i] != '\0' && (s[i] != c || (s[i] == c && (inDquotes || inSquotes))))
                 {
-                        n++;
-                        while (s[i] != '\0' && (s[i] != c || (s[i] == c && (inDquotes || inSquotes))))
-                        {
-				if (s[i] == '"')
-					inDquotes = !inDquotes;
-				if (s[i] == '\'')
-					inSquotes = !inSquotes;
-				i++;
-                        }
+					i++;
+					if (s[i] == '"' && !inSquotes)
+						inDquotes = !inDquotes;
+					if (s[i] == '\'' && !inDquotes)
+						inSquotes = !inSquotes;
                 }
-                else
-                        i++;
+            }
+            else
+                i++;
         }
-        //printf("%d\n", n);
+        printf("%d\n", n);
         return (n);
 }
 
 static size_t	strsize(char const *s, char c)
 {
-	size_t	len;
-	int		inQuotes = 0;
+	size_t	len; 
+	int inDquotes;
+    int inSquotes;
+
+	inDquotes = 0;
+	inSquotes = 0;
 
 	len = 0;
-	inQuotes = 0;
 	while (*s && *s == c)
 		s++;
 	while (*s)
 	{
-		if (*s == '"' || *s == '\'')
-			inQuotes = !inQuotes;
-		if (*s == c && !inQuotes)
+		
+        if (*s == '"' && !inSquotes)
+			inDquotes = !inDquotes;
+		if (*s == '\'' && !inDquotes)
+			inSquotes = !inSquotes;
+		if (*s == c && !inDquotes && !inSquotes)
 			break;
 		s++;
 		len++;
@@ -73,10 +79,11 @@ static char	*copyword(char const *s, char c, size_t len)
 {
 	char	*str;
 	char	*tmp;
-	int	inQuotes;
-	
-	inQuotes = 0;
+	int inDquotes;
+    int inSquotes;
 
+	inDquotes = 0;
+	inSquotes = 0;
 	if (!*s)
 		return (NULL);
 	str = malloc(len + 1);
@@ -86,14 +93,21 @@ static char	*copyword(char const *s, char c, size_t len)
 	while (*s && *s == c)
 		s++;
 	while (*s)
-	{
-		if (*s == '"' || *s == '\'')
-			inQuotes = !inQuotes;
-		if (*s == c && !inQuotes)
+	{	
+		if (*s == c && !inDquotes && !inSquotes)
 			break;
-		*tmp = *s;
-		tmp++;
-		s++;
+		if (*s == '"' && !inSquotes)
+			inDquotes = !inDquotes;
+		else if (*s == '\'' && !inDquotes)
+			inSquotes = !inSquotes;
+		if((*s == '"' && !inSquotes ) || (*s == '\'' && !inDquotes ))
+			s++;
+		else
+		{
+			*tmp = *s;
+			tmp++;
+			s++;
+		}
 	}
 	*tmp = '\0';
 	return (str);
@@ -118,10 +132,12 @@ char	**ft_split2(char const *s, char c)
 		if (!*s)
 			break;
 		strlen = strsize(s, c);
+		printf("word %s\n", s);
 		arr[i++] = copyword(s, c, strlen);
 		s += strlen;
 	}
 	arr[i] = NULL;
 	return (arr);
 }
+
 
