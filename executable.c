@@ -5,7 +5,7 @@ char	*absolute_path(char *arg, t_global *global)
 	char	*tmp;
 	char	*path;
 	int		i;
-	
+
 	path = NULL;
 	i = 0;
 	if (arg[0] == '\0')
@@ -53,16 +53,22 @@ char	*get_type_path(char *arg, t_global *global)
 void ft_executable(t_global *global)
 {
 	char		*path;
-	
+	int	p;
+
+	p = fork();
 	path = get_type_path(global->args[0], global);
-	if (path)
+	if (p == 0)
 	{
-		execve(path, global->args, global->copy_env);
+		if (path)
+		{
+			execve(path, global->args, global->copy_env);
+
+		}
+		else
+		{
+			printf("Minishell: command not found: %s\n", global->args[0]);
+			//return ;
+		}
 	}
-	else
-	{
-		printf("Minishell: command not found: %s\n", global->args[0]);
-		return ;
-	}
-	
+	wait(NULL);
 }

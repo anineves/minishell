@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 10:16:48 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/05/30 18:43:08 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/05/30 22:27:37 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ static size_t	nstrings(char const *s, char c)
             else
                 i++;
         }
-        printf("%d\n", n);
+        //printf("%d\n", n);
         return (n);
 }
 
 static size_t	strsize(char const *s, char c)
 {
-	size_t	len; 
+	size_t	len;
 	int inDquotes;
     int inSquotes;
 
@@ -62,7 +62,7 @@ static size_t	strsize(char const *s, char c)
 		s++;
 	while (*s)
 	{
-		
+
         if (*s == '"' && !inSquotes)
 			inDquotes = !inDquotes;
 		if (*s == '\'' && !inDquotes)
@@ -93,7 +93,7 @@ static char	*copyword(char const *s, char c, size_t len)
 	while (*s && *s == c)
 		s++;
 	while (*s)
-	{	
+	{
 		if (*s == c && !inDquotes && !inSquotes)
 			break;
 		if (*s == '"' && !inSquotes)
@@ -132,7 +132,7 @@ char	**ft_split2(char const *s, char c)
 		if (!*s)
 			break;
 		strlen = strsize(s, c);
-		printf("word %s\n", s);
+		//printf("word %s\n", s);
 		arr[i++] = copyword(s, c, strlen);
 		s += strlen;
 	}
