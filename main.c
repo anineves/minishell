@@ -72,7 +72,7 @@ t_global	*init_global(char **env)
 		return (NULL);
 	new->shell = NULL;
 	new->cwd = getcwd(NULL, 4096);
-	new->old_path = getenv("HOME");
+	new->old_path = "bash: cd: OLDPWD not set; \n";
 	new->copy_env = init_env(env);
 	new->len_env = size_env(env);
 	new->args = NULL;

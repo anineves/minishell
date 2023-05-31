@@ -15,20 +15,12 @@
 char	*ft_strdup(char *src)
 {
 	char	*c;
-	char	*a;
-	int		size;
+	size_t	size;
 
-	size = ft_strlen(src);
-	c = malloc(size + 1);
+	size = ft_strlen(src) + 1;
+	c = (char *)malloc(size);
 	if (!c)
 		return (NULL);
-	a = c;
-	while (*src)
-	{
-		*a = *src;
-		a++;
-		src++;
-	}
-	*a = '\0';
+	ft_memcpy(c, src, size);
 	return (c);
 }

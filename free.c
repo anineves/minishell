@@ -42,8 +42,8 @@ void	free_global(t_global *global)
 		free_args(global->args);
 		free(global->args);
 	}
-	//if (global->path != NULL) //isto ativo da double free nao sei porque
-	//	free(global->path);
+	//if (global->path != NULL)
+		//free(global->path);
 	if (global->split_path != NULL)
 	{
 		free_args(global->split_path);
