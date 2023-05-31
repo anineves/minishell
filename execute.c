@@ -1,9 +1,7 @@
 #include "minishell.h"
 
-void	execute(t_global *global)
+void	execute_no_redirection(t_global *global)
 {
-	if (!global->shell->cmd)
-		return ;
 	global->args = ft_split2(global->shell->cmd, ' ');
 	if (ft_strcmp(global->args[0], "echo") == 0)
 		ft_echo(global);
@@ -24,7 +22,12 @@ void	execute(t_global *global)
 	return;
 }
 
-/*void	execute_redirection(t_global *global)
+void	execute(t_global *global) //talvez aqui seja melhor por a receber um fd para mandar junto
 {
-
-}*/
+	if (!global->shell->cmd)
+		return ;
+	if (global->shell->flag != EMPTY)
+		redirection(global);
+	else
+		execute_no_redirection(global);
+}

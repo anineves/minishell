@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:19:40 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/05/28 19:08:34 by marvin           ###   ########.fr       */
+/*   Updated: 2023/05/31 00:24:13 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,4 +93,7 @@ size_t	size_env(char **env);
 char	**init_env(char **env);
 void	free_args(char	**args);
 void ft_executable(t_global *global);
+void	redirection(t_global *global);
+void	append_to_file(t_global *global);
+void	write_to_file(t_global *global);
 #endif

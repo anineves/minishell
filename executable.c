@@ -62,13 +62,12 @@ void ft_executable(t_global *global)
 		if (path)
 		{
 			execve(path, global->args, global->copy_env);
-
 		}
 		else
 		{
 			printf("Minishell: command not found: %s\n", global->args[0]);
-			//return ;
 		}
+		exit(1);
 	}
 	wait(NULL);
 }

@@ -20,7 +20,8 @@ SRC = main.c \
 	builtins/export.c \
  	utils_split.c \
  	executable.c \
-	free.c
+	free.c \
+	redirection.c \
 
 OBJ = $(SRC:.c=.o)
 
