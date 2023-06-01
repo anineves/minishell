@@ -2,7 +2,7 @@
 
 extern int	g_exit_status;
 
-void ft_pwd()
+void ft_pwd(t_global *global)
 {
 	char	pwd[PATH_MAX];
 
@@ -11,6 +11,7 @@ void ft_pwd()
 		g_exit_status = 1;
 		return ;
 	}
-	printf("%s\n", pwd);
+	ft_putstr_fd(pwd, global->fd_output);
+	ft_putchar_fd('\n', global->fd_output);
 	g_exit_status = 0;
 }

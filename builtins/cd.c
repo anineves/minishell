@@ -12,7 +12,7 @@ void change_dir(t_global *global, char *next_path)
 			g_exit_status = 0;
 	else
 	{
-		printf("bash: cd: %s: No such file or directory", global->args[1]);
+		printf("bash: cd: %s: No such file or directory\n", global->args[1]);
 		g_exit_status = 1;
 	}
 	free(path);
@@ -25,22 +25,22 @@ void ft_cd(t_global *global)
 	next_path = NULL;
 	if(global->args[1] && global->args[2])
 	{
-		printf("minishell: cd: too many arguments\n");
+		ft_putstr_fd("minishell: cd: too many arguments\n", global->fd_output);
 		g_exit_status = 1;		
 		return ;
 	}
-	else if((ft_strcmp(global->args[1], "-") == 0))
+	if( global->args[1] )
 	{
-		ft_putstr_fd(global->old_path, global->fd_output);
-		ft_putstr_fd("\n", global->fd_output);
-		g_exit_status = 0;
-		return ;
+		if((ft_strcmp(global->args[1], "-") == 0))
+		{
+			ft_putstr_fd(global->old_path, global->fd_output);
+			ft_putstr_fd("\n", global->fd_output);
+			g_exit_status = 0;
+			return ;
+		}
 	}
-	else
-	{	
-		next_path = global->args[1];
-		if((!global->args[1]) || (ft_strcmp(global->args[1], "~") == 0) || (ft_strncmp(global->args[1], "--", 3) == 0))
-			next_path = getenv("HOME");
-		change_dir(global, next_path);
-	}
+	next_path = global->args[1];
+	if((!global->args[1]) || (ft_strcmp(global->args[1], "~") == 0) || (ft_strncmp(global->args[1], "--", 3) == 0))
+		next_path = getenv("HOME");
+	change_dir(global, next_path);
 }

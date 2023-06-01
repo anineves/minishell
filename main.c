@@ -78,7 +78,7 @@ t_global	*init_global(char **env)
 	new->args = NULL;
 	new->fd_input = 0;
 	new->fd_output = 1;
-	new->path = get_path(new->copy_env, new->path);
+	new->path= get_path(new->copy_env, new->path);
 	new->split_path = ft_split(new->path, ':');
 	return (new);
 }
@@ -107,8 +107,10 @@ int	main(int argc, char **argv, char **env)
 			create_data(&global->shell, input);
 			execute(global);
 		}
-		free(input);
-		free_data(&global->shell);
+		if(input)
+			free(input);
+		if(global->shell)
+			free_data(&global->shell);
 	}
 	free_global(global);
 	return (0);

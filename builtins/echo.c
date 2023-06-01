@@ -1,5 +1,7 @@
 #include "../minishell.h"
 
+extern int	g_exit_status;
+
 void	print_for_echo(char *str)
 {
 	char	*new;
@@ -43,7 +45,10 @@ void	ft_echo(t_global *global)
 	while (global->args[i])
 	{
 		//printf("%s",global->args[i]);
-		print_for_echo(global->args[i]);
+		if(ft_strcmp(global->args[i], "$?") == 0)
+			ft_putstr_fd(ft_itoa(g_exit_status), global->fd_output);
+		else	
+			print_for_echo(global->args[i]);
 		i++;
 		if (global->args[i])
 			printf(" ");

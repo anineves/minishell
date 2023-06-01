@@ -1,5 +1,33 @@
 #include "minishell.h"
 
+extern int	g_exit_status;
+
+char	*get_path2(char *arg, t_global *global)
+{
+	char	*tmp;
+	char	*cmd;
+	int		i;
+
+	if (access(arg, F_OK) == 0 )
+	{
+		cmd = ft_strdup(arg);
+		return (cmd);
+	}
+	i = 0;
+	while (global->split_path[i])
+	{
+		tmp = ft_strjoin(global->split_path[i], "/");
+		cmd = ft_strjoin(tmp, arg);
+		free(tmp);
+		if (access(cmd, F_OK) == 0)
+			return (cmd);
+		free(cmd);
+		i++;
+	}
+	return (NULL);
+}
+
+/*
 char	*absolute_path(char *arg, t_global *global)
 {
 	char	*tmp;
@@ -32,8 +60,6 @@ char	*relative_path(char *arg, t_global *global)
 	if (access(path, X_OK) == 0)
 		return (path);
 	free(path);
-	if (access(arg, X_OK) == 0)
-		return (ft_strdup(arg));
 	return (NULL);
 }
 
@@ -46,7 +72,8 @@ char	*get_type_path(char *arg, t_global *global)
 	else
 		path = absolute_path(arg, global);
 	return (path);
-}
+} */
+
 
 void ft_executable(t_global *global)
 {
@@ -54,19 +81,25 @@ void ft_executable(t_global *global)
 	int		p;
 
 	p = fork();
-	path = get_type_path(global->args[0], global);
+	path = get_path2(global->args[0], global);
 	if (p == 0)
 	{
 		if (path)
 		{
-			execve(path, global->args, global->copy_env);
-			free(path);
+			if ( execve(path, global->args, global->copy_env) < 0)
+			{	
+				free(path);
+				g_exit_status = 1;
+			}
 		}
 		else
 		{
 			printf("Minishell: command not found: %s\n", global->args[0]);
+			g_exit_status = 127;
+	
 		}
 		exit(1);
 	}
+	free(path);
 	wait(NULL);
 }

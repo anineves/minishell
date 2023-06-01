@@ -7,6 +7,7 @@ void	ft_env(t_global *global)
 	int	i;
 
 	i = 0;
+	global->len_env = size_env(global->copy_env);
 	while (i < global->len_env)
 	{
 		printf("%s\n", global->copy_env[i]);

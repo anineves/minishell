@@ -83,5 +83,8 @@ void ft_export(t_global *global)
 			verific_equal(global->copy_env[i], global);			
 			i++;
 		}
-	}	//apenas se nao tiver argumentos
+	}
+	else
+		create_new_var(global);
+		
 }

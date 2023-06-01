@@ -18,6 +18,8 @@ SRC = main.c \
 	builtins/env.c \
 	builtins/exit.c \
 	builtins/export.c \
+	builtins/export2.c \
+	builtins/unset.c \
  	utils_split.c \
  	executable.c \
 	free.c \
