@@ -7,7 +7,7 @@ void change_dir(t_global *global, char *next_path)
 	char *path;
 		
 	path = getcwd(NULL, 0);
-	global->old_path = ft_strdup(path);
+	global->old_path = path;
 	if (chdir(next_path) == 0 )
 			g_exit_status = 0;
 	else
