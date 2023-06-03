@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:19:40 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/03 15:29:22 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/03 16:12:11 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,8 @@ void	free_global(t_global *global);
 size_t	size_env(char **env);
 char	**init_env(char **env);
 void	free_args(char	**args);
-void	redirection(t_global *global);
-void	append_to_file(t_global *global);
-void	write_to_file(t_global *global);
+void	append_to_file(t_global *global, int read_fd);
+void	write_to_file(t_global *global, int read_fd);
 void	create_new_var(t_global *global);
 size_t	size_env(char **env);
 void ft_unset(t_global *global);
@@ -107,6 +106,7 @@ char	**rmv_var(t_global *global, int j, int size);
 int	is_child_builtin(t_global *global);
 void	execute_child_builtin(t_global *global);
 void	is_parent_builtin(t_global *global);
+void	red_out_append(t_global *global, int read_fd);
 
 static inline void	ignore_signal(int n)
 {

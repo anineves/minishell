@@ -132,7 +132,8 @@ void execute(t_global *global)
 	else/*parent*/
 	{
 		/*mudar para o waitpid para receber o respectivo exit status */
-		wait(NULL);
+		waitpid(0, (int *)&g_exit_status, WEXITSTATUS(g_exit_status));
+		printf("%d\n", g_exit_status);
 		close(pipe_fd[WRITE_END]);
 		if (global->shell->flag == PIPE)
 		{
@@ -141,9 +142,9 @@ void execute(t_global *global)
 			execute(global);
 			return ;
 		}
-		else if (global->shell->flag == RD_OUT)
+		else if (global->shell->flag == RD_OUT || global->shell->flag == APPEND)
 		{
-
+			red_out_append(global, pipe_fd[READ_END]);
 		}
 	}
 	if (global->fd_input != STDIN_FILENO)

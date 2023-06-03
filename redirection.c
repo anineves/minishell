@@ -1,16 +1,17 @@
 #include "minishell.h"
 
-void	redirection(t_global *global)
+void	red_out_append(t_global *global, int read_fd)
 {
 	if (global->shell->flag == APPEND)
-		append_to_file(global);
+		append_to_file(global, read_fd);
 	if (global->shell->flag == RD_OUT)
-		write_to_file(global);
+		write_to_file(global, read_fd);
 }
 
-void	append_to_file(t_global *global)
+void	append_to_file(t_global *global, int read_fd)
 {
-	int	fd;
+	int		fd;
+	char	*str;
 
 	fd = open(global->shell->next->cmd, O_APPEND | O_RDWR, 0644);
 	if (fd < 0)
@@ -18,13 +19,24 @@ void	append_to_file(t_global *global)
 		printf("ERROR WITH FILE\n");
 		return ;
 	}
-	ft_putstr_fd(global->shell->cmd, fd);
+	while (1)
+	{
+		str = get_next_line(read_fd);
+		if (str)
+		{
+			write(fd, str, ft_strlen(str));
+			free(str);
+		}
+		else
+			break ;
+	}
 	close(fd);
 }
 
-void	write_to_file(t_global *global)
+void	write_to_file(t_global *global, int read_fd)
 {
 	int	fd;
+	char	*str;
 
 	fd = open(global->shell->next->cmd, O_CREAT | O_RDWR ,0644);
 	if (fd < 0)
@@ -32,6 +44,16 @@ void	write_to_file(t_global *global)
 		printf("ERROR WITH FILE\n");
 		return ;
 	}
-	ft_putstr_fd(global->shell->cmd, fd);
+	while (1)
+	{
+		str = get_next_line(read_fd);
+		if (str)
+		{
+			write(fd, str, ft_strlen(str));
+			free(str);
+		}
+		else
+			break ;
+	}
 	close(fd);
 }
