@@ -133,6 +133,8 @@ void execute(t_global *global)
 	{
 		/*mudar para o waitpid para receber o respectivo exit status */
 		waitpid(0, (int *)&g_exit_status, WEXITSTATUS(g_exit_status));
+		if (!WTERMSIG(g_exit_status))
+			g_exit_status = WEXITSTATUS(g_exit_status);
 		printf("%d\n", g_exit_status);
 		close(pipe_fd[WRITE_END]);
 		if (global->shell->flag == PIPE)

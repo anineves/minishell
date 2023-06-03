@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+extern int	g_exit_status;
+
 void	red_out_append(t_global *global, int read_fd)
 {
 	if (global->shell->flag == APPEND)
@@ -55,5 +57,6 @@ void	write_to_file(t_global *global, int read_fd)
 		else
 			break ;
 	}
+	
 	close(fd);
 }
