@@ -73,33 +73,83 @@ char	*get_type_path(char *arg, t_global *global)
 		path = absolute_path(arg, global);
 	return (path);
 } */
+/*ls | wc */
+void	open_pipes(t_global *global, int *pipe_fd)
+{
+	/*se existir mais comandos escrever para o pipe_fd(write end)*/
+	if (global->shell->next != NULL)
+	{
+		//printf("%s\n", global->shell->cmd);
+		close(pipe_fd[READ_END]);
+		if (global->fd_input != STDIN_FILENO)
+		{
+			dup2(global->fd_input, STDIN_FILENO);
+			close(global->fd_input);
+		}
+		dup2(pipe_fd[WRITE_END], STDOUT_FILENO);
+		close(pipe_fd[WRITE_END]);
+	}
+	else
+	{
+		if (global->fd_input != STDIN_FILENO)
+		{
+			dup2(global->fd_input, STDIN_FILENO);
+			close(global->fd_input);
+		}
+		if (global->fd_output != STDOUT_FILENO)
+		{
+			dup2(global->fd_output, STDOUT_FILENO);
+			close(global->fd_output);
+		}
+	}
+}
 
-
-void ft_executable(t_global *global)
+/*child builtins (pwd, export (sozinho), echo)*/
+void execute(t_global *global)
 {
 	char	*path;
-	int		p;
+	int pipe_fd[2];
 
-	p = fork();
+	pipe(pipe_fd);
+	global->args = ft_split2(global->shell->cmd, ' ');
 	path = get_path2(global->args[0], global);
-	if (p == 0)
+	if (fork() == 0)/*child process*/
 	{
-		if (path)
-		{
-			if ( execve(path, global->args, global->copy_env) < 0)
-			{	
-				free(path);
-				g_exit_status = 1;
-			}
-		}
-		else
+		/*colocar uma funcao para lidar com o CTRL'C */
+		signal(SIGINT, &ignore_signal);
+		open_pipes(global, pipe_fd);
+		if (path && !is_child_builtin(global))
+			execve(path, global->args, global->copy_env);
+		else if (is_child_builtin(global))
+			execute_child_builtin(global);
+		else if (!path)
 		{
 			printf("Minishell: command not found: %s\n", global->args[0]);
-			g_exit_status = 127;
-	
+			exit(127);
 		}
-		exit(1);
+		exit(g_exit_status);/*retornar o exit status do child builtins*/
 	}
+	else/*parent*/
+	{
+		/*mudar para o waitpid para receber o respectivo exit status */
+		wait(NULL);
+		close(pipe_fd[WRITE_END]);
+		if (global->shell->flag == PIPE)
+		{
+			global->shell = global->shell->next;
+			global->fd_input = pipe_fd[READ_END];
+			execute(global);
+			return ;
+		}
+		else if (global->shell->flag == RD_OUT)
+		{
+
+		}
+	}
+	if (global->fd_input != STDIN_FILENO)
+		close(global->fd_input);
+	else if (global->fd_output != STDOUT_FILENO)
+		close(global->fd_output);
 	free(path);
-	wait(NULL);
+	free_args(global->args);
 }

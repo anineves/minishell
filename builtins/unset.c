@@ -8,13 +8,14 @@ char	**rmv_var(t_global *global, int j,  int size)
 	char		**new_copy_env;
 
 	i = 0;
+	printf("entrei rm");
 	new_copy_env = ft_calloc(size + 1 , sizeof(char *));
 	while (i < j)
 	{
 		new_copy_env[i] = ft_strdup(global->copy_env[i]);
 		i++;
 	}
-	while (global->copy_env[i + 1])
+	while (global->copy_env[i + 1] )
 	{
 		new_copy_env[i] = ft_strdup(global->copy_env[i + 1]);
 		i++;
@@ -35,16 +36,21 @@ void ft_unset(t_global *global)
 	int	len;
 	int	j;
 	int k;
+	int size;
 	
 	i = 1;
 	len = 0;
 	j = 0;
 	k = 0;
-	if(!global->args[1])
-		g_exit_status = 0;
-	else
+
+	size = size_env(global->copy_env); 
+	if(!global->args[i])
 	{
-		
+		g_exit_status = 0;
+		return	;
+	}
+	else
+	{	
 		while(global->args[i])
 		{
 			len = ft_strlen(global->args[i]);
@@ -52,7 +58,8 @@ void ft_unset(t_global *global)
 				k++;
 			while(global->copy_env[j])	
 			{
-				if(!ft_strncmp(global->args[i], global->copy_env[j], len))
+				printf("tamanho %d pos %d %s\n", size, j, global->copy_env[j]);
+				if(!ft_strncmp(global->args[i], global->copy_env[j-1], len))
 					global->copy_env = rmv_var(global, j, (size_env(global->copy_env) - 1));
 				else if(!ft_strncmp(global->args[i], global->copy_env[j], k))
 					global->copy_env = rmv_var(global, j, (size_env(global->copy_env) - 1));

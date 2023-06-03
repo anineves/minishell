@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 14:06:29 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/05/31 00:50:01 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/03 15:04:36 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,11 @@ int	main(int argc, char **argv, char **env)
 		if(global->shell)
 			free_data(&global->shell);
 	}
-	free_global(global);
+	if (global->copy_env != NULL)
+	{
+		free_args(global->copy_env);
+		free(global->copy_env);
+	}
+	free(global);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:19:40 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/05/31 00:24:13 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/03 15:29:22 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@
 # include <termios.h>
 # include <stdbool.h>
 
+/*PIPE RELATED!!!*/
+
+# define WRITE_END 1
+# define READ_END 0
 typedef enum
 {
 	EMPTY,
@@ -93,13 +97,20 @@ void	free_global(t_global *global);
 size_t	size_env(char **env);
 char	**init_env(char **env);
 void	free_args(char	**args);
-void ft_executable(t_global *global);
 void	redirection(t_global *global);
 void	append_to_file(t_global *global);
 void	write_to_file(t_global *global);
 void	create_new_var(t_global *global);
 size_t	size_env(char **env);
 void ft_unset(t_global *global);
-void	rmv_var(t_global *global, int j);
-		
+char	**rmv_var(t_global *global, int j, int size);
+int	is_child_builtin(t_global *global);
+void	execute_child_builtin(t_global *global);
+void	is_parent_builtin(t_global *global);
+
+static inline void	ignore_signal(int n)
+{
+	(void)n;
+	exit(130);
+}
 #endif

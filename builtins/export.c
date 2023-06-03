@@ -74,7 +74,6 @@ void ft_export(t_global *global)
 	int	i;
 	
 	i = 0;
-	ft_unset(global);
 	if(global->args[1] == NULL)
 	{
 		ft_sort(global);

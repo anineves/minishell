@@ -24,6 +24,7 @@ void	free_args(char	**args)
 		free(args[i]);
 		i++;
 	}
+	free(args);
 }
 
 void	free_global(t_global *global)
@@ -32,11 +33,6 @@ void	free_global(t_global *global)
 		free_data(&global->shell);
 	if (global->cwd != NULL)
 		free(global->cwd);
-	if (global->copy_env != NULL)
-	{
-		free_args(global->copy_env);
-		free(global->copy_env);
-	}
 	if (global->args != NULL)
 	{
 		free_args(global->args);

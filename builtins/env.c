@@ -7,6 +7,11 @@ void	ft_env(t_global *global)
 	int	i;
 
 	i = 0;
+	if (global->args[1])
+	{
+		g_exit_status = 127;
+		return ;
+	}
 	global->len_env = size_env(global->copy_env);
 	while (i < global->len_env)
 	{
