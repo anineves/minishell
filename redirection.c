@@ -26,6 +26,8 @@ void	append_to_file(t_global *global, int read_fd)
 		str = get_next_line(read_fd);
 		if (str)
 		{
+			if(g_exit_status == 127)
+				fd = 2;
 			write(fd, str, ft_strlen(str));
 			free(str);
 		}
@@ -51,6 +53,8 @@ void	write_to_file(t_global *global, int read_fd)
 		str = get_next_line(read_fd);
 		if (str)
 		{
+			if(g_exit_status == 127)
+				fd = 2;
 			write(fd, str, ft_strlen(str));
 			free(str);
 		}
