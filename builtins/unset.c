@@ -24,7 +24,7 @@ char	**rmv_var(t_global *global, int j,  int size)
 	if (global->copy_env != NULL)
 	{
 		free_args(global->copy_env);
-		free(global->copy_env);
+		//free(global->copy_env);
 	}
 	return (new_copy_env);
 }
@@ -59,7 +59,7 @@ void ft_unset(t_global *global)
 			while(global->copy_env[j])	
 			{
 				printf("tamanho %d pos %d %s\n", size, j, global->copy_env[j]);
-				if(!ft_strncmp(global->args[i], global->copy_env[j-1], len))
+				if(!ft_strncmp(global->args[i], global->copy_env[j], len))
 					global->copy_env = rmv_var(global, j, (size_env(global->copy_env) - 1));
 				else if(!ft_strncmp(global->args[i], global->copy_env[j], k))
 					global->copy_env = rmv_var(global, j, (size_env(global->copy_env) - 1));
