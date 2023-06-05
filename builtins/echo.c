@@ -33,26 +33,44 @@ void	print_for_echo(char *str)
 	free(new);
 }
 
+bool is_n(t_global *global)
+{	
+	int i;
+	int len;
+	
+	i = 1;
+	len = ft_strlen(global->args[1]);
+	while(global->args[1][i] == 'n' && global->args[1][i])
+		i++;
+	if(i == len)
+		return (1);
+	else
+		return(0);
+}
+
 void	ft_echo(t_global *global)
 {
 	int		i;
 
 	i = 1;
 	if(!global->args[i])
-		return ;
-	if (ft_strcmp(global->args[1], "-n") == 0)
-		i++;
-	while (global->args[i])
 	{
-		//printf("%s",global->args[i]);
-		if(ft_strcmp(global->args[i], "$?") == 0)
-			ft_putstr_fd(ft_itoa(g_exit_status), global->fd_output);
-		else	
-			print_for_echo(global->args[i]);
-		i++;
-		if (global->args[i])
-			printf(" ");
+		ft_putstr_fd("\n", global->fd_output);
+		return ;
 	}
-	if (ft_strcmp(global->args[1], "-n") != 0)
-		printf("\n");
+		if (ft_strncmp(global->args[1], "-n", 2) == 0 && is_n(global))
+			i++;
+		while (global->args[i])
+		{
+			//printf("%s",global->args[i]);
+			if(ft_strcmp(global->args[i], "$?") == 0)
+				ft_putstr_fd(ft_itoa(g_exit_status), global->fd_output);
+			else	
+				print_for_echo(global->args[i]);
+			i++;
+			if (global->args[i])
+				printf(" ");
+		}
+		if (ft_strncmp(global->args[1], "-n", 2) != 0)
+			printf("\n");
 }
