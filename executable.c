@@ -122,7 +122,7 @@ void execute(t_global *global)
 			execve(path, global->args, global->copy_env);
 		else if (is_child_builtin(global))
 			execute_child_builtin(global);
-		else if (!path)
+		else if (!path && !is_parent_builtin(global))
 		{
 			printf("Minishell: command not found: %s\n", global->args[0]);
 			exit(127);
@@ -136,23 +136,31 @@ void execute(t_global *global)
 		if (!WTERMSIG(g_exit_status))
 			g_exit_status = WEXITSTATUS(g_exit_status);
 		printf("%d\n", g_exit_status);
-		close(pipe_fd[WRITE_END]);
-		if (global->shell->flag == PIPE)
+		if(is_parent_builtin(global) && global->shell->flag != PIPE)
+			execute_parent_builtin(global);
+		else if(global->shell->next != NULL)
 		{
-			global->shell = global->shell->next;
-			global->fd_input = pipe_fd[READ_END];
-			execute(global);
-			return ;
+			close(pipe_fd[WRITE_END]);
+			if (global->shell->flag == PIPE)
+			{
+				global->shell = global->shell->next;
+				global->fd_input = pipe_fd[READ_END];
+				execute(global);
+				return ;
+			}
+			else if (global->shell->flag == RD_OUT || global->shell->flag == APPEND)
+			{
+				red_out_append(global, pipe_fd[READ_END]);
+			}
 		}
-		else if (global->shell->flag == RD_OUT || global->shell->flag == APPEND)
+		else
 		{
-			red_out_append(global, pipe_fd[READ_END]);
+			if (global->fd_input != STDIN_FILENO)
+				close(global->fd_input);
+			else if (global->fd_output != STDOUT_FILENO)
+			close(global->fd_output);
 		}
 	}
-	if (global->fd_input != STDIN_FILENO)
-		close(global->fd_input);
-	else if (global->fd_output != STDOUT_FILENO)
-		close(global->fd_output);
 	free(path);
 	free_args(global->args);
 }

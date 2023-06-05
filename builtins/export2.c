@@ -17,7 +17,7 @@ char	**init_env2(char **copy_env, t_global *global, int size)
 	if (global->copy_env != NULL)
 	{
 		free_args(global->copy_env);
-		free(global->copy_env);
+		//free(global->copy_env);
 	}
 	return (new_copy_env);
 }

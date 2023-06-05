@@ -105,7 +105,8 @@ void ft_unset(t_global *global);
 char	**rmv_var(t_global *global, int j, int size);
 int	is_child_builtin(t_global *global);
 void	execute_child_builtin(t_global *global);
-void	is_parent_builtin(t_global *global);
+int	is_parent_builtin(t_global *global);
+void	execute_parent_builtin(t_global *global);
 void	red_out_append(t_global *global, int read_fd);
 
 static inline void	ignore_signal(int n)
