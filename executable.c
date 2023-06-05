@@ -104,6 +104,31 @@ void	open_pipes(t_global *global, int *pipe_fd)
 	}
 }
 
+void child_process(t_global *global, char *path, int pipe_fd[])
+{
+	/*colocar uma funcao para lidar com o CTRL'C */
+	signal(SIGINT, &ignore_signal);
+	open_pipes(global, pipe_fd);
+	if (path && !is_child_builtin(global))
+		execve(path, global->args, global->copy_env);
+	else if (is_child_builtin(global))
+		execute_child_builtin(global);
+	else if (!path && !is_parent_builtin(global))
+	{
+		printf("Minishell: command not found: %s\n", global->args[0]);
+		exit(127);
+	}
+	free(path);
+	exit(g_exit_status);/*retornar o exit status do child builtins*/
+}
+
+void ft_close(t_global *global)
+{
+	if (global->fd_input != STDIN_FILENO)
+		close(global->fd_input);
+	else if (global->fd_output != STDOUT_FILENO)
+		close(global->fd_output);
+}
 /*child builtins (pwd, export (sozinho), echo)*/
 void execute(t_global *global)
 {
@@ -114,21 +139,7 @@ void execute(t_global *global)
 	global->args = ft_split2(global->shell->cmd, ' ');
 	path = get_path2(global->args[0], global);
 	if (fork() == 0)/*child process*/
-	{
-		/*colocar uma funcao para lidar com o CTRL'C */
-		signal(SIGINT, &ignore_signal);
-		open_pipes(global, pipe_fd);
-		if (path && !is_child_builtin(global))
-			execve(path, global->args, global->copy_env);
-		else if (is_child_builtin(global))
-			execute_child_builtin(global);
-		else if (!path && !is_parent_builtin(global))
-		{
-			printf("Minishell: command not found: %s\n", global->args[0]);
-			exit(127);
-		}
-		exit(g_exit_status);/*retornar o exit status do child builtins*/
-	}
+		child_process(global, path, pipe_fd);
 	else/*parent*/
 	{
 		/*mudar para o waitpid para receber o respectivo exit status */
@@ -149,17 +160,10 @@ void execute(t_global *global)
 				return ;
 			}
 			else if (global->shell->flag == RD_OUT || global->shell->flag == APPEND)
-			{
 				red_out_append(global, pipe_fd[READ_END]);
-			}
 		}
 		else
-		{
-			if (global->fd_input != STDIN_FILENO)
-				close(global->fd_input);
-			else if (global->fd_output != STDOUT_FILENO)
-			close(global->fd_output);
-		}
+			ft_close(global);
 	}
 	free(path);
 	free_args(global->args);
