@@ -36,13 +36,13 @@ void	free_global(t_global *global)
 	if (global->args != NULL)
 	{
 		free_args(global->args);
-		free(global->args);
+		//free(global->args);
 	}
 	//if (global->path != NULL)
 		//free(global->path);
 	if (global->split_path != NULL)
 	{
 		free_args(global->split_path);
-		free(global->split_path);
+		//free(global->split_path);
 	}
 }
