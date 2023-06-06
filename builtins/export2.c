@@ -31,7 +31,7 @@ void create_new_var(t_global *global)
 	i=1;
 	while(global->args[i])
 	{
-		//ft_unset(global);
+		ft_unset(global);
 		if(ft_isalpha(global->args[i][0]))
 		{
 			size = size_env(global->copy_env);
