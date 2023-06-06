@@ -23,8 +23,10 @@ SRC = main.c \
  	utils_split.c \
  	executable.c \
 	free.c \
-	redirection.c \
+	redirect_out.c \
+	redirect_in.c
 
+	
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)

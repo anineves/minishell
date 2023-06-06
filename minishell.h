@@ -67,6 +67,7 @@ typedef struct s_global
 	int		len_env;
 	int	fd_input;
 	int	fd_output;
+	int	fd_heredoc;
 	char 	*path;
 	char	**split_path;
 	char	*cwd;
@@ -108,6 +109,8 @@ void	execute_child_builtin(t_global *global);
 int	is_parent_builtin(t_global *global);
 void	execute_parent_builtin(t_global *global);
 void	red_out_append(t_global *global, int read_fd);
+void	red_in_heredoc(t_global *global);
+void	verific_redin(t_global *global);
 
 static inline void	ignore_signal(int n)
 {
