@@ -152,15 +152,20 @@ void execute(t_global *global)
 		else if(global->shell->next != NULL)
 		{
 			close(pipe_fd[WRITE_END]);
-			if (global->shell->flag == PIPE)
+			while(global->shell != NULL)
 			{
-				global->shell = global->shell->next;
-				global->fd_input = pipe_fd[READ_END];
-				execute(global);
-				return ;
+				if (global->shell->flag == PIPE)
+				{
+					global->shell = global->shell->next;
+					global->fd_input = pipe_fd[READ_END];
+					execute(global);
+					return ;
+				}
+				else if (global->shell->flag == RD_OUT || global->shell->flag == APPEND)
+					red_out_append(global, pipe_fd[READ_END]);
+			global->shell = global->shell->next;
 			}
-			else if (global->shell->flag == RD_OUT || global->shell->flag == APPEND)
-				red_out_append(global, pipe_fd[READ_END]);
+			
 		}
 		else
 			ft_close(global);
