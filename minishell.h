@@ -111,6 +111,7 @@ void	execute_parent_builtin(t_global *global);
 void	red_out_append(t_global *global, int read_fd);
 void	red_in_heredoc(t_global *global);
 void	verific_redin(t_global *global);
+void	ft_expander(t_global *global, char *input);
 
 static inline void	ignore_signal(int n)
 {

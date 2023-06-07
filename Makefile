@@ -24,7 +24,8 @@ SRC = main.c \
  	executable.c \
 	free.c \
 	redirect_out.c \
-	redirect_in.c
+	redirect_in.c \
+	expander.c
 
 	
 OBJ = $(SRC:.c=.o)

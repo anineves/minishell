@@ -140,6 +140,7 @@ void execute(t_global *global)
     int pipe_fd[2];
 
     pipe(pipe_fd);
+    ft_expander(global, global->shell->cmd);
     global->args = ft_split2(global->shell->cmd, ' ');
     path = get_path2(global->args[0], global);
     if (fork() == 0)
