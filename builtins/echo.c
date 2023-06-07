@@ -62,9 +62,12 @@ void	ft_echo(t_global *global)
 			i++;
 		while (global->args[i])
 		{
-			//printf("%s",global->args[i]);
 			if(ft_strcmp(global->args[i], "$?") == 0)
+			{
 				ft_putstr_fd(ft_itoa(g_exit_status), global->fd_output);
+				g_exit_status = 0;
+				return ;
+			}
 			else	
 				print_for_echo(global->args[i]);
 			i++;
@@ -73,4 +76,5 @@ void	ft_echo(t_global *global)
 		}
 		if (ft_strncmp(global->args[1], "-n", 2) != 0)
 			printf("\n");
+		g_exit_status = 0;
 }

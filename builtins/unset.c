@@ -62,6 +62,7 @@ void ft_unset(t_global *global)
 			k = 0;
 			i++;
 		}
+		g_exit_status = 0;
 	}
 }
 

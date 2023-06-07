@@ -1,5 +1,7 @@
 #include "../minishell.h"
 
+extern int	g_exit_status;
+
 char	**init_env2(char **copy_env, t_global *global, int size)
 {
 	int			i;
@@ -38,13 +40,13 @@ void create_new_var(t_global *global)
 			global->copy_env = init_env2(global->copy_env, global, (size + 1));
 			global->copy_env[size] = ft_strdup(global->args[i]);
 			i++;
+			g_exit_status = 0;
 		}
 		else
 		{
 			printf("bash: export: %s: not a valid identifier\n", global->args[i]);
+			g_exit_status = 1;
 			return ;
 		}
 	}
-	
-	
 }

@@ -1,5 +1,7 @@
 #include "../minishell.h"
 
+extern int	g_exit_status;
+
 void	ft_quotes(char *str, t_global *global)
 {
 	int	i;
@@ -83,6 +85,7 @@ void ft_export(t_global *global)
 			verific_equal(global->copy_env[i], global);			
 			i++;
 		}
+		g_exit_status = 0;
 	}
 	else
 		create_new_var(global);

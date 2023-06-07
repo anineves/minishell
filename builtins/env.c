@@ -9,6 +9,7 @@ void	ft_env(t_global *global)
 	i = 0;
 	if (global->args[1])
 	{
+		printf("env: '%s': No such file or directory", global->args[1]);
 		g_exit_status = 127;
 		return ;
 	}
