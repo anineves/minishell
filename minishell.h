@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:19:40 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/08 13:19:07 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/08 16:03:45 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void	red_out_append(t_global *global, int read_fd);
 void	red_in_heredoc(t_global *global);
 void	verific_redin(t_global *global);
 void	ft_expander(t_global *global, char *input);
+t_data	*go_to_next(t_global *global);
 
 static inline void	ignore_signal(int n)
 {

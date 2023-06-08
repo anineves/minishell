@@ -19,12 +19,12 @@ void	red_in_heredoc(t_global *global)
 			buf = readline("> ");
 			if (buf == NULL)
 				break ;
-			if (strcmp(buf, global->shell->next->cmd) == 0)
+			if (ft_strncmp(buf, global->shell->next->cmd, ft_strlen(buf)) == 0)
 			{
 				free(buf);
 				break ;
 			}
-			write(global->fd_input, buf, strlen(buf));
+			write(global->fd_input, buf, ft_strlen(buf));
 			write(global->fd_input, "\n", 1);
 			free(buf);
 		}
@@ -39,6 +39,7 @@ void	red_in_heredoc(t_global *global)
 		tmp = ft_strjoin(global->shell->cmd, global->shell->next->cmd);
 	}
 	global->args = ft_split2(tmp, ' ');
+	//global->shell->flag = global->shell->next->flag;
 	free(tmp);
 }
 

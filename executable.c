@@ -64,7 +64,6 @@ void child_process(t_global *global, char *path, int pipe_fd[])
 		red_in_heredoc(global);
 	}
 	open_pipes(global, pipe_fd);
-	global->fd_output = 1;
 	if (path && !is_child_builtin(global))
 		execve(path, global->args, global->copy_env);
 	else if (is_child_builtin(global))
@@ -90,7 +89,6 @@ void ft_close(t_global *global)
 t_data	*go_to_next(t_global *global)
 {
 	t_data *aux;
-
 	aux = global->shell->next;
 	free(global->shell->cmd);
 	free(global->shell);
@@ -113,7 +111,6 @@ void execute(t_global *global)
 		waitpid(0, (int *)&g_exit_status, WEXITSTATUS(g_exit_status));
 		if (!WTERMSIG(g_exit_status))
 			g_exit_status = WEXITSTATUS(g_exit_status);
-		//printf("%d\n", g_exit_status);
 		if (is_parent_builtin(global) && global->shell->flag != PIPE)
 			execute_parent_builtin(global);
 		else if (global->shell->next != NULL)
