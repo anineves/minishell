@@ -5,12 +5,13 @@ extern int	g_exit_status;
 void	red_in_heredoc(t_global *global)
 {
 	char	*buf;
+	char	*tmp;
 
+	tmp = NULL;
 	if (global->shell->flag == RD_IN)
-		global->fd_input = open(global->shell->next->cmd, O_RDONLY);
+		global->fd_input = open(global->shell->next->cmd, O_RDWR, 0644);
 	else if (global->shell->flag == HEREDOC)
-		global->fd_input = open("here_doc", O_CREAT | O_WRONLY | O_RDWR, 0666);
-
+		global->fd_input = open("here_doc", O_CREAT | O_TRUNC | O_RDWR, 0644);
 	if (global->shell->flag == HEREDOC)
 	{
 		while (1)
@@ -28,8 +29,17 @@ void	red_in_heredoc(t_global *global)
 			free(buf);
 		}
 		close(global->fd_input);
-		global->fd_input = open(".here_doc", O_RDONLY);
 	}
+	free_args(global->args);
+	if (global->shell->flag == HEREDOC)
+		tmp = ft_strjoin(global->shell->cmd, " here_doc");
+	else
+	{
+		tmp = ft_strjoin(global->shell->cmd, " ");
+		tmp = ft_strjoin(global->shell->cmd, global->shell->next->cmd);
+	}
+	global->args = ft_split2(tmp, ' ');
+	free(tmp);
 }
 
 

@@ -22,6 +22,8 @@ void ft_cd(t_global *global)
 {
 	char *next_path;
 	
+	if (global->shell->flag == HEREDOC || global->shell->flag == RD_IN)
+		return ;
 	next_path = NULL;
 	if(global->args[1] && global->args[2])
 	{

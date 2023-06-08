@@ -29,10 +29,8 @@ char	*get_path2(char *arg, t_global *global)
 
 void	open_pipes(t_global *global, int *pipe_fd)
 {
-	/*se existir mais comandos escrever para o pipe_fd(write end)*/
-	if (global->shell->next != NULL)
+	if (global->shell->next != NULL && global->shell->flag != HEREDOC)
 	{
-		//printf("%s\n", global->shell->cmd);
 		close(pipe_fd[READ_END]);
 		if (global->fd_input != STDIN_FILENO)
 		{
@@ -62,8 +60,11 @@ void child_process(t_global *global, char *path, int pipe_fd[])
 	/*colocar uma funcao para lidar com o CTRL'C */
 	signal(SIGINT, &ignore_signal);
 	if (global->shell->flag == RD_IN || global->shell->flag == HEREDOC)
+	{
 		red_in_heredoc(global);
+	}
 	open_pipes(global, pipe_fd);
+	global->fd_output = 1;
 	if (path && !is_child_builtin(global))
 		execve(path, global->args, global->copy_env);
 	else if (is_child_builtin(global))

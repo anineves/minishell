@@ -48,11 +48,25 @@ bool is_n(t_global *global)
 		return(0);
 }
 
+static int	size_arg(t_global *global)
+{
+	int	i;
+
+	i = 0;
+	while(global->args[i])
+		i++;
+	if (global->shell->flag == HEREDOC || global->shell->flag == RD_IN)
+		i--;
+	return (i);
+}
+
 void	ft_echo(t_global *global)
 {
 	int		i;
+	int		len;
 
 	i = 1;
+	len = size_arg(global);
 	if(!global->args[i])
 	{
 		ft_putstr_fd("\n", global->fd_output);
@@ -60,7 +74,7 @@ void	ft_echo(t_global *global)
 	}
 		if (ft_strncmp(global->args[1], "-n", 2) == 0 && is_n(global))
 			i++;
-		while (global->args[i])
+		while (i < len)
 		{
 			if(ft_strcmp(global->args[i], "$?") == 0)
 			{
