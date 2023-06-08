@@ -27,53 +27,6 @@ char	*get_path2(char *arg, t_global *global)
 	return (NULL);
 }
 
-/*
-char	*absolute_path(char *arg, t_global *global)
-{
-	char	*tmp;
-	char	*path;
-	int		i;
-
-	path = NULL;
-	i = 0;
-	while (global->split_path[i])
-	{
-		tmp = ft_strjoin(global->split_path[i], "/");
-		path = ft_strjoin(tmp, arg);
-		free(tmp);
-		if (access(path, X_OK) == 0)
-			return (path);
-		free(path);
-		i++;
-	}
-	return (NULL);
-}
-
-char	*relative_path(char *arg, t_global *global)
-{
-	char	*tmp;
-	char	*path;
-
-	tmp = ft_strjoin(global->cwd, "/");
-	path = ft_strjoin(tmp, arg + 2);
-	free(tmp);
-	if (access(path, X_OK) == 0)
-		return (path);
-	free(path);
-	return (NULL);
-}
-
-char	*get_type_path(char *arg, t_global *global)
-{
-	char	*path;
-
-	if (arg[0] == '.')
-		path = relative_path(arg, global);
-	else
-		path = absolute_path(arg, global);
-	return (path);
-} */
-/*ls | wc */
 void	open_pipes(t_global *global, int *pipe_fd)
 {
 	/*se existir mais comandos escrever para o pipe_fd(write end)*/
@@ -132,6 +85,17 @@ void ft_close(t_global *global)
 		close(global->fd_output);
 }
 /*child builtins (pwd, export (sozinho), echo)*/
+
+t_data	*go_to_next(t_global *global)
+{
+	t_data *aux;
+
+	aux = global->shell->next;
+	free(global->shell->cmd);
+	free(global->shell);
+	return (aux);
+}
+
 void execute(t_global *global)
 {
 	char *path;
@@ -158,14 +122,16 @@ void execute(t_global *global)
 			{
 				if (global->shell->flag == PIPE)
 				{
-					global->shell = global->shell->next;
+					global->shell = go_to_next(global);
+					free_args(global->args);
 					global->fd_input = pipe_fd[READ_END];
+					free(path);
 					execute(global);
 					return;
 				}
 				else if (global->shell->flag == RD_OUT || global->shell->flag == APPEND)
 					red_out_append(global, pipe_fd[READ_END]);
-				global->shell = global->shell->next;
+				global->shell = go_to_next(global);
 			}
 		}
 		else
