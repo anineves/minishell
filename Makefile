@@ -8,6 +8,7 @@ LIBFT = ./libft/libft.a
 
 SRC = main.c \
 	handling_signals.c \
+	init.c \
 	valid_input.c \
 	utils.c quotes.c \
 	create_data.c \
@@ -21,7 +22,7 @@ SRC = main.c \
 	builtins/export2.c \
 	builtins/unset.c \
  	utils_split.c \
- 	executable.c \
+ 	child_or_parent.c \
 	free.c \
 	redirect_out.c \
 	redirect_in.c \

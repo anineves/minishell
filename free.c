@@ -1,5 +1,22 @@
 #include "minishell.h"
 
+void ft_close(t_global *global)
+{
+	if (global->fd_input != STDIN_FILENO)
+		close(global->fd_input);
+	else if (global->fd_output != STDOUT_FILENO)
+		close(global->fd_output);
+}
+
+t_data	*go_to_next(t_global *global)
+{
+	t_data *aux;
+	aux = global->shell->next;
+	free(global->shell->cmd);
+	free(global->shell);
+	return (aux);
+}
+
 void	free_data(t_data **shell)
 {
 	t_data	*it;
@@ -39,5 +56,4 @@ void	free_global(t_global *global)
 		free(global->path);
 	if (global->split_path != NULL)
 		free_args(global->split_path);
-
 }

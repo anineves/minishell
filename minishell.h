@@ -75,8 +75,7 @@ typedef struct s_global
 
 void	init_signals(void);
 void	sig_handler(int sig);
-int		verify_input(char *input);
-char	*ft_strtok(char *str, const char *delim);
+int	verify_input(char *input);
 char	*copy_len(char *src, size_t len);
 bool	closed_quotes(char *input);
 void	rmvQuotes(char* str);
@@ -113,6 +112,11 @@ void	red_in_heredoc(t_global *global);
 void	verific_redin(t_global *global);
 void	ft_expander(t_global *global, char *input);
 t_data	*go_to_next(t_global *global);
+char	*get_path(char **copy_env, char *path);
+t_data	*go_to_next(t_global *global);
+void	ft_close(t_global *global);
+t_global	*init_global(char **env);
+void switch_quotes(char s, int *inDquotes, int *inSquotes);
 
 static inline void	ignore_signal(int n)
 {

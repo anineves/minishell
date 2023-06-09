@@ -1,5 +1,13 @@
 #include "minishell.h"
 
+void switch_quotes(char s, int *inDquotes, int *inSquotes)
+{
+	if (s == '"' && !(*inSquotes))
+		*inDquotes = !(*inDquotes);
+	if (s == '\'' && !(*inDquotes))
+		*inSquotes = !(*inSquotes);
+}
+
 char	*copy_len(char *src, size_t len)
 {
 	char	*it;

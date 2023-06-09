@@ -60,7 +60,6 @@ void	write_to_file(t_global *global, int read_fd)
 		}
 		else
 			break ;
-	}
-	
+	}	
 	close(fd);
 }

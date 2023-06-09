@@ -2,70 +2,123 @@
 
 extern int	g_exit_status;
 
-int	is_child_builtin(t_global *global)
+char	*get_path2(char *arg, t_global *global)
 {
-	if (ft_strcmp(global->args[0], "echo") == 0)
-		return (1);
-	else if (ft_strcmp(global->args[0], "pwd") == 0)
-		return (1);
-	else if (ft_strcmp(global->args[0], "export") == 0 && !global->args[1])
-		return(1);
-	else if (ft_strcmp(global->args[0], "env") == 0)
-		return (1);
-	return (0);
-}
+	char	*tmp;
+	char	*cmd;
+	int		i;
 
-void	execute_child_builtin(t_global *global)
-{
-	if (ft_strcmp(global->args[0], "echo") == 0)
-		ft_echo(global);
-	else if (ft_strcmp(global->args[0], "pwd") == 0)
-		ft_pwd(global);
-	else if (ft_strcmp(global->args[0], "export") == 0)
-		ft_export(global);
-	else if (ft_strcmp(global->args[0], "env") == 0)
-		ft_env(global);
-}
-
-void	execute_parent_builtin(t_global *global)
-{
-	if (ft_strcmp(global->args[0], "exit") == 0)
-		ft_exit(global);
-	else if (ft_strcmp(global->args[0], "cd") == 0)
-		ft_cd(global);
-	else if (ft_strcmp(global->args[0], "export") == 0 && global->args[1] && global->shell->flag != PIPE)
-		ft_export(global);
-	else if (ft_strcmp(global->args[0], "unset") == 0)
-		ft_unset(global);
-}
-
-int	is_parent_builtin(t_global *global)
-{
-	if (ft_strcmp(global->args[0], "exit") == 0)
-		return(1);
-	else if (ft_strcmp(global->args[0], "cd") == 0)
-		return(1);
-	else if (ft_strcmp(global->args[0], "export") == 0 && global->args[1] && global->shell->flag != PIPE)
-		return(1);
-	else if (ft_strcmp(global->args[0], "unset") == 0)
-		return(1);
-	return(0);
-}
-
-/*void builtin parent (export sem argumentos pertence ao filho)*/
-/*echo ola | ls
-void	execute(t_global *global) //talvez aqui seja melhor por a receber um fd para mandar junto
-{
-	while (true)
+	if (access(arg, F_OK) == 0 )
 	{
-		if (!global->shell->cmd)
-			break ;
-		if (global->shell->flag != EMPTY)
-			redirection(global);
-		//else if (global->shell->next->flag == PIPE)
+		cmd = ft_strdup(arg);
+		return (cmd);
+	}
+	i = 0;
+	while (global->split_path[i])
+	{
+		tmp = ft_strjoin(global->split_path[i], "/");
+		cmd = ft_strjoin(tmp, arg);
+		free(tmp);
+		if (access(cmd, F_OK) == 0)
+			return (cmd);
+		free(cmd);
+		i++;
+	}
+	return (NULL);
+}
 
-		else
-			execute_no_redirection(global);
+void	open_pipes(t_global *global, int *pipe_fd)
+{
+	if ((global->shell->next != NULL && global->shell->next->flag) || (global->shell->next != NULL && (global->shell->flag != HEREDOC && global->shell->flag != RD_IN)))
+	{
+		close(pipe_fd[READ_END]);
+		if (global->fd_input != STDIN_FILENO)
+		{
+			dup2(global->fd_input, STDIN_FILENO);
+			close(global->fd_input);
+		}
+		dup2(pipe_fd[WRITE_END], STDOUT_FILENO);
+		close(pipe_fd[WRITE_END]);
+	}
+	else
+	{
+		if (global->fd_input != STDIN_FILENO)
+		{
+			dup2(global->fd_input, STDIN_FILENO);
+			close(global->fd_input);
+		}
+		if (global->fd_output != STDOUT_FILENO)
+		{
+			dup2(global->fd_output, STDOUT_FILENO);
+			close(global->fd_output);
+		}
 	}
 }
-*/
+
+void child_process(t_global *global, char *path, int pipe_fd[])
+{
+	/*colocar uma funcao para lidar com o CTRL'C */
+	signal(SIGINT, &ignore_signal);
+	if (global->shell->flag == RD_IN || global->shell->flag == HEREDOC)
+	{
+		red_in_heredoc(global);
+	}
+	open_pipes(global, pipe_fd);
+	if (path && !is_child_builtin(global))
+		execve(path, global->args, global->copy_env);
+	else if (is_child_builtin(global))
+		execute_child_builtin(global);
+	else if (!path && !is_parent_builtin(global))
+	{
+		printf("Minishell: command not found: %s\n", global->args[0]);
+		exit(127);
+	}
+	free(path);
+	exit(g_exit_status);/*retornar o exit status do child builtins*/
+}
+
+
+void execute(t_global *global)
+{
+	char *path;
+	int pipe_fd[2];
+
+	pipe(pipe_fd);
+	ft_expander(global, global->shell->cmd);
+	global->args = ft_split2(global->shell->cmd, ' ');
+	path = get_path2(global->args[0], global);
+	if (fork() == 0)
+		child_process(global, path, pipe_fd);
+	else
+	{
+		waitpid(0, (int *)&g_exit_status, WEXITSTATUS(g_exit_status));
+		if (!WTERMSIG(g_exit_status))
+			g_exit_status = WEXITSTATUS(g_exit_status);
+		if (is_parent_builtin(global) && global->shell->flag != PIPE)
+			execute_parent_builtin(global);
+		else if (global->shell->next != NULL)
+		{
+			close(pipe_fd[WRITE_END]);
+			while (global->shell != NULL)
+			{
+				if (global->shell->flag == PIPE)
+				{
+					global->shell = go_to_next(global);
+					free_args(global->args);
+					global->fd_input = pipe_fd[READ_END];
+					free(path);
+					execute(global);
+					return;
+				}
+				else if (global->shell->flag == RD_OUT || global->shell->flag == APPEND)
+					red_out_append(global, pipe_fd[READ_END]);
+				global->shell = go_to_next(global);
+			}
+		}
+		else
+			ft_close(global);
+	}
+	free(path);
+	free_args(global->args);
+}
+

@@ -13,9 +13,6 @@
 #include "minishell.h"
 #include <stdbool.h>
 
-#include "minishell.h"
-#include <stdbool.h>
-
 void rmvSpaces(char *str)
 {
 	int i;
@@ -33,10 +30,7 @@ void rmvSpaces(char *str)
 	len = ft_strlen(str);
 	while (i < len)
 	{
-		if (str[i] == '\"')
-			inDquotes = !inDquotes;
-		else if (str[i] == '\'')
-			inSquotes = !inSquotes;
+		switch_quotes(str[i], &inDquotes, &inSquotes);
 		if ((str[i] == ' ' && !space) || inDquotes || inSquotes)
 		{
 			str[j++] = str[i];

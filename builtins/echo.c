@@ -76,14 +76,7 @@ void	ft_echo(t_global *global)
 			i++;
 		while (i < len)
 		{
-			if(ft_strcmp(global->args[i], "$?") == 0)
-			{
-				ft_putstr_fd(ft_itoa(g_exit_status), global->fd_output);
-				g_exit_status = 0;
-				return ;
-			}
-			else	
-				print_for_echo(global->args[i]);
+			print_for_echo(global->args[i]);
 			i++;
 			if (global->args[i])
 				printf(" ");

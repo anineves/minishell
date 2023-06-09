@@ -26,42 +26,43 @@ char **rmv_var(t_global *global, int j, int size)
 	return (new_copy_env);
 }
 
+void verific_var (t_global *global)
+{
+	int i = 1;
+	int len = 0;
+	int j = 0;
+	int k = 0;
+
+	while (global->args[i])
+	{
+		len = ft_strlen(global->args[i]);
+		while (global->args[i][k] && global->args[i][k] != '=')
+			k++;
+		j = 0;
+		while (global->copy_env[j])
+		{
+			if (!ft_strncmp(global->args[i], global->copy_env[j], len))
+				global->copy_env = rmv_var(global, j, (size_env(global->copy_env) - 1));
+			else if (!ft_strncmp(global->args[i], global->copy_env[j], k) && global->args[i][0] != '=')
+				global->copy_env = rmv_var(global, j, (size_env(global->copy_env) - 1));
+			else
+				j++;
+		}
+		k = 0;
+		i++;
+	}
+}
+
 void ft_unset(t_global *global)
 {
-	int i;
-	int len;
-	int j;
-	int k;
-
-	i = 1;
-	len = 0;
-	j = 0;
-	k = 0;
-	if (!global->args[i])
+	if (!global->args[1])
 	{
 		g_exit_status = 0;
 		return;
 	}
 	else
 	{
-		while (global->args[i])
-		{
-			len = ft_strlen(global->args[i]);
-			while (global->args[i][k] && global->args[i][k] != '=')
-				k++;
-			j = 0;
-			while (global->copy_env[j])
-			{
-				if (!ft_strncmp(global->args[i], global->copy_env[j], len))
-					global->copy_env = rmv_var(global, j, (size_env(global->copy_env) - 1));
-				else if (!ft_strncmp(global->args[i], global->copy_env[j], k))
-					global->copy_env = rmv_var(global, j, (size_env(global->copy_env) - 1));
-				else
-					j++;
-			}
-			k = 0;
-			i++;
-		}
+		verific_var(global);
 		g_exit_status = 0;
 	}
 }
