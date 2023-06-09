@@ -33,7 +33,7 @@ int	main(int argc, char **argv, char **env)
 			return (0);
 		}
 		add_history(input);
-		if (verify_input(input))
+		if (verify_input(global, input))
 		{
 			create_data(&global->shell, input);
 			execute(global);

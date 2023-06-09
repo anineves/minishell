@@ -71,6 +71,7 @@ void child_process(t_global *global, char *path, int pipe_fd[])
 	else if (!path && !is_parent_builtin(global))
 	{
 		printf("Minishell: command not found: %s\n", global->args[0]);
+		g_exit_status = 127;
 		exit(127);
 	}
 	free(path);
@@ -83,9 +84,8 @@ void execute(t_global *global)
 	char *path;
 	int pipe_fd[2];
 
-	pipe(pipe_fd);
-	ft_expander(global, global->shell->cmd);
 	global->args = ft_split2(global->shell->cmd, ' ');
+	pipe(pipe_fd);
 	path = get_path2(global->args[0], global);
 	if (fork() == 0)
 		child_process(global, path, pipe_fd);

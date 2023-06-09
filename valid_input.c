@@ -79,7 +79,7 @@ bool first_char(char *input)
 	return(1);
 }
 
-int	verify_input(char *input)
+int	verify_input(t_global *global, char *input)
 {
 	char	*it;
 
@@ -95,5 +95,6 @@ int	verify_input(char *input)
 	if (!last_char(input))
 		return (0);
 	rmvSpaces(input);
+	ft_expander(global, input);
 	return (1);
 }

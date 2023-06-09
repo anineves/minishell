@@ -75,7 +75,7 @@ typedef struct s_global
 
 void	init_signals(void);
 void	sig_handler(int sig);
-int	verify_input(char *input);
+int	verify_input(t_global *global, char *input);
 char	*copy_len(char *src, size_t len);
 bool	closed_quotes(char *input);
 void	rmvQuotes(char* str);

@@ -1,61 +1,86 @@
 #include "minishell.h"
 
-char *get_env_value(const char *var) 
+extern int	g_exit_status;
+
+char *is_env(t_global *global, char *temp)
 {
-    char *value = getenv(var);
-    if (value == NULL)
-    	return NULL;
-    return ft_strdup(value);
+	int len;
+	int i;
+	//int = j;
+	char *value;
+
+	i =0;
+	//j = 0;
+	len = ft_strlen(temp);
+	value = NULL;
+	while (global->copy_env[i])
+	{
+		
+		if (ft_strncmp(temp, global->copy_env[i], len) == 0 && global->copy_env[i][len] == '=')
+		{
+			value = ft_strdup(global->copy_env[i] + len + 1);
+			//free(global->copy_env[i]);
+			break;
+		}
+		i++;
+	}
+	if(value == NULL)
+		value = ft_strdup(" ");
+	return value;
 }
 
-char *ft_nstrdup(const char *s, size_t n) 
+void ft_expander(t_global *global, char *input)
 {
-    size_t len;
-    char *sub;
-    
-    len = 0;
-    while (len < n && s[len] != '\0') {
-        len++;
-    }
-    sub = malloc(len + 1);
-    if (sub != NULL) {
-        ft_memcpy(sub, s, len);
-        sub[len] = '\0';
-    }
-    return sub;
-}
-
-void ft_expander(t_global *global, char *input) 
-{
-	(void) global;
-    char *start = input;
-    char *end;
-    size_t var_len;
-    char *variable;
-    char *value;
-    size_t value_len;
-    
-    while (*start != '\0') 
-    {
-        if (*start == '$') 
-        {
-            start++;
-            end = start;
-            while (*end != '\0' && *end != ' ' && *end != '\t') 
-                end++;
-            var_len = end - start;
-            variable = ft_nstrdup(start, var_len);
-            value = get_env_value(variable);
-            if (value != NULL) 
-            {
-                value_len = ft_strlen(value);
-                ft_memmove(start + value_len, end, ft_strlen(end) + 1);
-                ft_memcpy(start, value, value_len);
-                free(value);
-            }
-            free(variable);
-        } 
-        else 
-            start++;
-    }
+	int i;
+	int j;
+	int k;
+	int len;
+	char temp[20];
+	char *value;
+	char *aux;
+	
+	
+	i = 0;
+	j = 0;
+	k = 0;
+	len = ft_strlen(input);
+	while (i < len)
+	{
+		
+		if(input[i] == '$' )
+		{
+			i++;
+			if(input[i] == '?')
+			{
+				aux = ft_itoa(g_exit_status);
+				len = ft_strlen(aux);
+				ft_memcpy(&input[j], aux, len);
+				j += len;
+				free(aux);
+					
+			}
+			else
+			{
+				while(input[i] != ' ' && input[i])
+				{
+					temp[k] = input[i];
+					k++;
+					i++;
+				}
+				temp[k] = '\0';
+				value = ft_strdup(is_env(global, temp));
+				len = ft_strlen(value);
+				ft_memcpy(&input[j], value, len);
+				j += len;
+				free(value);
+			}
+		}
+		else
+		{
+			input[j++] = input[i];
+		}
+		len = ft_strlen(input);
+		i++;
+	}
+	input[j] = '\0';
 }
