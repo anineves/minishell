@@ -29,7 +29,7 @@ char	*get_path2(char *arg, t_global *global)
 
 void	open_pipes(t_global *global, int *pipe_fd)
 {
-	if (global->shell->next != NULL && global->shell->flag != HEREDOC)
+	if (global->shell->next != NULL && global->shell->next->flag)
 	{
 		close(pipe_fd[READ_END]);
 		if (global->fd_input != STDIN_FILENO)

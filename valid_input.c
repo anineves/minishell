@@ -64,7 +64,7 @@ bool last_char(char *input)
 		i--;
 	if((input[i] == '|') || (input[i] == '<') || (input[i] == '>'))
 	{
-		printf("Unexpected last char \n");
+		printf("bash: syntax error near unexpected token `newline' \n");
 		return(0);
 	}
 	return(1);

@@ -39,7 +39,9 @@ void	red_in_heredoc(t_global *global)
 		tmp = ft_strjoin(global->shell->cmd, global->shell->next->cmd);
 	}
 	global->args = ft_split2(tmp, ' ');
-	//global->shell->flag = global->shell->next->flag;
+	if(global->shell->cmd)
+		global->shell->cmd = global->shell->next->cmd;
+		
 	free(tmp);
 }
 
