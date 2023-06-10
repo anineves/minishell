@@ -128,12 +128,12 @@ void execute(t_global *global)
 		else
 			ft_close(global);
 	}
+	waitpid(0, (int *)&g_exit_status, WEXITSTATUS(g_exit_status));
+		if (!WTERMSIG(g_exit_status))
+			g_exit_status = WEXITSTATUS(g_exit_status);
 	if (path != NULL)
 		free(path);
-	int i = 0;
-	while (global->args[i])
-	{
-		printf("%s\n", global->args[i++]);
-	}
+	unlink("here_doc");
 	free_args(global->args);
+	global->args = NULL;
 }

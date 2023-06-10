@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mimoreir <mimoreir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 14:06:29 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/10 15:31:19 by mimoreir         ###   ########.fr       */
+/*   Updated: 2023/06/10 15:51:31 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_exit2(t_global *global)
 {
 	free_global(global);
 	free(global);
-	printf("\nexit\n");
+	printf("exit\n");
 	exit(130);
 }
 
@@ -36,7 +36,7 @@ int	main(int argc, char **argv, char **env)
 		input = readline("prompt% ");
 		if (input == NULL)
 		{
-			global->args = NULL;
+			//global->args = NULL;
 			ft_exit2(global);
 		}
 		add_history(input);
