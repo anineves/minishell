@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mimoreir <mimoreir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:24:16 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/05/27 15:18:26 by mimoreir         ###   ########.fr       */
+/*   Updated: 2023/06/10 11:41:34 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,10 @@ bool first_char(char *input)
 	return(1);
 }
 
-int	verify_input(t_global *global, char *input)
+int	verify_input(char *input)
 {
 	char	*it;
-
+	
 	it = input;
 	while (*it == ' ' || *it == '\t')
 		it++;
@@ -95,6 +95,5 @@ int	verify_input(t_global *global, char *input)
 	if (!last_char(input))
 		return (0);
 	rmvSpaces(input);
-	ft_expander(global, input);
 	return (1);
 }

@@ -10,7 +10,7 @@ char	*get_path(char **copy_env, char *path)
 	{
 		if (!ft_strncmp(copy_env[i], "PATH", 4))
 		{
-			path = copy_env[i];
+			path = ft_strdup(copy_env[i]);
 			return (path);
 		}
 		i++;
@@ -55,6 +55,7 @@ t_global	*init_global(char **env)
 {
 	t_global	*new;
 
+	init_signals();
 	new = (t_global*)malloc(sizeof(t_global));
 	if (!new)
 		return (NULL);

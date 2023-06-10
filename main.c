@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 14:06:29 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/08 13:20:33 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/10 13:07:46 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,33 +20,29 @@ int	main(int argc, char **argv, char **env)
 	(void)argc;
 	t_global	*global;
 	char	*input;
+	char	*real_input;
 
 	global = init_global(env);
-	init_signals();
 	while (1)
 	{
 		input = readline("prompt% ");
-		if (input == NULL )
+		if (input == NULL)
 		{
 			free_global(global);
 			free(global);
 			return (0);
 		}
 		add_history(input);
-		if (verify_input(global, input))
+		if (verify_input(input))
 		{
-			create_data(&global->shell, input);
+			real_input = ft_expander(global, input);
+			free(input);
+			create_data(&global->shell, real_input);
 			execute(global);
 		}
-		if(input)
-			free(input);
 		if(global->shell)
 			free_data(&global->shell);
-	}
-	if (global->copy_env != NULL)
-	{
-		free_args(global->copy_env);
-		free(global->copy_env);
+		free(real_input);
 	}
 	free(global);
 	return (0);

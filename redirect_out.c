@@ -15,7 +15,9 @@ void	append_to_file(t_global *global, int read_fd)
 	int		fd;
 	char	*str;
 
-	fd = open(global->shell->next->cmd, O_APPEND | O_CREAT | O_RDWR, 0644);
+	str = ft_strtrim(global->shell->next->cmd, " ");
+	fd = open(str, O_APPEND | O_CREAT | O_RDWR, 0644);
+	free(str);
 	if (fd < 0)
 	{
 		printf("ERROR WITH FILE\n");
@@ -42,7 +44,9 @@ void	write_to_file(t_global *global, int read_fd)
 	int	fd;
 	char	*str;
 
-	fd = open(global->shell->next->cmd, O_CREAT | O_TRUNC | O_RDWR ,0644);
+	str = ft_strtrim(global->shell->next->cmd, " ");
+	fd = open(str, O_CREAT | O_TRUNC | O_RDWR ,0644);
+	free(str);
 	if (fd < 0)
 	{
 		printf("ERROR WITH FILE\n");

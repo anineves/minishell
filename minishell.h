@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:19:40 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/08 16:03:45 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/10 11:41:55 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ typedef struct s_global
 
 void	init_signals(void);
 void	sig_handler(int sig);
-int	verify_input(t_global *global, char *input);
+int		verify_input(char *input);
 char	*copy_len(char *src, size_t len);
 bool	closed_quotes(char *input);
 void	rmvQuotes(char* str);
@@ -110,7 +110,7 @@ void	execute_parent_builtin(t_global *global);
 void	red_out_append(t_global *global, int read_fd);
 void	red_in_heredoc(t_global *global);
 void	verific_redin(t_global *global);
-void	ft_expander(t_global *global, char *input);
+char	*ft_expander(t_global *global, char *input);
 t_data	*go_to_next(t_global *global);
 char	*get_path(char **copy_env, char *path);
 t_data	*go_to_next(t_global *global);
