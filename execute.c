@@ -67,12 +67,9 @@ void	open_pipes(t_global *global, int *pipe_fd)
 
 void child_process(t_global *global, char *path, int pipe_fd[])
 {
-	/*colocar uma funcao para lidar com o CTRL'C */
 	signal(SIGINT, &ignore_signal);
 	if (global->shell->flag == RD_IN || global->shell->flag == HEREDOC)
-	{
 		red_in_heredoc(global);
-	}
 	if (path || is_child_builtin(global))
 		open_pipes(global, pipe_fd);
 	if (is_child_builtin(global))
@@ -87,7 +84,7 @@ void child_process(t_global *global, char *path, int pipe_fd[])
 		execve(path, global->args, global->copy_env);
 	if (path != NULL)
 		free(path);
-	exit(g_exit_status);/*retornar o exit status do child builtins*/
+	exit(g_exit_status);
 }
 
 
@@ -133,6 +130,10 @@ void execute(t_global *global)
 	}
 	if (path != NULL)
 		free(path);
+	int i = 0;
+	while (global->args[i])
+	{
+		printf("%s\n", global->args[i++]);
+	}
 	free_args(global->args);
 }
-

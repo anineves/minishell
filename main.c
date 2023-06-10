@@ -3,16 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mimoreir <mimoreir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 14:06:29 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/10 13:07:46 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/10 15:31:19 by mimoreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int	g_exit_status = 0;
+
+void	ft_exit2(t_global *global)
+{
+	free_global(global);
+	free(global);
+	printf("\nexit\n");
+	exit(130);
+}
 
 int	main(int argc, char **argv, char **env)
 {
@@ -28,22 +36,20 @@ int	main(int argc, char **argv, char **env)
 		input = readline("prompt% ");
 		if (input == NULL)
 		{
-			free_global(global);
-			free(global);
-			return (0);
+			global->args = NULL;
+			ft_exit2(global);
 		}
 		add_history(input);
 		if (verify_input(input))
 		{
 			real_input = ft_expander(global, input);
-			free(input);
 			create_data(&global->shell, real_input);
+			free(real_input);
 			execute(global);
 		}
 		if(global->shell)
 			free_data(&global->shell);
-		free(real_input);
+		free(input);
 	}
-	free(global);
 	return (0);
 }

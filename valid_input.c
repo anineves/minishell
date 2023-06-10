@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mimoreir <mimoreir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:24:16 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/10 11:41:34 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/10 14:50:27 by mimoreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,9 @@ bool first_char(char *input)
 int	verify_input(char *input)
 {
 	char	*it;
-	
+
 	it = input;
-	while (*it == ' ' || *it == '\t')
+	while (*it == ' ' || *it == '\t' || *it == EOF)
 		it++;
 	if (*it == '\0')
 		return (0);

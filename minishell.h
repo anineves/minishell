@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mimoreir <mimoreir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:19:40 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/10 11:41:55 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/10 15:11:18 by mimoreir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,9 +114,9 @@ char	*ft_expander(t_global *global, char *input);
 t_data	*go_to_next(t_global *global);
 char	*get_path(char **copy_env, char *path);
 t_data	*go_to_next(t_global *global);
-void	ft_close(t_global *global);
+void		ft_close(t_global *global);
 t_global	*init_global(char **env);
-void switch_quotes(char s, int *inDquotes, int *inSquotes);
+void		switch_quotes(char s, int *inDquotes, int *inSquotes);
 
 static inline void	ignore_signal(int n)
 {
