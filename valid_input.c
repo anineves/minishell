@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mimoreir <mimoreir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:24:16 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/10 14:50:27 by mimoreir         ###   ########.fr       */
+/*   Updated: 2023/06/12 17:55:08 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,29 @@ bool first_char(char *input)
 	return(1);
 }
 
+bool repeat_red(char *input)
+{
+	int i;
+	
+	i = 0;
+	while(input[i])
+	{
+		if(input[i] == '<' || input[i] == '>' || input[i] == '|')
+		{	
+			if (input [i+1]== ' ')
+			{
+				if(input[i + 2] == '<' || input[i +2 ] == '>' || input[i + 2] == '|')
+				{
+					printf("bash: syntax error near unexpected token `%c' \n", input[i+2]);
+					return(0);
+				}
+			}
+		}
+		i++;
+	}
+	return (1);
+}
+
 int	verify_input(char *input)
 {
 	char	*it;
@@ -93,6 +116,8 @@ int	verify_input(char *input)
 	if (!first_char(input))
 		return (0);
 	if (!last_char(input))
+		return (0);
+	if (!repeat_red(input))
 		return (0);
 	rmvSpaces(input);
 	return (1);

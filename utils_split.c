@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 10:16:48 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/05/30 22:27:37 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/12 18:24:09 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ static size_t	nstrings(char const *s, char c)
 		{
 			n++;
 			while (s[i] != '\0' && (s[i] != c || (s[i] == c && (inDquotes || inSquotes))))
-                	{
-                		i++;
-                		switch_quotes(s[i], &inDquotes, &inSquotes);
-                	}
+            {
+                i++;
+                switch_quotes(s[i], &inDquotes, &inSquotes);
+            }
             }
             else
                 i++;

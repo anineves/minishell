@@ -60,17 +60,16 @@ char	*ft_expander(t_global *global, char *input)
 	char	*num;
 	char	*aux;
 	int		squote;
-	int		i;
+	int		dquote;
 
 	it = input;
 	squote = 0;
-	i = 0;
+	dquote = 0;
 	new = ft_calloc(sizeof(char), 1);
 	while (*it)
 	{
-		if(*it == '\'')
-			squote = !squote;
-		if(*it == '$' && squote == 0)
+		switch_quotes(*it, &dquote, &squote);
+		if((*it == '$' && squote == 0) || (( *it == '$' && squote == 1) &&  (*it == '$' && dquote == 1)))
 		{
 			it++;
 			if(*it == '?')
@@ -85,7 +84,7 @@ char	*ft_expander(t_global *global, char *input)
 			else
 			{
 				tmp = it;
-				while (*it != ' ' && *it)
+				while (*it != ' ' && *it != '"' && *it != '\'' && *it)
 					it++;
 				num = copy_len(tmp, it - tmp);
 				aux = is_env(global, num);
@@ -106,62 +105,3 @@ char	*ft_expander(t_global *global, char *input)
 	}
 	return (new);
 }
-
-/*void	ft_expan(t_global *global, char *input)
-{
-	int i;
-	int j;
-	int k;
-	int len;
-	int squote;
-	char *temp;
-	char *value;
-	char *aux;
-	char *new;
-	
-	i = 0;
-	j = 0;
-	k = 0;
-	squote = 0;
-	len = ft_strlen(input);
-	value = NULL;
-	temp = NULL;
-	while (i < len)
-	{
-		if(input[i] == '\'')
-			squote = !squote;
-			
-		if(input[i] == '$' && squote == 0)
-		{
-			i++;
-			if(input[i] == '?')
-			{
-				aux = ft_itoa(g_exit_status);
-				len = ft_strlen(aux);
-				ft_memcpy(&input[j], aux, len);
-				j += len;
-				free(aux);
-			}
-			else
-			{
-				k = i;
-				while(input[i] != ' ' && input[i])
-					i++;
-				temp = ft_substr(input, k, i);
-				value = is_env(global, temp);
-				len = ft_strlen(value);
-				ft_memcpy(&input[j], value, len); //echo  user 
-				j += len;						  //echo ansoua-n
-				free(value);
-			}
-		}
-		else
-		{
-			input[j++] = input[i];
-		}
-		len = ft_strlen(input);
-		i++;
-	}
-	input[j] = '\0';
-}
-*/

@@ -2,7 +2,7 @@
 
 extern int	g_exit_status;
 
-void	print_for_echo(char *str)
+/*void	print_for_echo(char *str)
 {
 	char	*new;
 	char	*it;
@@ -31,7 +31,7 @@ void	print_for_echo(char *str)
 			it++;
 		}
 	free(new);
-}
+}*/
 
 bool is_n(t_global *global)
 {	
@@ -76,7 +76,7 @@ void	ft_echo(t_global *global)
 			i++;
 		while (i < len)
 		{
-			print_for_echo(global->args[i]);
+			printf("%s", global->args[i]);
 			i++;
 			if (global->args[i])
 				printf(" ");

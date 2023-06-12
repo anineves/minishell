@@ -21,10 +21,11 @@ void rmvQuotes(char* str)
             inSquotes = !inSquotes;
         if (str[i] != '\"' && str[i] != '\'')
             str[j++] = str[i];
-        else if ((str[i] == '\"' && inSquotes) ||(str[i] == '\'' && inDquotes))
+        if ((str[i] == '\"' && inSquotes) ||(str[i] == '\'' && inDquotes))
         	str[j++] = str[i];
         i++;
     }
+    printf("str %s\n", str);
     str[j] = '\0';
 }
 
