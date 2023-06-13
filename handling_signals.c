@@ -3,16 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   handling_signals.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mimoreir <mimoreir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 14:06:20 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/10 15:11:55 by mimoreir         ###   ########.fr       */
+/*   Updated: 2023/06/13 12:23:35 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 extern int	g_exit_status;
+
+void	sig_int(int sig)
+{
+	if (sig == SIGINT)
+	{
+		write(1, "\n", 1);
+		g_exit_status = 130;
+	}
+}
 
 void	sig_handler(int sig)
 {
@@ -26,6 +35,15 @@ void	sig_handler(int sig)
 	}
 }
 
+void	sig_quit(int sig)
+{
+	if (sig == SIGQUIT)
+	{
+		ft_printf("minishell: Quit: (core dumped)");
+		kill(0, SIGINT);
+		g_exit_status = 131;
+	}
+}
 void	init_signals()
 {
 	struct sigaction	sigact;
@@ -34,8 +52,8 @@ void	init_signals()
 
 	sigact.sa_flags = SA_SIGINFO;
 	sigact.sa_handler = sig_handler;
-	sigaction(SIGINT, &sigact, NULL);
-	sigaction(SIGQUIT, &sigact, NULL);
+	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, SIG_IGN);
 	if (tcgetattr(0, &termios_save) == -1)
 	{
 		perror("Error EOF signal\n");

@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:24:16 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/12 17:55:08 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/13 11:41:05 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void rmvSpaces(char *str)
 	while (i < len)
 	{
 		switch_quotes(str[i], &inDquotes, &inSquotes);
+		if (str[0] == ' ')
+			i++;
 		if ((str[i] == ' ' && !space) || inDquotes || inSquotes)
 		{
 			str[j++] = str[i];
@@ -107,7 +109,7 @@ int	verify_input(char *input)
 	char	*it;
 
 	it = input;
-	while (*it == ' ' || *it == '\t' || *it == EOF)
+	while (*it == '\t' || *it == EOF)
 		it++;
 	if (*it == '\0')
 		return (0);

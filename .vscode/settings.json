@@ -2,6 +2,7 @@
 	"C_Cpp.errorSquiggles": "disabled",
 	"files.associations": {
 		"environments.h": "c",
-		"posix_opt.h": "c"
+		"posix_opt.h": "c",
+		"minishell.h": "c"
 	}
 }

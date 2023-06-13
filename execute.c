@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/13 11:30:50 by asousa-n          #+#    #+#             */
+/*   Updated: 2023/06/13 12:22:47 by asousa-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 extern int	g_exit_status;
@@ -67,7 +79,8 @@ void	open_pipes(t_global *global, int *pipe_fd)
 
 void child_process(t_global *global, char *path, int pipe_fd[])
 {
-	signal(SIGINT, &ignore_signal);
+	//signal(SIGQUIT, sig_quit);
+	//signal(SIGINT, sig_int);
 	if (global->shell->flag == RD_IN || global->shell->flag == HEREDOC)
 		red_in_heredoc(global);
 	if (path || is_child_builtin(global))
@@ -96,6 +109,8 @@ void execute(t_global *global)
 	global->args = ft_split2(global->shell->cmd, ' ');
 	pipe(pipe_fd);
 	path = get_path2(global->args[0], global);
+	signal(SIGQUIT, sig_quit);
+	signal(SIGINT, sig_int);
 	if (fork() == 0)
 		child_process(global, path, pipe_fd);
 	else
