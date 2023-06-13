@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:04:20 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/13 11:04:21 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/13 23:50:08 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	ft_sort(t_global *global)
 	{
 		sort = 1;
 		i = 0;
-		while (global->copy_env[i + 1 ] != NULL)
+		while (global->copy_env[i + 1] != NULL)
 		{
 			if (ft_strcmp(global->copy_env[i], global->copy_env[i + 1]) > 0)
 			{
@@ -66,40 +66,38 @@ void	verific_equal(char *copy_env, t_global *global)
 {
 	int	i;
 	int	equal;
-	
+
 	i = 0;
 	equal = 0;
-	
-	while(copy_env[i])
+	while (copy_env[i])
 	{
-		if(copy_env[i] == '=')
+		if (copy_env[i] == '=')
 			equal = 1;
 		i++;
 	}
-	if(equal == 1)
+	if (equal == 1)
 		ft_quotes(copy_env, global);
 	else
 		ft_putstr_fd(copy_env, global->fd_output);
 	ft_putchar_fd('\n', global->fd_output);
 }
 
-void ft_export(t_global *global)
+void	ft_export(t_global *global)
 {
 	int	i;
-	
+
 	i = 0;
-	if(global->args[1] == NULL)
+	if (global->args[1] == NULL)
 	{
 		ft_sort(global);
 		while (global->copy_env[i])
 		{
 			ft_putstr_fd("declare -x ", 1);
-			verific_equal(global->copy_env[i], global);			
+			verific_equal(global->copy_env[i], global);
 			i++;
 		}
 		g_exit_status = 0;
 	}
 	else
 		create_new_var(global);
-		
 }

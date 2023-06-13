@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:04:32 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/13 11:04:33 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/13 23:48:05 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 extern int	g_exit_status;
 
-void ft_pwd(t_global *global)
+void	ft_pwd(t_global *global)
 {
 	char	pwd[PATH_MAX];
 

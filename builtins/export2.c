@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:04:26 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/13 11:04:27 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/13 23:57:30 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ extern int	g_exit_status;
 
 char	**init_env2(char **copy_env, t_global *global, int size)
 {
-	int			i;
-	char		**new_copy_env;
+	int		i;
+	char	**new_copy_env;
 
 	i = 0;
-	new_copy_env = ft_calloc(size + 1 , sizeof(char *));
+	new_copy_env = ft_calloc(size + 1, sizeof(char *));
 	while (copy_env[i])
 	{
 		new_copy_env[i] = ft_strdup(copy_env[i]);
@@ -32,17 +32,16 @@ char	**init_env2(char **copy_env, t_global *global, int size)
 	return (new_copy_env);
 }
 
-
-void create_new_var(t_global *global)
+void	create_new_var(t_global *global)
 {
-	int size;
-	int i;
-	
-	i=1;
+	int	size;
+	int	i;
+
+	i = 1;
 	ft_unset(global);
-	while(global->args[i])
-	{		
-		if(ft_isalpha(global->args[i][0]))
+	while (global->args[i])
+	{
+		if (ft_isalpha(global->args[i][0]))
 		{
 			size = size_env(global->copy_env);
 			global->copy_env = init_env2(global->copy_env, global, (size + 1));
@@ -52,7 +51,8 @@ void create_new_var(t_global *global)
 		}
 		else
 		{
-			printf("bash: export: %s: not a valid identifier\n", global->args[i]);
+			printf("bash: export: %s: not a valid identifier\n", \
+				global->args[i]);
 			g_exit_status = 1;
 			return ;
 		}

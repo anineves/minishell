@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:04:38 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/13 11:04:39 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/13 23:54:19 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 extern int	g_exit_status;
 
-char **rmv_var(t_global *global, int j, int size)
+char	**rmv_var(t_global *global, int j, int size)
 {
-	int i;
-	char **new_copy_env;
+	int		i;
+	char	**new_copy_env;
 
 	i = 0;
 	new_copy_env = ft_calloc(size + 1, sizeof(char *));
@@ -38,13 +38,17 @@ char **rmv_var(t_global *global, int j, int size)
 	return (new_copy_env);
 }
 
-void verific_var (t_global *global)
+void	verific_var(t_global *global)
 {
-	int i = 1;
-	int len = 0;
-	int j = 0;
-	int k = 0;
+	int	i;
+	int	len;
+	int	j;
+	int	k;
 
+	i = 0;
+	len = 0;
+	j = 0;
+	k = 0;
 	while (global->args[i])
 	{
 		len = ft_strlen(global->args[i]);
@@ -65,12 +69,12 @@ void verific_var (t_global *global)
 	}
 }
 
-void ft_unset(t_global *global)
+void	ft_unset(t_global *global)
 {
 	if (!global->args[1])
 	{
 		g_exit_status = 0;
-		return;
+		return ;
 	}
 	else
 	{
@@ -78,4 +82,3 @@ void ft_unset(t_global *global)
 		g_exit_status = 0;
 	}
 }
-

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:30:50 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/13 17:07:44 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/14 00:03:28 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*get_path2(char *arg, t_global *global)
 	if (global->split_path)
 		free_args(global->split_path);
 	global->split_path = ft_split(global->path, ':');
-	if (access(arg, F_OK) == 0 )
+	if (access(arg, F_OK) == 0)
 	{
 		cmd = ft_strdup(arg);
 		return (cmd);
@@ -36,7 +36,6 @@ char	*get_path2(char *arg, t_global *global)
 	i = 0;
 	while (global->split_path[i])
 	{
-
 		tmp = ft_strjoin(global->split_path[i], "/");
 		cmd = ft_strjoin(tmp, arg);
 		free(tmp);
@@ -77,7 +76,7 @@ void	open_pipes(t_global *global, int *pipe_fd)
 	}
 }
 
-void child_process(t_global *global, char *path, int pipe_fd[])
+void	child_process(t_global *global, char *path, int pipe_fd[])
 {
 	signal(SIGQUIT, sig_quit);
 	signal(SIGINT, sig_int);
@@ -89,7 +88,7 @@ void child_process(t_global *global, char *path, int pipe_fd[])
 		execute_child_builtin(global);
 	else if (!path && !is_parent_builtin(global))
 	{
-		if(ft_strcmp(global->args[0], "export") != 0)
+		if (ft_strcmp(global->args[0], "export") != 0)
 		{
 			printf("Minishell: command not found: %s\n", global->args[0]);
 			g_exit_status = 127;
@@ -105,11 +104,10 @@ void child_process(t_global *global, char *path, int pipe_fd[])
 	exit(g_exit_status);
 }
 
-
-void execute(t_global *global)
+void	execute(t_global *global)
 {
-	char *path;
-	int pipe_fd[2];
+	char	*path;
+	int		pipe_fd[2];
 
 	global->args = ft_split2(global->shell->cmd, ' ');
 	pipe(pipe_fd);
@@ -135,7 +133,7 @@ void execute(t_global *global)
 					if (path != NULL)
 						free(path);
 					execute(global);
-					return;
+					return ;
 				}
 				else if (global->shell->flag == RD_OUT || global->shell->flag == APPEND)
 					red_out_append(global, pipe_fd[READ_END]);

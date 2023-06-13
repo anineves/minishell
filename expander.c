@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:30:27 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/13 11:30:28 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/14 00:12:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,31 @@
 
 extern int	g_exit_status;
 
-char *is_env(t_global *global, char *temp)
+char	*is_env(t_global *global, char *temp)
 {
-	int len;
-	int i;
-	char *value;
-	char *it;
+	int		len;
+	int		i;
+	char	*value;
+	char	*it;
 
-	i =0;
+	i = 0;
 	len = ft_strlen(temp);
 	value = NULL;
 	while (global->copy_env[i])
 	{
-		if (ft_strncmp(temp, global->copy_env[i], len) == 0 && global->copy_env[i][len] == '=')
+		if (ft_strncmp(temp, global->copy_env[i], len) == 0 \
+			&& global->copy_env[i][len] == '=')
 		{
 			it = global->copy_env[i];
 			while (*it != '=')
 				it++;
 			it++;
 			value = ft_strdup(it);
-			break;
+			break ;
 		}
 		i++;
 	}
-	if(value == NULL)
+	if (value == NULL)
 		value = ft_strdup(" ");
 	return (value);
 }
@@ -53,11 +54,11 @@ char	*ft_charjoin(char *s1, char c)
 		return (NULL);
 	it = s1;
 	it2 = new;
-	while(*it)
+	while (*it)
 	{
 		*it2 = *it;
 		it++;
-		it2++; 
+		it2++;
 	}
 	*it2++ = c;
 	*it2 = '\0';
@@ -81,10 +82,11 @@ char	*ft_expander(t_global *global, char *input)
 	while (*it)
 	{
 		switch_quotes(*it, &dquote, &squote);
-		if((*it == '$' && squote == 0) || (( *it == '$' && squote == 1) &&  (*it == '$' && dquote == 1)))
+		if ((*it == '$' && squote == 0) || ((*it == '$' && squote == 1) \
+			&& (*it == '$' && dquote == 1)))
 		{
 			it++;
-			if(*it == '?')
+			if (*it == '?')
 			{
 				it++;
 				num = ft_itoa(g_exit_status);

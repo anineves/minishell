@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_data.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:04:53 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/13 11:04:54 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/14 00:34:13 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	lst_add_back(t_data **shell, t_data *new)
 {
-	t_data *it;
+	t_data	*it;
 
 	if (*shell == NULL)
 	{
@@ -33,7 +33,7 @@ t_data	*new_node(char *start, size_t len, int red)
 {
 	t_data	*new;
 
-	new = (t_data*)malloc(sizeof(t_data));
+	new = (t_data *)malloc(sizeof(t_data));
 	new->cmd = copy_len(start, len);
 	new->flag = red;
 	new->next = NULL;
@@ -81,7 +81,7 @@ void	create_data(t_data **shell, char *input)
 	end = input;
 	while (*end)
 	{
-		while(*end)
+		while (*end)
 		{
 			count = verify_quotes(*end);
 			end++;

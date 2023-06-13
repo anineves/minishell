@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:32:20 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/13 11:32:21 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/14 00:31:01 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void switch_quotes(char s, int *inDquotes, int *inSquotes)
+void	switch_quotes(char s, int *indquotes, int *insquotes)
 {
-	if (s == '"' && !(*inSquotes))
-		*inDquotes = !(*inDquotes);
-	if (s == '\'' && !(*inDquotes))
-		*inSquotes = !(*inSquotes);
+	if (s == '"' && !(*insquotes))
+		*indquotes = !(*indquotes);
+	if (s == '\'' && !(*indquotes))
+		*insquotes = !(*insquotes);
 }
 
 char	*copy_len(char *src, size_t len)

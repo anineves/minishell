@@ -40,7 +40,7 @@ void	append_to_file(t_global *global, int read_fd)
 		str = get_next_line(read_fd);
 		if (str)
 		{
-			if(g_exit_status == 127)
+			if (g_exit_status == 127)
 				fd = 2;
 			write(fd, str, ft_strlen(str));
 			free(str);
@@ -53,11 +53,11 @@ void	append_to_file(t_global *global, int read_fd)
 
 void	write_to_file(t_global *global, int read_fd)
 {
-	int	fd;
+	int		fd;
 	char	*str;
 
 	str = ft_strtrim(global->shell->next->cmd, " ");
-	fd = open(str, O_CREAT | O_TRUNC | O_RDWR ,0644);
+	fd = open(str, O_CREAT | O_TRUNC | O_RDWR, 0644);
 	free(str);
 	if (fd < 0)
 	{
@@ -69,13 +69,13 @@ void	write_to_file(t_global *global, int read_fd)
 		str = get_next_line(read_fd);
 		if (str)
 		{
-			if(g_exit_status == 127)
+			if (g_exit_status == 127)
 				fd = 2;
 			write(fd, str, ft_strlen(str));
 			free(str);
 		}
 		else
 			break ;
-	}	
+	}
 	close(fd);
 }

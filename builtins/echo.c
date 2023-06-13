@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:03:55 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/13 11:04:00 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/13 23:52:00 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,19 @@ extern int	g_exit_status;
 	free(new);
 }*/
 
-bool is_n(t_global *global)
-{	
-	int i;
-	int len;
-	
+bool	is_n(t_global *global)
+{
+	int	i;
+	int	len;
+
 	i = 1;
 	len = ft_strlen(global->args[1]);
-	while(global->args[1][i] == 'n' && global->args[1][i])
+	while (global->args[1][i] == 'n' && global->args[1][i])
 		i++;
-	if(i == len)
+	if (i == len)
 		return (1);
 	else
-		return(0);
+		return (0);
 }
 
 static int	size_arg(t_global *global)
@@ -65,7 +65,7 @@ static int	size_arg(t_global *global)
 	int	i;
 
 	i = 0;
-	while(global->args[i])
+	while (global->args[i])
 		i++;
 	if (global->shell->flag == HEREDOC || global->shell->flag == RD_IN)
 		i--;
@@ -74,26 +74,26 @@ static int	size_arg(t_global *global)
 
 void	ft_echo(t_global *global)
 {
-	int		i;
-	int		len;
+	int	i;
+	int	len;
 
 	i = 1;
 	len = size_arg(global);
-	if(!global->args[i])
+	if (!global->args[i])
 	{
 		ft_putstr_fd("\n", global->fd_output);
 		return ;
 	}
-		if (ft_strncmp(global->args[1], "-n", 2) == 0 && is_n(global))
-			i++;
-		while (i < len)
-		{
-			printf("%s", global->args[i]);
-			i++;
-			if (global->args[i])
-				printf(" ");
-		}
-		if (ft_strncmp(global->args[1], "-n", 2) != 0)
-			printf("\n");
-		g_exit_status = 0;
+	if (ft_strncmp(global->args[1], "-n", 2) == 0 && is_n(global))
+		i++;
+	while (i < len)
+	{
+		printf("%s", global->args[i]);
+		i++;
+		if (global->args[i])
+			printf(" ");
+	}
+	if (ft_strncmp(global->args[1], "-n", 2) != 0)
+		printf("\n");
+	g_exit_status = 0;
 }

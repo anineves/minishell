@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void ft_close(t_global *global)
+void	ft_close(t_global *global)
 {
 	if (global->fd_input != STDIN_FILENO)
 		close(global->fd_input);
@@ -22,7 +22,8 @@ void ft_close(t_global *global)
 
 t_data	*go_to_next(t_global *global)
 {
-	t_data *aux;
+	t_data	*aux;
+
 	aux = global->shell->next;
 	free(global->shell->cmd);
 	free(global->shell);
@@ -34,6 +35,8 @@ void	free_data(t_data **shell)
 	t_data	*it;
 
 	it = (*shell);
+	if (it == NULL)
+		return ;
 	while (it != NULL)
 	{
 		it = it->next;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_in.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:31:53 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/13 11:31:55 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/14 00:22:14 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ extern int	g_exit_status;
 
 void	ft_heredoc(t_global *global)
 {
-	char *buf;
-	
+	char	*buf;
+
 	buf = NULL;
 	while (1)
 	{
@@ -57,9 +57,7 @@ void	red_in_heredoc(t_global *global)
 		tmp = ft_strjoin(global->shell->cmd, global->shell->next->cmd);
 	}
 	global->args = ft_split2(tmp, ' ');
-	if(global->shell->cmd)
+	if (global->shell->cmd)
 		global->shell->cmd = global->shell->next->cmd;
 	free(tmp);
 }
-
-

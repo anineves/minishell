@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 14:06:29 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/13 15:55:38 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/14 00:08:28 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,19 @@ void	ft_exit2(t_global *global)
 
 int	main(int argc, char **argv, char **env)
 {
+	t_global	*global;
+	char		*input;
+	char		*real_input;
+
 	(void)argv;
 	(void)argc;
-	t_global	*global;
-	char	*input;
-	char	*real_input;
-
 	global = init_global(env);
 	while (1)
 	{
 		init_signals();
 		input = readline("prompt% ");
 		if (input == NULL)
-		{
-			//global->args = NULL;
 			ft_exit2(global);
-		}
 		add_history(input);
 		if (verify_input(input))
 		{
@@ -48,8 +45,7 @@ int	main(int argc, char **argv, char **env)
 			free(real_input);
 			execute(global);
 		}
-		if(global->shell)
-			free_data(&global->shell);
+		free_data(&global->shell);
 		free(input);
 	}
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handling_signals.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 14:06:20 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/13 13:50:26 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/14 00:22:51 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ void	sig_quit(int sig)
 		g_exit_status = 131;
 	}
 }
-void	init_signals()
+
+void	init_signals(void)
 {
 	struct sigaction	sigact;
 	struct termios		termios_save;

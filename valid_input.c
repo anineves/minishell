@@ -3,37 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   valid_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:24:16 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/13 16:00:20 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/14 00:29:02 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdbool.h>
 
-void rmvSpaces(char *str)
+void	rmv_spaces(char *str)
 {
-	int i;
-	int j;
-	int len;
-	int inDquotes;
-	int inSquotes;
-	int space;
+	int	i;
+	int	j;
+	int	len;
+	int	indquotes;
+	int	insquotes;
+	int	space;
 
 	i = 0;
 	j = 0;
-	inSquotes = 0;
-	inDquotes = 0;
+	insquotes = 0;
+	indquotes = 0;
 	space = 0;
 	len = ft_strlen(str);
 	while (i < len)
 	{
-		switch_quotes(str[i], &inDquotes, &inSquotes);
+		switch_quotes(str[i], &indquotes, &insquotes);
 		if (str[0] == ' ')
 			i++;
-		if ((str[i] == ' ' && !space) || inDquotes || inSquotes)
+		if ((str[i] == ' ' && !space) || indquotes || insquotes)
 		{
 			str[j++] = str[i];
 			space = (str[i] == ' ');
@@ -48,54 +48,56 @@ void rmvSpaces(char *str)
 	str[j] = '\0';
 }
 
-bool last_char(char *input)
+bool	last_char(char *input)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(input[i] != '\0')
+	while (input[i] != '\0')
 		i++;
 	i--;
-	while(input[i] == 32)
+	while (input[i] == 32)
 		i--;
-	if((input[i] == '|') || (input[i] == '<') || (input[i] == '>'))
+	if ((input[i] == '|') || (input[i] == '<') || (input[i] == '>'))
 	{
 		printf("bash: syntax error near unexpected token `newline' \n");
-		return(0);
+		return (0);
 	}
-	return(1);
+	return (1);
 }
 
-bool first_char(char *input)
+bool	first_char(char *input)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(input[i] == 32)
+	while (input[i] == 32)
 		i++;
-	if((input[i] == '|') || (input[i] == '<'))
+	if ((input[i] == '|') || (input[i] == '<'))
 	{
 		printf("Unexpected first char \n");
-		return(0);
+		return (0);
 	}
-	return(1);
+	return (1);
 }
 
-bool repeat_red(char *input)
+bool	repeat_red(char *input)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
-	while(input[i])
+	while (input[i])
 	{
-		if(input[i] == '<' || input[i] == '>' || input[i] == '|')
-		{	
-			if (input [i+1]== ' ')
+		if (input[i] == '<' || input[i] == '>' || input[i] == '|')
+		{
+			if (input[i + 1] == ' ')
 			{
-				if(input[i + 2] == '<' || input[i +2 ] == '>' || input[i + 2] == '|')
+				if (input[i + 2] == '<' || input[i +2] == '>' \
+					|| input[i + 2] == '|')
 				{
-					printf("bash: syntax error near unexpected token `%c' \n", input[i+2]);
-					return(0);
+					printf("bash: syntax error near unexpected token \
+						`%c' \n", input[i + 2]);
+					return (0);
 				}
 			}
 		}
@@ -109,7 +111,7 @@ int	verify_input(char *input)
 	char	*it;
 
 	it = input;
-	while ( *it == ' ' || *it == '\t' || *it == EOF)
+	while (*it == ' ' || *it == '\t' || *it == EOF)
 		it++;
 	if (*it == '\0')
 		return (0);
@@ -121,6 +123,6 @@ int	verify_input(char *input)
 		return (0);
 	if (!repeat_red(input))
 		return (0);
-	rmvSpaces(input);
+	rmv_spaces(input);
 	return (1);
 }
