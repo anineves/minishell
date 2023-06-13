@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:30:50 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/13 13:53:31 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/13 17:07:44 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,12 @@ void child_process(t_global *global, char *path, int pipe_fd[])
 		execute_child_builtin(global);
 	else if (!path && !is_parent_builtin(global))
 	{
-		printf("Minishell: command not found: %s\n", global->args[0]);
-		g_exit_status = 127;
-		exit(127);
+		if(ft_strcmp(global->args[0], "export") != 0)
+		{
+			printf("Minishell: command not found: %s\n", global->args[0]);
+			g_exit_status = 127;
+			exit(127);
+		}
 	}
 	else if (path && !is_child_builtin(global))
 	{
@@ -117,9 +120,6 @@ void execute(t_global *global)
 		child_process(global, path, pipe_fd);
 	else
 	{
-		waitpid(0, (int *)&g_exit_status, WEXITSTATUS(g_exit_status));
-		if (!WTERMSIG(g_exit_status))
-			g_exit_status = WEXITSTATUS(g_exit_status);
 		if (is_parent_builtin(global) && global->shell->flag != PIPE)
 			execute_parent_builtin(global);
 		else if (global->shell->next != NULL)
@@ -144,10 +144,11 @@ void execute(t_global *global)
 		}
 		else
 			ft_close(global);
-	}
-	waitpid(0, (int *)&g_exit_status, WEXITSTATUS(g_exit_status));
+		while (waitpid(0, (int *)&g_exit_status, WEXITSTATUS(g_exit_status)) > 0)
+			continue ;
 		if (!WTERMSIG(g_exit_status))
 			g_exit_status = WEXITSTATUS(g_exit_status);
+	}
 	if (path != NULL)
 		free(path);
 	unlink("here_doc");

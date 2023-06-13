@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 14:06:29 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/13 13:58:34 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/13 15:55:38 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_exit2(t_global *global)
 	free_global(global);
 	free(global);
 	printf("exit\n");
-	exit(0);
+	exit(g_exit_status);
 }
 
 int	main(int argc, char **argv, char **env)

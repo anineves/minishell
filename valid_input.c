@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:24:16 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/13 11:41:05 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/13 16:00:20 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	verify_input(char *input)
 	char	*it;
 
 	it = input;
-	while (*it == '\t' || *it == EOF)
+	while ( *it == ' ' || *it == '\t' || *it == EOF)
 		it++;
 	if (*it == '\0')
 		return (0);
