@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 14:06:29 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/13 12:17:06 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/13 13:50:07 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ int	main(int argc, char **argv, char **env)
 	global = init_global(env);
 	while (1)
 	{
-		//signal(SIGINT, sig_handler);
-		//signal(SIGQUIT, SIG_IGN);
+		init_signals();
 		input = readline("prompt% ");
 		if (input == NULL)
 		{

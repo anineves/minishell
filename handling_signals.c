@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 14:06:20 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/13 12:23:35 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/13 13:50:26 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ void	init_signals()
 
 	sigact.sa_flags = SA_SIGINFO;
 	sigact.sa_handler = sig_handler;
-	signal(SIGINT, sig_handler);
-	signal(SIGQUIT, SIG_IGN);
+	sigaction(SIGINT, &sigact, NULL);
+	sigaction(SIGQUIT, &sigact, NULL);
 	if (tcgetattr(0, &termios_save) == -1)
 	{
 		perror("Error EOF signal\n");

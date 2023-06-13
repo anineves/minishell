@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:31:21 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/13 12:17:20 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/13 13:50:03 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ t_global	*init_global(char **env)
 {
 	t_global	*new;
 
-	init_signals();
+	//init_signals();
 	new = (t_global*)malloc(sizeof(t_global));
 	if (!new)
 		return (NULL);

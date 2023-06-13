@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:30:50 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/13 12:22:47 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/13 13:53:31 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ void	open_pipes(t_global *global, int *pipe_fd)
 
 void child_process(t_global *global, char *path, int pipe_fd[])
 {
-	//signal(SIGQUIT, sig_quit);
-	//signal(SIGINT, sig_int);
+	signal(SIGQUIT, sig_quit);
+	signal(SIGINT, sig_int);
 	if (global->shell->flag == RD_IN || global->shell->flag == HEREDOC)
 		red_in_heredoc(global);
 	if (path || is_child_builtin(global))
@@ -94,7 +94,9 @@ void child_process(t_global *global, char *path, int pipe_fd[])
 		exit(127);
 	}
 	else if (path && !is_child_builtin(global))
+	{
 		execve(path, global->args, global->copy_env);
+	}
 	if (path != NULL)
 		free(path);
 	exit(g_exit_status);
