@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:31:21 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/14 00:33:20 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/14 19:58:46 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ t_global	*init_global(char **env)
 	new->args = NULL;
 	new->fd_input = 0;
 	new->fd_output = 1;
+	new->flag = 0;
 	new->path = get_path(new->copy_env, new->path);
 	new->split_path = ft_split(new->path, ':');
 	return (new);

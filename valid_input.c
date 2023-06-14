@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:24:16 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/14 00:29:02 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/14 19:21:40 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,8 @@ int	verify_input(char *input)
 		return (0);
 	if (!closed_quotes(input))
 		return (0);
-	if (!first_char(input))
-		return (0);
+	//if (!first_char(input))
+		//return (0);
 	if (!last_char(input))
 		return (0);
 	if (!repeat_red(input))

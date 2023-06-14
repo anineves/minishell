@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_in.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:31:53 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/14 00:22:14 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/14 20:27:21 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ void	red_in_heredoc(t_global *global)
 	char	*tmp;
 
 	tmp = NULL;
+	if (global->args[0] == NULL)
+		global->flag = 1;
 	if (global->shell->flag == RD_IN)
 		global->fd_input = open(global->shell->next->cmd, O_RDWR, 0644);
 	else if (global->shell->flag == HEREDOC)

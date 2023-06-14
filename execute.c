@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:30:50 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/14 00:03:28 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/14 20:29:38 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ char	*get_path2(char *arg, t_global *global)
 	char	*cmd;
 	int		i;
 
+	if (!global->args[0])
+		return (NULL);
 	if (global->path)
 		free(global->path);
 	global->path = get_path(global->copy_env, global->path);
@@ -80,6 +82,7 @@ void	child_process(t_global *global, char *path, int pipe_fd[])
 {
 	signal(SIGQUIT, sig_quit);
 	signal(SIGINT, sig_int);
+	waitpid(0, (int *)&g_exit_status, WEXITSTATUS(g_exit_status));
 	if (global->shell->flag == RD_IN || global->shell->flag == HEREDOC)
 		red_in_heredoc(global);
 	if (path || is_child_builtin(global))
@@ -88,11 +91,16 @@ void	child_process(t_global *global, char *path, int pipe_fd[])
 		execute_child_builtin(global);
 	else if (!path && !is_parent_builtin(global))
 	{
-		if (ft_strcmp(global->args[0], "export") != 0)
+		if (global->flag == 1)
+			unlink("here_doc");
+		if (global->args[0] != NULL && global->flag == 0)
 		{
-			printf("Minishell: command not found: %s\n", global->args[0]);
-			g_exit_status = 127;
-			exit(127);
+			if (ft_strcmp(global->args[0], "export") != 0)
+			{
+				printf("Minishell: command not found: %s\n", global->args[0]);
+				g_exit_status = 127;
+				exit(127);
+			}
 		}
 	}
 	else if (path && !is_child_builtin(global))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_data.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:04:53 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/14 00:34:13 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/14 20:26:24 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ t_data	*new_node(char *start, size_t len, int red)
 	t_data	*new;
 
 	new = (t_data *)malloc(sizeof(t_data));
-	new->cmd = copy_len(start, len);
+	if (new->cmd)
+		new->cmd = copy_len(start, len);
 	new->flag = red;
 	new->next = NULL;
 	return (new);
@@ -84,7 +85,8 @@ void	create_data(t_data **shell, char *input)
 		while (*end)
 		{
 			count = verify_quotes(*end);
-			end++;
+			if ((end[0] != '<' && end[0] != '>') || ((end[0] != '<' && end[1] != '<') && (end[0] != '>' && end[1] != '>')))
+				end++;
 			if (count == 0 && (is_ridirection(end) != 0))
 				break ;
 		}
