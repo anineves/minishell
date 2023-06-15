@@ -14,55 +14,18 @@
 
 extern int	g_exit_status;
 
-char	*is_env(t_global *global, char *temp)
+char	*expand_exit_status(char *new)
 {
-	int		len;
-	int		i;
-	char	*value;
-	char	*it;
+    char *num;
+    char *tmp;
 
-	i = 0;
-	len = ft_strlen(temp);
-	value = NULL;
-	while (global->copy_env[i])
-	{
-		if (ft_strncmp(temp, global->copy_env[i], len) == 0 \
-			&& global->copy_env[i][len] == '=')
-		{
-			it = global->copy_env[i];
-			while (*it != '=')
-				it++;
-			it++;
-			value = ft_strdup(it);
-			break ;
-		}
-		i++;
-	}
-	if (value == NULL)
-		value = ft_strdup(" ");
-	return (value);
-}
+    num = ft_itoa(g_exit_status);
+    tmp = ft_strjoin(new, num);
+    free(new);
+    free(num);
+    new = tmp;
 
-char	*ft_charjoin(char *s1, char c)
-{
-	char	*new;
-	char	*it;
-	char	*it2;
-
-	new = malloc(sizeof(char) * (ft_strlen(s1) + 2));
-	if (!new)
-		return (NULL);
-	it = s1;
-	it2 = new;
-	while (*it)
-	{
-		*it2 = *it;
-		it++;
-		it2++;
-	}
-	*it2++ = c;
-	*it2 = '\0';
-	return (new);
+    return new;
 }
 
 char	*expand_variable(t_global *global, char **it, char *new)
@@ -74,11 +37,7 @@ char	*expand_variable(t_global *global, char **it, char *new)
 	if (**it == '?')
 	{
 		(*it)++;
-		num = ft_itoa(g_exit_status);
-		tmp = ft_strjoin(new, num);
-		free(new);
-		free(num);
-		new = tmp;
+		new = expand_exit_status(new);
 	}
 	else
 	{
@@ -97,7 +56,7 @@ char	*expand_variable(t_global *global, char **it, char *new)
 	return new;
 }
 
-bool ft_verific_expand(char *it, int squote, int dquote)
+bool	ft_verific_expand(char *it, int squote, int dquote)
 {
 	if ((*it == '$' && dquote == 1 && (((*(it - 2) == '<') && \
 		(*(it - 3) == '<')) || ((*(it - 3) == '<') && (*(it - 4) == '<')))))
@@ -110,40 +69,38 @@ bool ft_verific_expand(char *it, int squote, int dquote)
 		return(1);
 	else 
 		return(0);
-		
 }
 
-char	*ft_expander(t_global *global, char *input)
+char	*process_character(t_global *global, char *new, char **it) 
 {
-	char	*new;
-	char	*it;
-	int		squote;
-	int		dquote;
+    (*it)++;
+    new = expand_variable(global, it, new);
+    return new;
+}
 
-	it = input;
-	squote = 0;
-	dquote = 0;
-	new = ft_calloc(sizeof(char), 1);
-	while (*it)
-	{
-		switch_quotes(*it, &dquote, &squote);
-		if (input[0] == '$')
-		{
-			it++;
-			new = expand_variable(global, &it, new);
-		}
-		else if (ft_verific_expand(it, squote, dquote))
-		{
-			it++;
-			new = expand_variable(global, &it, new);
-		}
-		else
-		{
-			char *tmp = ft_charjoin(new, *it);
-			free(new);
-			new = tmp;
-			it++;
-		}
-	}
-	return new;
+char	*ft_expander(t_global *global, char *input) 
+{
+    char *new;
+    char *it;
+    int squote;
+    int dquote;
+
+    it = input;
+    squote = 0;
+    dquote = 0;
+    new = ft_calloc(sizeof(char), 1);
+    while (*it) 
+    {
+        switch_quotes(*it, &dquote, &squote);
+        if (input[0] == '$' || ft_verific_expand(it, squote, dquote))
+            new = process_character(global, new, &it);
+        else 
+        {
+            char *tmp = ft_charjoin(new, *it);
+            free(new);
+            new = tmp;
+            it++;
+        }
+    }
+    return new;
 }

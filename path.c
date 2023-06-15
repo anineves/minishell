@@ -15,12 +15,9 @@ char	*absolute_path(char *arg, t_global *global)
 		free_args(global->split_path);
 	global->split_path = ft_split(global->path, ':');
 	if (access(arg, F_OK) == 0)
-	{
-		cmd = ft_strdup(arg);
-		return (cmd);
-	}
-	i = 0;
-	while (global->split_path[i])
+		return ( cmd = ft_strdup(arg));
+	i = -1;
+	while (global->split_path[++i])
 	{
 		tmp = ft_strjoin(global->split_path[i], "/");
 		cmd = ft_strjoin(tmp, arg);
@@ -28,7 +25,6 @@ char	*absolute_path(char *arg, t_global *global)
 		if (access(cmd, F_OK) == 0)
 			return (cmd);
 		free(cmd);
-		i++;
 	}
 	return (NULL);
 }

@@ -14,83 +14,8 @@
 
 extern int	g_exit_status;
 
-/* char	*get_path2(char *arg, t_global *global)
+void	handle_child_process(t_global *global, char *path, int pipe_fd[])
 {
-	char	*tmp;
-	char	*cmd;
-	int		i;
-
-	if (!global->args[0])
-		return (NULL);
-	if (global->path)
-		free(global->path);
-	global->path = get_path(global->copy_env, global->path);
-	if (global->path == NULL)
-		return (NULL);
-	if (global->split_path)
-		free_args(global->split_path);
-	global->split_path = ft_split(global->path, ':');
-	if (access(arg, F_OK) == 0)
-	{
-		cmd = ft_strdup(arg);
-		return (cmd);
-	}
-	i = 0;
-	while (global->split_path[i])
-	{
-		tmp = ft_strjoin(global->split_path[i], "/");
-		cmd = ft_strjoin(tmp, arg);
-		free(tmp);
-		if (access(cmd, F_OK) == 0)
-			return (cmd);
-		free(cmd);
-		i++;
-	}
-	return (NULL);
-} */
-
-void	open_pipes(t_global *global, int *pipe_fd)
-{
-	if ((global->shell->next != NULL && global->shell->next->flag) || (global->shell->next != NULL \
-		&& (global->shell->flag != HEREDOC && global->shell->flag != RD_IN)))
-	{
-		close(pipe_fd[READ_END]);
-		if (global->fd_input != STDIN_FILENO)
-		{
-			dup2(global->fd_input, STDIN_FILENO);
-			close(global->fd_input);
-		}
-		dup2(pipe_fd[WRITE_END], STDOUT_FILENO);
-		close(pipe_fd[WRITE_END]);
-	}
-	else
-	{
-		if (global->fd_input != STDIN_FILENO)
-		{
-			dup2(global->fd_input, STDIN_FILENO);
-			close(global->fd_input);
-		}
-		if (global->fd_output != STDOUT_FILENO)
-		{
-			dup2(global->fd_output, STDOUT_FILENO);
-			close(global->fd_output);
-		}
-	}
-}
-
-void wait_and_exit_status()
-{
-    while (waitpid(0, (int *)&g_exit_status, WEXITSTATUS(g_exit_status)) > 0)
-        continue;
-    if (!WTERMSIG(g_exit_status))
-        g_exit_status = WEXITSTATUS(g_exit_status);
-}
-
-void	child_process(t_global *global, char *path, int pipe_fd[])
-{
-	signal(SIGQUIT, sig_quit);
-	signal(SIGINT, sig_int);
-	wait_and_exit_status();
 	if (global->shell->flag == RD_IN || global->shell->flag == HEREDOC)
 		red_in_heredoc(global);
 	if (path || is_child_builtin(global))
@@ -112,18 +37,37 @@ void	child_process(t_global *global, char *path, int pipe_fd[])
 		}
 	}
 	else if (path && !is_child_builtin(global))
-	{
 		execve(path, global->args, global->copy_env);
-	}
 	if (path != NULL)
 		free(path);
 	exit(g_exit_status);
 }
 
+void	child_process(t_global *global, char *path, int pipe_fd[])
+{
+	signal(SIGQUIT, sig_quit);
+	signal(SIGINT, sig_int);
+	wait_and_exit_status();
+	handle_child_process(global, path, pipe_fd);
+}
+
+
+void	execute_next_shell(t_global *global, char *path, int pipe_fd[2])
+{
+	if (global->shell->next->flag == HEREDOC || global->shell->next->flag == RD_IN)
+		wait_and_exit_status();
+	global->shell = go_to_next(global);
+	free_args(global->args);
+	global->fd_input = pipe_fd[READ_END];
+	if (path != NULL)
+		free(path);
+	execute(global);
+}
+
 void	execute(t_global *global)
 {
-	char	*path;
-	int		pipe_fd[2];
+	char *path;
+	int pipe_fd[2];
 
 	global->args = ft_split2(global->shell->cmd, ' ');
 	pipe(pipe_fd);
@@ -143,15 +87,8 @@ void	execute(t_global *global)
 			{
 				if (global->shell->flag == PIPE)
 				{
-					if (global->shell->next->flag == HEREDOC || global->shell->next->flag == RD_IN )
-						wait_and_exit_status();
-					global->shell = go_to_next(global);
-					free_args(global->args);
-					global->fd_input = pipe_fd[READ_END];
-					if (path != NULL)
-						free(path);
-					execute(global);
-					return ;
+					execute_next_shell(global, path, pipe_fd);
+					return;
 				}
 				else if (global->shell->flag == RD_OUT || global->shell->flag == APPEND)
 					red_out_append(global, pipe_fd[READ_END]);

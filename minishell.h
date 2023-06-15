@@ -119,7 +119,11 @@ t_global	*init_global(char **env);
 void		switch_quotes(char s, int *inDquotes, int *inSquotes);
 void		sig_quit(int sig);
 void		sig_int(int sig);
+void		wait_and_exit_status();
+void		open_pipes(t_global *global, int *pipe_fd);
 char		*get_type_path(char *arg, t_global *global);
+char		*ft_charjoin(char *s1, char c);
+char		*is_env(t_global *global, char *temp);
 
 static inline void	ignore_signal(int n)
 {
