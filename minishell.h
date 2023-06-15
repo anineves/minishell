@@ -119,6 +119,7 @@ t_global	*init_global(char **env);
 void		switch_quotes(char s, int *inDquotes, int *inSquotes);
 void		sig_quit(int sig);
 void		sig_int(int sig);
+char		*get_type_path(char *arg, t_global *global);
 
 static inline void	ignore_signal(int n)
 {

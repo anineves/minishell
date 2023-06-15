@@ -26,6 +26,7 @@ SRC = main.c \
 	free.c \
 	redirect_out.c \
 	redirect_in.c \
+	path.c \
 	expander.c
 
 	

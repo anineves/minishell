@@ -14,7 +14,7 @@
 
 extern int	g_exit_status;
 
-char	*get_path2(char *arg, t_global *global)
+/* char	*get_path2(char *arg, t_global *global)
 {
 	char	*tmp;
 	char	*cmd;
@@ -47,7 +47,7 @@ char	*get_path2(char *arg, t_global *global)
 		i++;
 	}
 	return (NULL);
-}
+} */
 
 void	open_pipes(t_global *global, int *pipe_fd)
 {
@@ -127,7 +127,7 @@ void	execute(t_global *global)
 
 	global->args = ft_split2(global->shell->cmd, ' ');
 	pipe(pipe_fd);
-	path = get_path2(global->args[0], global);
+	path = get_type_path(global->args[0], global);
 	signal(SIGQUIT, sig_quit);
 	signal(SIGINT, sig_int);
 	if (fork() == 0)
@@ -143,7 +143,7 @@ void	execute(t_global *global)
 			{
 				if (global->shell->flag == PIPE)
 				{
-					if (global->shell->next->flag == HEREDOC)
+					if (global->shell->next->flag == HEREDOC || global->shell->next->flag == RD_IN )
 						wait_and_exit_status();
 					global->shell = go_to_next(global);
 					free_args(global->args);
