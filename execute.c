@@ -78,11 +78,19 @@ void	open_pipes(t_global *global, int *pipe_fd)
 	}
 }
 
+void wait_and_exit_status()
+{
+    while (waitpid(0, (int *)&g_exit_status, WEXITSTATUS(g_exit_status)) > 0)
+        continue;
+    if (!WTERMSIG(g_exit_status))
+        g_exit_status = WEXITSTATUS(g_exit_status);
+}
+
 void	child_process(t_global *global, char *path, int pipe_fd[])
 {
 	signal(SIGQUIT, sig_quit);
 	signal(SIGINT, sig_int);
-	waitpid(0, (int *)&g_exit_status, WEXITSTATUS(g_exit_status));
+	wait_and_exit_status();
 	if (global->shell->flag == RD_IN || global->shell->flag == HEREDOC)
 		red_in_heredoc(global);
 	if (path || is_child_builtin(global))
@@ -135,6 +143,8 @@ void	execute(t_global *global)
 			{
 				if (global->shell->flag == PIPE)
 				{
+					if (global->shell->next->flag == HEREDOC)
+						wait_and_exit_status();
 					global->shell = go_to_next(global);
 					free_args(global->args);
 					global->fd_input = pipe_fd[READ_END];
@@ -150,10 +160,7 @@ void	execute(t_global *global)
 		}
 		else
 			ft_close(global);
-		while (waitpid(0, (int *)&g_exit_status, WEXITSTATUS(g_exit_status)) > 0)
-			continue ;
-		if (!WTERMSIG(g_exit_status))
-			g_exit_status = WEXITSTATUS(g_exit_status);
+		wait_and_exit_status();
 	}
 	if (path != NULL)
 		free(path);

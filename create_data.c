@@ -34,8 +34,7 @@ t_data	*new_node(char *start, size_t len, int red)
 	t_data	*new;
 
 	new = (t_data *)malloc(sizeof(t_data));
-	if (new->cmd)
-		new->cmd = copy_len(start, len);
+	new->cmd = copy_len(start, len);
 	new->flag = red;
 	new->next = NULL;
 	return (new);
