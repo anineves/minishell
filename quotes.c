@@ -37,7 +37,6 @@ void	rmv_quotes(char *str)
 			str[j++] = str[i];
 		i++;
 	}
-	printf("str %s\n", str);
 	str[j] = '\0';
 }
 

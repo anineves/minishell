@@ -24,6 +24,7 @@ void	ft_heredoc(t_global *global)
 		buf = readline("> ");
 		if (buf == NULL)
 			break ;
+		rmv_quotes(global->shell->next->cmd);
 		if (ft_strncmp(buf, global->shell->next->cmd, ft_strlen(buf)) == 0)
 		{
 			free(buf);

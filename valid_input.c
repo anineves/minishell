@@ -13,20 +13,14 @@
 #include "minishell.h"
 #include <stdbool.h>
 
-void	rmv_spaces(char *str)
+void	rmv_spaces(char *str, int i , int j, int space)
 {
-	int	i;
-	int	j;
 	int	len;
 	int	indquotes;
 	int	insquotes;
-	int	space;
-
-	i = 0;
-	j = 0;
+	
 	insquotes = 0;
 	indquotes = 0;
-	space = 0;
 	len = ft_strlen(str);
 	while (i < len)
 	{
@@ -109,7 +103,13 @@ bool	repeat_red(char *input)
 int	verify_input(char *input)
 {
 	char	*it;
+	int		i;
+	int		j;
+	int		space;
 
+	i = 0;
+	j = 0;
+	space = 0;
 	it = input;
 	while (*it == ' ' || *it == '\t' || *it == EOF)
 		it++;
@@ -123,6 +123,6 @@ int	verify_input(char *input)
 		return (0);
 	if (!repeat_red(input))
 		return (0);
-	rmv_spaces(input);
+	rmv_spaces(input, i, j, space);
 	return (1);
 }

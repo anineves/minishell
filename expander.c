@@ -65,13 +65,58 @@ char	*ft_charjoin(char *s1, char c)
 	return (new);
 }
 
+char	*expand_variable(t_global *global, char **it, char *new)
+{
+	char	*tmp;
+	char	*num;
+	char	*aux;
+
+	if (**it == '?')
+	{
+		(*it)++;
+		num = ft_itoa(g_exit_status);
+		tmp = ft_strjoin(new, num);
+		free(new);
+		free(num);
+		new = tmp;
+	}
+	else
+	{
+		tmp = *it;
+		while (**it != ' ' && **it != '"' && **it != '\'' && **it)
+			(*it)++;
+		num = copy_len(tmp, *it - tmp);
+		aux = is_env(global, num);
+		tmp = ft_strjoin(new, aux);
+		free(num);
+		free(new);
+		free(aux);
+		new = tmp;
+	}
+
+	return new;
+}
+
+bool ft_verific_expand(char *it, int squote, int dquote)
+{
+	if ((*it == '$' && dquote == 1 && (((*(it - 2) == '<') && \
+		(*(it - 3) == '<')) || ((*(it - 3) == '<') && (*(it - 4) == '<')))))
+		return (0);
+	if ((*it == '$' && squote == 0 && *(it + 1) != '~') && \
+		(((*(it - 1) != '<') || (*(it - 2) != '<')) && \
+		((*(it - 2) != '<') || (*(it - 3) != '<'))))
+		return(1);
+	else if ((*it == '$' && squote == 1) && (*it == '$' && dquote == 1))
+		return(1);
+	else 
+		return(0);
+		
+}
+
 char	*ft_expander(t_global *global, char *input)
 {
 	char	*new;
 	char	*it;
-	char	*tmp;
-	char	*num;
-	char	*aux;
 	int		squote;
 	int		dquote;
 
@@ -82,40 +127,23 @@ char	*ft_expander(t_global *global, char *input)
 	while (*it)
 	{
 		switch_quotes(*it, &dquote, &squote);
-		if ((*it == '$' && squote == 0) || ((*it == '$' && squote == 1) \
-			&& (*it == '$' && dquote == 1)))
+		if (input[0] == '$')
 		{
 			it++;
-			if (*it == '?')
-			{
-				it++;
-				num = ft_itoa(g_exit_status);
-				tmp = ft_strjoin(new, num);
-				free(new);
-				free(num);
-				new = tmp;
-			}
-			else
-			{
-				tmp = it;
-				while (*it != ' ' && *it != '"' && *it != '\'' && *it)
-					it++;
-				num = copy_len(tmp, it - tmp);
-				aux = is_env(global, num);
-				tmp = ft_strjoin(new, aux);
-				free(num);
-				free(new);
-				free(aux);
-				new = tmp;
-			}
+			new = expand_variable(global, &it, new);
+		}
+		else if (ft_verific_expand(it, squote, dquote))
+		{
+			it++;
+			new = expand_variable(global, &it, new);
 		}
 		else
 		{
-			tmp = ft_charjoin(new, *it);
+			char *tmp = ft_charjoin(new, *it);
 			free(new);
 			new = tmp;
 			it++;
 		}
 	}
-	return (new);
+	return new;
 }
