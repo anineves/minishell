@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 14:06:29 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/17 14:21:23 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/17 16:53:36 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	main(int argc, char **argv, char **env)
 		if (verify_input(input))
 		{
 			real_input = ft_expander(global, input, NULL);
-			create_data(&global->shell, real_input, 0);
+			create_data(&global->shell, real_input, 0, NULL);
 			free(real_input);
 			execute(global);
 		}

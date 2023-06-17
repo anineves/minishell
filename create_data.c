@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:04:53 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/17 14:12:48 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/17 16:54:39 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,9 @@ int	get_red(char *str)
 	return (0);
 }
 
-void	create_data(t_data **shell, char *input, int count)
+void	create_data(t_data **shell, char *input, int count, char *end)
 {
 	char	*start;
-	char	*end;
 
 	start = input;
 	end = input;
@@ -82,11 +81,12 @@ void	create_data(t_data **shell, char *input, int count)
 		while (*end)
 		{
 			count = verify_quotes(*end);
-			if ((end[0] != '<' && end[0] != '>') || ((end[0] != '<' \
-				&& end[1] != '<') && (end[0] != '>' && end[1] != '>')))
+			if ((end[0] != '<' && end[0] != '>'))
 				end++;
-			if (count == 0 && (is_ridirection(end) != 0))
+			else if (count == 0 && (is_ridirection(end) != 0))
 				break ;
+			else
+				end++;
 		}
 		lst_add_back(shell, new_node(start, (end - start), get_red(end)));
 		if (*end != '\0')

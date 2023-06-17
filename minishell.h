@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:19:40 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/17 14:39:44 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/17 16:53:30 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int			verify_input(char *input);
 char		*copy_len(char *src, size_t len);
 bool		closed_quotes(char *input);
 void		rmv_quotes(char *str);
-void		create_data(t_data **shell, char *input, int count);
+void		create_data(t_data **shell, char *input, int count, char *end);
 void		lst_add_back(t_data **shell, t_data *new);
 t_data		*new_node(char *start, size_t len, int red);
 int			verify_quotes(char c);
