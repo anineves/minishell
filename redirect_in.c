@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:31:53 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/14 20:27:21 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/17 11:27:58 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,20 @@ void	red_in_heredoc(t_global *global)
 		global->fd_input = open("here_doc", O_CREAT | O_TRUNC | O_RDWR, 0644);
 		ft_heredoc(global);
 	}
-	free_args(global->args);
-	if (global->shell->flag == HEREDOC)
-		tmp = ft_strjoin(global->shell->cmd, " here_doc");
-	else
+	/*if (!ft_strncmp(global->shell->cmd, "cat", 3) || !ft_strncmp(global->shell->cmd, "wc", 2))
 	{
-		tmp = ft_strjoin(global->shell->cmd, " ");
-		tmp = ft_strjoin(global->shell->cmd, global->shell->next->cmd);
-	}
-	global->args = ft_split2(tmp, ' ');
+		free_args(global->args);
+		if (global->shell->flag == HEREDOC)
+			tmp = ft_strjoin(global->shell->cmd, " here_doc");
+		else
+		{
+			tmp = ft_strjoin(global->shell->cmd, " ");
+			//if (!ft_str)
+			tmp = ft_strjoin(global->shell->cmd, global->shell->next->cmd);
+		}
+		global->args = ft_split2(tmp, ' ');
+	} */
 	if (global->shell->cmd)
-		global->shell->cmd = global->shell->next->cmd;
+		global->shell = go_to_next(global);
 	free(tmp);
 }

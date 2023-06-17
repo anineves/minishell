@@ -6,13 +6,32 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:30:50 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/14 20:29:38 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/17 12:27:36 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 extern int	g_exit_status;
+
+void	write_to_pipe(t_global *global)
+{
+	char	*buf;
+	int		fd;
+	
+	if (global->shell->flag == HEREDOC)
+		fd = open("here_doc", O_RDONLY);
+	else
+		fd = open(global->shell->cmd, O_RDONLY);
+	while (1)
+	{
+		buf = get_next_line(fd);
+		if (!buf)
+			break ;
+		ft_putstr_fd(buf, global->fd_input);
+		free(buf);
+	}
+}
 
 void	handle_child_process(t_global *global, char *path, int pipe_fd[])
 {
@@ -38,6 +57,8 @@ void	handle_child_process(t_global *global, char *path, int pipe_fd[])
 	}
 	else if (path && !is_child_builtin(global))
 		execve(path, global->args, global->copy_env);
+	if (global->shell->flag == RD_IN || global->shell->flag == HEREDOC)
+		write_to_pipe(global);
 	if (path != NULL)
 		free(path);
 	exit(g_exit_status);
@@ -47,8 +68,8 @@ void	child_process(t_global *global, char *path, int pipe_fd[])
 {
 	signal(SIGQUIT, sig_quit);
 	signal(SIGINT, sig_int);
-	wait_and_exit_status();
 	handle_child_process(global, path, pipe_fd);
+	wait_and_exit_status();
 }
 
 
