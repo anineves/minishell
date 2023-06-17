@@ -6,19 +6,19 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:24:16 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/14 19:21:40 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/17 14:13:53 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdbool.h>
 
-void	rmv_spaces(char *str, int i , int j, int space)
+void	rmv_spaces(char *str, int i, int j, int space)
 {
 	int	len;
 	int	indquotes;
 	int	insquotes;
-	
+
 	insquotes = 0;
 	indquotes = 0;
 	len = ft_strlen(str);
@@ -117,8 +117,6 @@ int	verify_input(char *input)
 		return (0);
 	if (!closed_quotes(input))
 		return (0);
-	//if (!first_char(input))
-		//return (0);
 	if (!last_char(input))
 		return (0);
 	if (!repeat_red(input))

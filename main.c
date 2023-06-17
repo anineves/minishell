@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 14:06:29 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/14 00:08:28 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/17 14:21:23 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ int	main(int argc, char **argv, char **env)
 		add_history(input);
 		if (verify_input(input))
 		{
-			real_input = ft_expander(global, input);
-			create_data(&global->shell, real_input);
+			real_input = ft_expander(global, input, NULL);
+			create_data(&global->shell, real_input, 0);
 			free(real_input);
 			execute(global);
 		}

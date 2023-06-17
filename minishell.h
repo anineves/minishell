@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:19:40 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/14 19:57:40 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/17 14:39:44 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int			verify_input(char *input);
 char		*copy_len(char *src, size_t len);
 bool		closed_quotes(char *input);
 void		rmv_quotes(char *str);
-void		create_data(t_data **shell, char *input);
+void		create_data(t_data **shell, char *input, int count);
 void		lst_add_back(t_data **shell, t_data *new);
 t_data		*new_node(char *start, size_t len, int red);
 int			verify_quotes(char c);
@@ -110,7 +110,7 @@ void		execute_parent_builtin(t_global *global);
 void		red_out_append(t_global *global, int read_fd);
 void		red_in_heredoc(t_global *global);
 void		verific_redin(t_global *global);
-char		*ft_expander(t_global *global, char *input);
+char		*ft_expander(t_global *global, char *input, char *tmp);
 t_data		*go_to_next(t_global *global);
 char		*get_path(char **copy_env, char *path);
 t_data		*go_to_next(t_global *global);
@@ -119,15 +119,12 @@ t_global	*init_global(char **env);
 void		switch_quotes(char s, int *inDquotes, int *inSquotes);
 void		sig_quit(int sig);
 void		sig_int(int sig);
-void		wait_and_exit_status();
+void		wait_and_exit_status(void);
 void		open_pipes(t_global *global, int *pipe_fd);
 char		*get_type_path(char *arg, t_global *global);
 char		*ft_charjoin(char *s1, char c);
 char		*is_env(t_global *global, char *temp);
+void		execute_next_shell(t_global *global, char *path, int pipe_fd[2]);
+void		final_exec(t_global *global, char *path);
 
-static inline void	ignore_signal(int n)
-{
-	(void)n;
-	exit(130);
-}
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:30:27 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/14 00:12:11 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/17 14:21:34 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,15 @@ extern int	g_exit_status;
 
 char	*expand_exit_status(char *new)
 {
-    char *num;
-    char *tmp;
+	char	*num;
+	char	*tmp;
 
-    num = ft_itoa(g_exit_status);
-    tmp = ft_strjoin(new, num);
-    free(new);
-    free(num);
-    new = tmp;
-
-    return new;
+	num = ft_itoa(g_exit_status);
+	tmp = ft_strjoin(new, num);
+	free(new);
+	free(num);
+	new = tmp;
+	return (new);
 }
 
 char	*expand_variable(t_global *global, char **it, char *new)
@@ -52,8 +51,7 @@ char	*expand_variable(t_global *global, char **it, char *new)
 		free(aux);
 		new = tmp;
 	}
-
-	return new;
+	return (new);
 }
 
 bool	ft_verific_expand(char *it, int squote, int dquote)
@@ -64,43 +62,43 @@ bool	ft_verific_expand(char *it, int squote, int dquote)
 	if ((*it == '$' && squote == 0 && *(it + 1) != '~') && \
 		(((*(it - 1) != '<') || (*(it - 2) != '<')) && \
 		((*(it - 2) != '<') || (*(it - 3) != '<'))))
-		return(1);
+		return (1);
 	else if ((*it == '$' && squote == 1) && (*it == '$' && dquote == 1))
-		return(1);
-	else 
-		return(0);
+		return (1);
+	else
+		return (0);
 }
 
-char	*process_character(t_global *global, char *new, char **it) 
+char	*process_character(t_global *global, char *new, char **it)
 {
-    (*it)++;
-    new = expand_variable(global, it, new);
-    return new;
+	(*it)++;
+	new = expand_variable(global, it, new);
+	return (new);
 }
 
-char	*ft_expander(t_global *global, char *input) 
+char	*ft_expander(t_global *global, char *input, char *tmp)
 {
-    char *new;
-    char *it;
-    int squote;
-    int dquote;
+	char	*new;
+	char	*it;
+	int		squote;
+	int		dquote;
 
-    it = input;
-    squote = 0;
-    dquote = 0;
-    new = ft_calloc(sizeof(char), 1);
-    while (*it) 
-    {
-        switch_quotes(*it, &dquote, &squote);
-        if (input[0] == '$' || ft_verific_expand(it, squote, dquote))
-            new = process_character(global, new, &it);
-        else 
-        {
-            char *tmp = ft_charjoin(new, *it);
-            free(new);
-            new = tmp;
-            it++;
-        }
-    }
-    return new;
+	it = input;
+	squote = 0;
+	dquote = 0;
+	new = ft_calloc(sizeof(char), 1);
+	while (*it)
+	{
+		switch_quotes(*it, &dquote, &squote);
+		if (input[0] == '$' || ft_verific_expand(it, squote, dquote))
+			new = process_character(global, new, &it);
+		else
+		{
+			tmp = ft_charjoin(new, *it);
+			free(new);
+			new = tmp;
+			it++;
+		}
+	}
+	return (new);
 }

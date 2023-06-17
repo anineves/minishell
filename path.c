@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   path.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/17 14:15:01 by asousa-n          #+#    #+#             */
+/*   Updated: 2023/06/17 14:15:30 by asousa-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*absolute_path(char *arg, t_global *global)
@@ -15,7 +27,7 @@ char	*absolute_path(char *arg, t_global *global)
 		free_args(global->split_path);
 	global->split_path = ft_split(global->path, ':');
 	if (access(arg, F_OK) == 0)
-		return ( cmd = ft_strdup(arg));
+		return (cmd = ft_strdup(arg));
 	i = -1;
 	while (global->split_path[++i])
 	{
@@ -57,5 +69,3 @@ char	*get_type_path(char *arg, t_global *global)
 		path = absolute_path(arg, global);
 	return (path);
 }
-
-

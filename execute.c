@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:30:50 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/17 12:27:36 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/17 14:39:02 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,22 @@
 
 extern int	g_exit_status;
 
-void	write_to_pipe(t_global *global)
+static int	aux_execute(t_global *global, char *path, int *pipe_fd)
 {
-	char	*buf;
-	int		fd;
-	
-	if (global->shell->flag == HEREDOC)
-		fd = open("here_doc", O_RDONLY);
-	else
-		fd = open(global->shell->cmd, O_RDONLY);
-	while (1)
+	close(pipe_fd[WRITE_END]);
+	while (global->shell != NULL)
 	{
-		buf = get_next_line(fd);
-		if (!buf)
-			break ;
-		ft_putstr_fd(buf, global->fd_input);
-		free(buf);
+		if (global->shell->flag == PIPE)
+		{
+			execute_next_shell(global, path, pipe_fd);
+			return (1);
+		}
+		else if (global->shell->flag == RD_OUT \
+			|| global->shell->flag == APPEND)
+			red_out_append(global, pipe_fd[READ_END]);
+		global->shell = go_to_next(global);
 	}
+	return (0);
 }
 
 void	handle_child_process(t_global *global, char *path, int pipe_fd[])
@@ -57,8 +56,6 @@ void	handle_child_process(t_global *global, char *path, int pipe_fd[])
 	}
 	else if (path && !is_child_builtin(global))
 		execve(path, global->args, global->copy_env);
-	if (global->shell->flag == RD_IN || global->shell->flag == HEREDOC)
-		write_to_pipe(global);
 	if (path != NULL)
 		free(path);
 	exit(g_exit_status);
@@ -68,14 +65,14 @@ void	child_process(t_global *global, char *path, int pipe_fd[])
 {
 	signal(SIGQUIT, sig_quit);
 	signal(SIGINT, sig_int);
-	handle_child_process(global, path, pipe_fd);
 	wait_and_exit_status();
+	handle_child_process(global, path, pipe_fd);
 }
-
 
 void	execute_next_shell(t_global *global, char *path, int pipe_fd[2])
 {
-	if (global->shell->next->flag == HEREDOC || global->shell->next->flag == RD_IN)
+	if (global->shell->next->flag == HEREDOC \
+		|| global->shell->next->flag == RD_IN)
 		wait_and_exit_status();
 	global->shell = go_to_next(global);
 	free_args(global->args);
@@ -87,8 +84,8 @@ void	execute_next_shell(t_global *global, char *path, int pipe_fd[2])
 
 void	execute(t_global *global)
 {
-	char *path;
-	int pipe_fd[2];
+	char	*path;
+	int		pipe_fd[2];
 
 	global->args = ft_split2(global->shell->cmd, ' ');
 	pipe(pipe_fd);
@@ -103,26 +100,12 @@ void	execute(t_global *global)
 			execute_parent_builtin(global);
 		else if (global->shell->next != NULL)
 		{
-			close(pipe_fd[WRITE_END]);
-			while (global->shell != NULL)
-			{
-				if (global->shell->flag == PIPE)
-				{
-					execute_next_shell(global, path, pipe_fd);
-					return;
-				}
-				else if (global->shell->flag == RD_OUT || global->shell->flag == APPEND)
-					red_out_append(global, pipe_fd[READ_END]);
-				global->shell = go_to_next(global);
-			}
+			if (aux_execute(global, path, pipe_fd))
+				return ;
 		}
 		else
 			ft_close(global);
 		wait_and_exit_status();
 	}
-	if (path != NULL)
-		free(path);
-	unlink("here_doc");
-	free_args(global->args);
-	global->args = NULL;
+	final_exec(global, path);
 }

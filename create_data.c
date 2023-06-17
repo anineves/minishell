@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:04:53 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/14 20:26:24 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/17 14:12:48 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,11 @@ int	get_red(char *str)
 	return (0);
 }
 
-void	create_data(t_data **shell, char *input)
+void	create_data(t_data **shell, char *input, int count)
 {
 	char	*start;
 	char	*end;
-	int		count;
 
-	count = 0;
 	start = input;
 	end = input;
 	while (*end)
@@ -84,7 +82,8 @@ void	create_data(t_data **shell, char *input)
 		while (*end)
 		{
 			count = verify_quotes(*end);
-			if ((end[0] != '<' && end[0] != '>') || ((end[0] != '<' && end[1] != '<') && (end[0] != '>' && end[1] != '>')))
+			if ((end[0] != '<' && end[0] != '>') || ((end[0] != '<' \
+				&& end[1] != '<') && (end[0] != '>' && end[1] != '>')))
 				end++;
 			if (count == 0 && (is_ridirection(end) != 0))
 				break ;

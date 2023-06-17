@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:31:53 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/17 11:27:58 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/17 14:14:35 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,41 +30,36 @@ void	ft_heredoc(t_global *global)
 			free(buf);
 			break ;
 		}
-		write(global->fd_input, buf, ft_strlen(buf));
-		write(global->fd_input, "\n", 1);
+		write(global->fd_heredoc, buf, ft_strlen(buf));
+		write(global->fd_heredoc, "\n", 1);
 		free(buf);
 	}
-	close(global->fd_input);
 }
 
 void	red_in_heredoc(t_global *global)
 {
-	char	*tmp;
+	char	*name;
 
-	tmp = NULL;
+	name = ft_strtrim(global->shell->next->cmd, " ");
 	if (global->args[0] == NULL)
 		global->flag = 1;
 	if (global->shell->flag == RD_IN)
-		global->fd_input = open(global->shell->next->cmd, O_RDWR, 0644);
+	{
+		global->fd_input = open(name, O_RDWR);
+		if (global->fd_input < 0)
+		{
+			printf("%s : No such file or directory\n", global->shell->next->cmd);
+			exit(EXIT_FAILURE);
+		}
+	}
 	else if (global->shell->flag == HEREDOC)
 	{
-		global->fd_input = open("here_doc", O_CREAT | O_TRUNC | O_RDWR, 0644);
+		global->fd_heredoc = open("here_doc", O_CREAT | O_TRUNC | O_RDWR, 0644);
 		ft_heredoc(global);
+		global->fd_heredoc = open("here_doc", O_RDWR | 0644);
+		if (global->shell->cmd)
+			global->shell = go_to_next(global);
+		global->fd_input = global->fd_heredoc;
 	}
-	/*if (!ft_strncmp(global->shell->cmd, "cat", 3) || !ft_strncmp(global->shell->cmd, "wc", 2))
-	{
-		free_args(global->args);
-		if (global->shell->flag == HEREDOC)
-			tmp = ft_strjoin(global->shell->cmd, " here_doc");
-		else
-		{
-			tmp = ft_strjoin(global->shell->cmd, " ");
-			//if (!ft_str)
-			tmp = ft_strjoin(global->shell->cmd, global->shell->next->cmd);
-		}
-		global->args = ft_split2(tmp, ' ');
-	} */
-	if (global->shell->cmd)
-		global->shell = go_to_next(global);
-	free(tmp);
+	free(name);
 }

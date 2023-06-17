@@ -38,17 +38,11 @@ char	**rmv_var(t_global *global, int j, int size)
 	return (new_copy_env);
 }
 
-void	verific_var(t_global *global)
+void	verific_var(t_global *global, int i, int j, int k)
 {
-	int	i;
 	int	len;
-	int	j;
-	int	k;
 
-	i = 0;
 	len = 0;
-	j = 0;
-	k = 0;
 	while (global->args[i])
 	{
 		len = ft_strlen(global->args[i]);
@@ -58,9 +52,12 @@ void	verific_var(t_global *global)
 		while (global->copy_env[j])
 		{
 			if (!ft_strncmp(global->args[i], global->copy_env[j], len))
-				global->copy_env = rmv_var(global, j, (size_env(global->copy_env) - 1));
-			else if (!ft_strncmp(global->args[i], global->copy_env[j], k) && global->args[i][0] != '=')
-				global->copy_env = rmv_var(global, j, (size_env(global->copy_env) - 1));
+				global->copy_env = rmv_var(global, j, \
+					(size_env(global->copy_env) - 1));
+			else if (!ft_strncmp(global->args[i], global->copy_env[j], k) \
+				&& global->args[i][0] != '=')
+				global->copy_env = \
+					rmv_var(global, j, (size_env(global->copy_env) - 1));
 			else
 				j++;
 		}
@@ -78,7 +75,7 @@ void	ft_unset(t_global *global)
 	}
 	else
 	{
-		verific_var(global);
+		verific_var(global, 0, 0, 0);
 		g_exit_status = 0;
 	}
 }
