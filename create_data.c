@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:04:53 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/17 16:54:39 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/17 17:16:11 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,9 @@ void	create_data(t_data **shell, char *input, int count, char *end)
 		while (*end)
 		{
 			count = verify_quotes(*end);
-			if ((end[0] != '<' && end[0] != '>'))
-				end++;
-			else if (count == 0 && (is_ridirection(end) != 0))
+			if (count == 0 && (is_ridirection(end) != 0))
 				break ;
-			else
-				end++;
+			end++;
 		}
 		lst_add_back(shell, new_node(start, (end - start), get_red(end)));
 		if (*end != '\0')

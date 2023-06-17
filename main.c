@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 14:06:29 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/17 16:53:36 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/17 17:26:14 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,18 @@ void	ft_exit2(t_global *global)
 	free(global);
 	printf("exit\n");
 	exit(g_exit_status);
+}
+
+void print_data(t_data *shell)
+{
+	t_data *it;
+
+	it = shell;
+	while (it)
+	{
+		printf("string:%s\nflag:%d\n", it->cmd, it->flag);
+		it = it->next;
+	}
 }
 
 int	main(int argc, char **argv, char **env)

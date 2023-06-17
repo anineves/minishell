@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:24:16 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/17 14:13:53 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/17 16:59:20 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,15 @@ bool	first_char(char *input)
 bool	repeat_red(char *input)
 {
 	int	i;
+	int	count;
 
 	i = 0;
+	count = 0;
 	while (input[i])
 	{
-		if (input[i] == '<' || input[i] == '>' || input[i] == '|')
+		count = verify_quotes(input[i]);
+		if ((input[i] == '<' || input[i] == '>' || input[i] == '|') \
+			&& count == 0)
 		{
 			if (input[i + 1] == ' ')
 			{
