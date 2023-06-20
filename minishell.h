@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:19:40 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/17 17:13:49 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/20 01:30:06 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,5 +126,9 @@ char		*ft_charjoin(char *s1, char c);
 char		*is_env(t_global *global, char *temp);
 void		execute_next_shell(t_global *global, char *path, int pipe_fd[2]);
 void		final_exec(t_global *global, char *path);
+char		*advance_first_word(char *start);
+size_t		len_word(char *start);
+char		*advance_and_clear(char *start);
+char		*find_words_after_red(char *start);
 
 #endif

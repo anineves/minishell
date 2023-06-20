@@ -29,9 +29,10 @@ SRC = main.c \
 	path.c \
 	expander.c \
 	execute_utils.c \
-	expander_utils.c
+	expander_utils.c \
+	create_data_utils.c
 
-	
+
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)

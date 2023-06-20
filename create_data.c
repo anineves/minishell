@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_data.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:04:53 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/17 17:16:11 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/20 01:27:36 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,22 @@ void	lst_add_back(t_data **shell, t_data *new)
 t_data	*new_node(char *start, size_t len, int red)
 {
 	t_data	*new;
+	char	*tmp;
+	char	*aux;
 
 	new = (t_data *)malloc(sizeof(t_data));
 	new->cmd = copy_len(start, len);
 	new->flag = red;
+	if (red == HEREDOC || red == RD_IN || red == APPEND || red == RD_OUT)
+	{
+		tmp = find_words_after_red(start + len + 1);
+		aux = ft_strjoin(new->cmd, tmp);
+		free(new->cmd);
+		free(tmp);
+		tmp = ft_strtrim(aux, " ");
+		free(aux);
+		new->cmd = tmp;
+	}
 	new->next = NULL;
 	return (new);
 }
