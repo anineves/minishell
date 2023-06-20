@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:30:50 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/17 17:25:58 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/21 00:29:22 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static int	aux_execute(t_global *global, char *path, int *pipe_fd)
 			|| global->shell->flag == APPEND)
 			red_out_append(global, pipe_fd[READ_END]);
 		global->shell = go_to_next(global);
+		//ao andar para a frente perdemos o nome do ficheiro
+		//desenrascar qualquer merda e fazer ciclo e copiar duns para os outros
 	}
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_in.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:31:53 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/17 14:14:35 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/21 00:14:10 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,11 @@ void	red_in_heredoc(t_global *global)
 		global->fd_heredoc = open("here_doc", O_CREAT | O_TRUNC | O_RDWR, 0644);
 		ft_heredoc(global);
 		global->fd_heredoc = open("here_doc", O_RDWR | 0644);
-		if (global->shell->cmd)
-			global->shell = go_to_next(global);
 		global->fd_input = global->fd_heredoc;
 	}
+	if (global->shell->cmd)
+		global->shell = go_to_next(global);
+	if (global->shell->flag == RD_IN || global->shell->flag == HEREDOC)
+		red_in_heredoc(global);
 	free(name);
 }
