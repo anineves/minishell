@@ -28,8 +28,6 @@ static int	aux_execute(t_global *global, char *path, int *pipe_fd)
 			|| global->shell->flag == APPEND)
 			red_out_append(global, pipe_fd[READ_END]);
 		global->shell = go_to_next(global);
-		//ao andar para a frente perdemos o nome do ficheiro
-		//desenrascar qualquer merda e fazer ciclo e copiar duns para os outros
 	}
 	return (0);
 }
@@ -67,7 +65,7 @@ void	child_process(t_global *global, char *path, int pipe_fd[])
 {
 	signal(SIGQUIT, sig_quit);
 	signal(SIGINT, sig_int);
-	wait_and_exit_status();
+	//wait_and_exit_status();
 	handle_child_process(global, path, pipe_fd);
 }
 

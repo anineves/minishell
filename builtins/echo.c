@@ -86,6 +86,8 @@ void	ft_echo(t_global *global)
 	}
 	if (ft_strncmp(global->args[1], "-n", 2) == 0 && is_n(global))
 		i++;
+	while(ft_strncmp(global->args[i], "-n", 2) == 0)
+		i++;
 	while (i < len)
 	{
 		printf("%s", global->args[i]);
