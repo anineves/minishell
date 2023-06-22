@@ -17,31 +17,30 @@ extern int	g_exit_status;
 void	red_out_append(t_global *global, int read_fd)
 {
 	if (global->shell->flag == APPEND)
-		append_to_file(global, read_fd);
+		append_to_file(global, read_fd, 0);
 	if (global->shell->flag == RD_OUT)
-		write_to_file(global, read_fd);
+		write_to_file(global, read_fd, 0);
 }
 
-void	repeat_redout(t_global *global, int read_fd)
+void	repeat_redout(t_global *global, int read_fd, int fd)
 {
 	if (global->shell->cmd)
 	{
 		if (global->shell->next->flag == RD_OUT)
 		{
 			global->shell = go_to_next(global);
-			write_to_file(global, read_fd);
+			write_to_file(global, read_fd, fd);
 		}
-		else if	(global->shell->next->flag == APPEND)
+		else if (global->shell->next->flag == APPEND)
 		{
 			global->shell = go_to_next(global);
-			append_to_file(global, read_fd);
+			append_to_file(global, read_fd, fd);
 		}
 	}
 }
 
-void	append_to_file(t_global *global, int read_fd)
+void	append_to_file(t_global *global, int read_fd, int fd)
 {
-	int		fd;
 	char	*str;
 
 	str = ft_strtrim(global->shell->next->cmd, " ");
@@ -52,7 +51,7 @@ void	append_to_file(t_global *global, int read_fd)
 		printf("ERROR WITH FILE\n");
 		return ;
 	}
-	repeat_redout(global, read_fd);
+	repeat_redout(global, read_fd, fd);
 	while (1)
 	{
 		str = get_next_line(read_fd);
@@ -69,9 +68,8 @@ void	append_to_file(t_global *global, int read_fd)
 	close(fd);
 }
 
-void	write_to_file(t_global *global, int read_fd)
+void	write_to_file(t_global *global, int read_fd, int fd)
 {
-	int		fd;
 	char	*str;
 
 	str = ft_strtrim(global->shell->next->cmd, " ");
@@ -82,7 +80,7 @@ void	write_to_file(t_global *global, int read_fd)
 		printf("ERROR WITH FILE\n");
 		return ;
 	}
-	repeat_redout(global, read_fd);
+	repeat_redout(global, read_fd, fd);
 	while (1)
 	{
 		str = get_next_line(read_fd);

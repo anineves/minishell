@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:03:55 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/13 23:52:00 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/22 18:32:05 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	ft_echo(t_global *global)
 	}
 	if (ft_strncmp(global->args[1], "-n", 2) == 0 && is_n(global))
 		i++;
-	while(ft_strncmp(global->args[i], "-n", 2) == 0)
+	while (ft_strncmp(global->args[i], "-n", 2) == 0)
 		i++;
 	while (i < len)
 	{

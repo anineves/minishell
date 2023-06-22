@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:03:45 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/13 17:56:41 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/22 19:25:49 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	change_dir(t_global *global, char *next_path)
 	char	*path;
 
 	path = getcwd(NULL, 0);
-	global->old_path = path;
+	global->old_path = ft_strdup(path);
 	if (chdir(next_path) == 0)
 		g_exit_status = 0;
 	else

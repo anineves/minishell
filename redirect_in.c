@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_in.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:31:53 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/21 00:14:10 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/22 18:57:05 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	ft_heredoc(t_global *global)
 	char	*buf;
 
 	buf = NULL;
+	global->fd_heredoc = open("here_doc", O_CREAT | O_TRUNC | O_RDWR, 0644);
 	while (1)
 	{
 		buf = readline("> ");
@@ -34,6 +35,8 @@ void	ft_heredoc(t_global *global)
 		write(global->fd_heredoc, "\n", 1);
 		free(buf);
 	}
+		global->fd_heredoc = open("here_doc", O_RDWR | 0644);
+		global->fd_input = global->fd_heredoc;
 }
 
 void	red_in_heredoc(t_global *global)
@@ -53,12 +56,7 @@ void	red_in_heredoc(t_global *global)
 		}
 	}
 	else if (global->shell->flag == HEREDOC)
-	{
-		global->fd_heredoc = open("here_doc", O_CREAT | O_TRUNC | O_RDWR, 0644);
 		ft_heredoc(global);
-		global->fd_heredoc = open("here_doc", O_RDWR | 0644);
-		global->fd_input = global->fd_heredoc;
-	}
 	if (global->shell->cmd)
 		global->shell = go_to_next(global);
 	if (global->shell->flag == RD_IN || global->shell->flag == HEREDOC)

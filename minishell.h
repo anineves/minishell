@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:19:40 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/20 01:30:06 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/22 18:38:30 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ void		free_global(t_global *global);
 size_t		size_env(char **env);
 char		**init_env(char **env);
 void		free_args(char	**args);
-void		append_to_file(t_global *global, int read_fd);
-void		write_to_file(t_global *global, int read_fd);
+void		append_to_file(t_global *global, int read_fd, int fd);
+void		write_to_file(t_global *global, int read_fd, int fd);
 void		create_new_var(t_global *global);
 size_t		size_env(char **env);
 void		ft_unset(t_global *global);

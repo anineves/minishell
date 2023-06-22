@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   create_data_utils.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/22 18:55:08 by asousa-n          #+#    #+#             */
+/*   Updated: 2023/06/22 18:55:08 by asousa-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*advance_first_word(char *start)
@@ -95,7 +107,7 @@ char	*find_words_after_red(char *start)
 	if (*start == ' ' || *start == '<' || *start == '>')
 		start++;
 	start = advance_first_word(start);
-	while (*start && *start != '|') //&& *start != '>' && *start != '<')
+	while (*start && *start != '|')
 	{
 		tmp = copy_len(start, len_word(start));
 		aux = ft_strjoin(new, tmp);
