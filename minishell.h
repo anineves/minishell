@@ -130,5 +130,7 @@ char		*advance_first_word(char *start);
 size_t		len_word(char *start);
 char		*advance_and_clear(char *start);
 char		*find_words_after_red(char *start);
+void		ignore_signal(int n);
+void		init_child_signals(void);
 
 #endif

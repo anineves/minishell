@@ -49,7 +49,8 @@ void	ft_cd(t_global *global)
 		{
 			ft_putstr_fd(global->old_path, global->fd_output);
 			ft_putstr_fd("\n", global->fd_output);
-			g_exit_status = 0;
+			if (chdir(global->old_path) == 0)
+				g_exit_status = 0;
 			return ;
 		}
 	}

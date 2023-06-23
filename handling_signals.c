@@ -21,6 +21,12 @@ void	sig_int(int sig)
 		write(1, "\n", 1);
 		g_exit_status = 130;
 	}
+	else if (sig == SIGQUIT)
+	{
+		ft_printf("minishell: Quit: (core dumped)");
+		kill(0, SIGINT);
+		g_exit_status = 131;
+	}
 }
 
 void	sig_handler(int sig)
@@ -35,15 +41,30 @@ void	sig_handler(int sig)
 	}
 }
 
-void	sig_quit(int sig)
+void	init_child_signals(void)
 {
-	if (sig == SIGQUIT)
+	struct sigaction	sigact;
+	struct termios		termios_save;
+	struct termios		termios_new;
+
+	sigact.sa_flags = SA_SIGINFO;
+	sigact.sa_handler = sig_int;
+	sigaction(SIGINT, &sigact, NULL);
+	sigaction(SIGQUIT, &sigact, NULL);
+	if (tcgetattr(0, &termios_save) == -1)
 	{
-		ft_printf("minishell: Quit: (core dumped)");
-		kill(0, SIGINT);
-		g_exit_status = 131;
+		perror("Error EOF signal\n");
+		exit(1);
+	}
+	termios_new = termios_save;
+	termios_new.c_lflag &= ~ECHOCTL;
+	if (tcsetattr(0, 0, &termios_new) == -1)
+	{
+		perror("Error EOF signal\n");
+		exit(1);
 	}
 }
+
 
 void	init_signals(void)
 {

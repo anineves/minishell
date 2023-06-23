@@ -12,32 +12,35 @@
 
 #include "minishell.h"
 
-static size_t	nstrings(char const *s, char c)
+static size_t nstrings(char const *s, char c, size_t i)
 {
-	int	i;
-	int	n;
-	int	indquotes;
-	int	insquotes;
-
-	indquotes = 0;
-	insquotes = 0;
-	i = 0;
-	n = 0;
-	while (s && s[i])
-	{
-		switch_quotes(s[i], &indquotes, &insquotes);
-		if (s[i] != c)
-		{
-			n++;
-			while (s[i] != '\0' && (s[i] != c \
-				|| (s[i] == c && (indquotes || insquotes))))
-				switch_quotes(s[i++], &indquotes, &insquotes);
-		}
-		else
-			i++;
-	}
-	return (n);
+    size_t	n;
+    int	indquotes;
+    int	insquotes;
+    
+    n = 0;
+    indquotes = 0;
+    insquotes = 0;
+    while (s && s[i])
+    {
+      	switch_quotes(s[i], &indquotes, &insquotes);
+        if (s[i] == c && !indquotes && !insquotes)
+            i++;
+        else if (s[i] != c)
+        {
+            n++;
+            while (s[i] && s[i] != c)
+            {
+                switch_quotes(s[i], &indquotes, &insquotes);
+                i++;
+            }
+        }
+        else
+            i++;
+    }
+    return (n);
 }
+
 
 static size_t	strsize(char const *s, char c)
 {
@@ -112,7 +115,7 @@ char	**ft_split2(char const *s, char c)
 	size_t	i;
 
 	i = 0;
-	nstr = nstrings(s, c);
+	nstr = nstrings(s, c, 0);
 	arr = malloc(sizeof(char *) * (nstr + 1));
 	if (!arr)
 		return (NULL);

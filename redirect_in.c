@@ -42,7 +42,8 @@ void	ft_heredoc(t_global *global)
 void	red_in_heredoc(t_global *global)
 {
 	char	*name;
-
+	
+	init_child_signals();
 	name = ft_strtrim(global->shell->next->cmd, " ");
 	if (global->args[0] == NULL)
 		global->flag = 1;

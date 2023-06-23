@@ -63,9 +63,8 @@ void	handle_child_process(t_global *global, char *path, int pipe_fd[])
 
 void	child_process(t_global *global, char *path, int pipe_fd[])
 {
-	signal(SIGQUIT, sig_quit);
-	signal(SIGINT, sig_int);
-	//wait_and_exit_status();
+	init_child_signals();
+	wait_and_exit_status();
 	handle_child_process(global, path, pipe_fd);
 }
 
@@ -86,17 +85,19 @@ void	execute(t_global *global)
 {
 	char	*path;
 	int		pipe_fd[2];
+	static int	num_pipe = 0;
 
 	global->args = ft_split2(global->shell->cmd, ' ');
 	pipe(pipe_fd);
 	path = get_type_path(global->args[0], global);
-	signal(SIGQUIT, sig_quit);
-	signal(SIGINT, sig_int);
+	if (global->shell->flag == PIPE)
+		num_pipe = 1;
+	init_child_signals();
 	if (fork() == 0)
-		child_process(global, path, pipe_fd);
+		handle_child_process(global, path, pipe_fd);
 	else
 	{
-		if (is_parent_builtin(global) && global->shell->flag != PIPE)
+		if (is_parent_builtin(global) && global->shell->flag != PIPE && num_pipe != 1)
 			execute_parent_builtin(global);
 		else if (global->shell->next != NULL)
 		{
@@ -108,4 +109,5 @@ void	execute(t_global *global)
 		wait_and_exit_status();
 	}
 	final_exec(global, path);
+	num_pipe = 0;
 }
