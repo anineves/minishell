@@ -14,12 +14,39 @@
 
 extern int	g_exit_status;
 
+char	**update_env(t_global *global)
+{
+	int		i;
+	int	size;
+	char	**new_copy_env;
+	char	*new_path;
+	char	pwd[PATH_MAX];
+
+	i = 0;
+	size = size_env(global->copy_env);
+	new_path = ft_strjoin("PWD=", getcwd(pwd, PATH_MAX));
+	new_copy_env = ft_calloc(size, sizeof(char *) + 1);
+	while (global->copy_env[i])
+	{
+		if(ft_strncmp(global->copy_env[i], "PWD", 3) == 0)
+			new_copy_env[i] = ft_strdup(new_path);
+		else
+			new_copy_env[i] = ft_strdup(global->copy_env[i]);
+		i++;
+	}
+	new_copy_env[i] = NULL;
+	free_args(global->copy_env);
+	free(new_path);
+	return (new_copy_env);
+}
+
 void	change_dir(t_global *global, char *next_path)
 {
 	char	*path;
 
 	path = getcwd(NULL, 0);
 	global->old_path = ft_strdup(path);
+	free(path);
 	if (chdir(next_path) == 0)
 		g_exit_status = 0;
 	else
@@ -27,6 +54,8 @@ void	change_dir(t_global *global, char *next_path)
 		printf("bash: cd: %s: No such file or directory\n", global->args[1]);
 		g_exit_status = 1;
 	}
+	path = getcwd(NULL, 0);
+	global->copy_env = update_env(global);
 	free(path);
 }
 
