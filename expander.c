@@ -56,6 +56,8 @@ char	*expand_variable(t_global *global, char **it, char *new)
 
 bool	ft_verific_expand(char *it, int squote, int dquote)
 {
+	if ((*it == '$' && dquote == 1 && squote ==0))
+		return (1);
 	if ((*it == '$' && dquote == 1 && (((*(it - 2) == '<') && \
 		(*(it - 3) == '<')) || ((*(it - 3) == '<') && (*(it - 4) == '<')))))
 		return (0);
