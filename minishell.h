@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:19:40 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/22 18:38:30 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/23 22:54:52 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,5 +132,6 @@ char		*advance_and_clear(char *start);
 char		*find_words_after_red(char *start);
 void		ignore_signal(int n);
 void		init_child_signals(void);
+void		parent(t_global *global, char *path, int *pipe_fd, int num_pipe);
 
 #endif

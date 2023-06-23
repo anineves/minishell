@@ -73,4 +73,6 @@ void	free_global(t_global *global)
 		free_args(global->split_path);
 	if (global->copy_env != NULL)
 		free_args(global->copy_env);
+	if (global->old_path)
+		free(global->old_path);
 }

@@ -6,41 +6,40 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 10:16:48 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/14 00:46:28 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/23 22:55:44 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static size_t nstrings(char const *s, char c, size_t i)
+static size_t	nstrings(char const *s, char c, size_t i)
 {
-    size_t	n;
-    int	indquotes;
-    int	insquotes;
-    
-    n = 0;
-    indquotes = 0;
-    insquotes = 0;
-    while (s && s[i])
-    {
-      	switch_quotes(s[i], &indquotes, &insquotes);
-        if (s[i] == c && !indquotes && !insquotes)
-            i++;
-        else if (s[i] != c)
-        {
-            n++;
-            while (s[i] && s[i] != c)
-            {
-                switch_quotes(s[i], &indquotes, &insquotes);
-                i++;
-            }
-        }
-        else
-            i++;
-    }
-    return (n);
-}
+	size_t	n;
+	int		indquotes;
+	int		insquotes;
 
+	n = 0;
+	indquotes = 0;
+	insquotes = 0;
+	while (s && s[i])
+	{
+		switch_quotes(s[i], &indquotes, &insquotes);
+		if (s[i] == c && !indquotes && !insquotes)
+			i++;
+		else if (s[i] != c)
+		{
+			n++;
+			while (s[i] && s[i] != c)
+			{
+				switch_quotes(s[i], &indquotes, &insquotes);
+				i++;
+			}
+		}
+		else
+			i++;
+	}
+	return (n);
+}
 
 static size_t	strsize(char const *s, char c)
 {

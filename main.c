@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 14:06:29 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/21 00:01:26 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/23 22:42:37 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	ft_exit2(t_global *global)
 	exit(g_exit_status);
 }
 
-void print_data(t_data *shell)
+void	print_data(t_data *shell)
 {
-	t_data *it;
+	t_data	*it;
 
 	it = shell;
 	while (it)

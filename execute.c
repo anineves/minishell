@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:30:50 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/21 00:29:22 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/23 23:13:06 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,6 @@ void	handle_child_process(t_global *global, char *path, int pipe_fd[])
 	exit(g_exit_status);
 }
 
-void	child_process(t_global *global, char *path, int pipe_fd[])
-{
-	init_child_signals();
-	wait_and_exit_status();
-	handle_child_process(global, path, pipe_fd);
-}
-
 void	execute_next_shell(t_global *global, char *path, int pipe_fd[2])
 {
 	if (global->shell->next->flag == HEREDOC \
@@ -81,23 +74,31 @@ void	execute_next_shell(t_global *global, char *path, int pipe_fd[2])
 	execute(global);
 }
 
+char	*aux2(t_global *global, int *num_pipe)
+{
+	init_child_signals();
+	if (global->shell->flag == PIPE)
+		*num_pipe = 1;
+	else
+		*num_pipe = 0;
+	return (get_type_path(global->args[0], global));
+}
+
 void	execute(t_global *global)
 {
-	char	*path;
-	int		pipe_fd[2];
+	char		*path;
+	int			pipe_fd[2];
 	static int	num_pipe = 0;
 
 	global->args = ft_split2(global->shell->cmd, ' ');
 	pipe(pipe_fd);
-	path = get_type_path(global->args[0], global);
-	if (global->shell->flag == PIPE)
-		num_pipe = 1;
-	init_child_signals();
+	path = aux2(global, &num_pipe);
 	if (fork() == 0)
 		handle_child_process(global, path, pipe_fd);
 	else
 	{
-		if (is_parent_builtin(global) && global->shell->flag != PIPE && num_pipe != 1)
+		if (is_parent_builtin(global) && global->shell->flag != PIPE \
+			&& num_pipe != 1)
 			execute_parent_builtin(global);
 		else if (global->shell->next != NULL)
 		{

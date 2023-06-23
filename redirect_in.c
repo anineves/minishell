@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_in.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:31:53 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/22 18:57:05 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/23 22:43:20 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	ft_heredoc(t_global *global)
 void	red_in_heredoc(t_global *global)
 {
 	char	*name;
-	
+
 	init_signals();
 	name = ft_strtrim(global->shell->next->cmd, " ");
 	if (global->args[0] == NULL)

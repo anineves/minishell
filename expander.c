@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:30:27 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/17 14:21:34 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/23 22:43:04 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*expand_variable(t_global *global, char **it, char *new)
 
 bool	ft_verific_expand(char *it, int squote, int dquote)
 {
-	if ((*it == '$' && dquote == 1 && squote ==0))
+	if ((*it == '$' && dquote == 1 && squote == 0))
 		return (1);
 	if ((*it == '$' && dquote == 1 && (((*(it - 2) == '<') && \
 		(*(it - 3) == '<')) || ((*(it - 3) == '<') && (*(it - 4) == '<')))))

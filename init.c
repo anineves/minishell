@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:31:21 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/14 19:58:46 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/23 22:25:31 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ t_global	*init_global(char **env)
 		return (NULL);
 	new->shell = NULL;
 	new->cwd = getcwd(NULL, 4096);
-	new->old_path = "bash: cd: OLDPWD not set; \n";
+	new->old_path = ft_strdup("bash: cd: OLDPWD not set; \n");
 	new->copy_env = init_env(env);
 	new->len_env = size_env(env);
 	new->args = NULL;

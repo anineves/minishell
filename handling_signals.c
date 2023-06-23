@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 14:06:20 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/14 00:22:51 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/23 22:43:38 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	init_child_signals(void)
 		exit(1);
 	}
 }
-
 
 void	init_signals(void)
 {

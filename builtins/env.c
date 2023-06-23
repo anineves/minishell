@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:04:06 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/13 11:04:08 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/23 22:31:19 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 extern int	g_exit_status;
 
-int ft_aux_env(char *env)
-{	
-	int i;
+int	ft_aux_env(char *env)
+{
+	int	i;
+
 	i = 0;
-	
-	while(env[i])
+	while (env[i])
 	{
-		if(env[i] == '=')
+		if (env[i] == '=')
 			return (1);
 		i++;
 	}
@@ -42,7 +42,7 @@ void	ft_env(t_global *global)
 	global->len_env = size_env(global->copy_env);
 	while (i < global->len_env)
 	{
-		if(ft_aux_env(global->copy_env[i]))
+		if (ft_aux_env(global->copy_env[i]))
 			printf("%s\n", global->copy_env[i]);
 		i++;
 	}
