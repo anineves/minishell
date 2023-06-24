@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_data.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:04:53 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/20 01:27:36 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/24 11:51:59 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ void	create_data(t_data **shell, char *input, int count, char *end)
 	end = input;
 	while (*end)
 	{
+		while (*end && (*end == ' ' || *end == '\t'))
+			end++;
 		while (*end)
 		{
 			count = verify_quotes(*end);

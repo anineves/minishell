@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 14:22:41 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/23 22:59:44 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/24 14:17:42 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	wait_and_exit_status(void)
 		continue ;
 	if (!WTERMSIG(g_exit_status))
 		g_exit_status = WEXITSTATUS(g_exit_status);
+	wait(NULL);
 }
 
 void	final_exec(t_global *global, char *path)

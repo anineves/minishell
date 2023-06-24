@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:03:45 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/23 22:41:29 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/24 14:46:50 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,32 @@
 
 extern int	g_exit_status;
 
-char	**update_env(t_global *global)
+char	**update_oldpwd(t_global *global)
+{
+	int		i;
+	int		size;
+	char	**new_copy_env;
+	char	*new_path;
+
+	i = 0;
+	size = size_env(global->copy_env);
+	new_path = ft_strjoin("OLDPWD=", global->old_path);
+	new_copy_env = ft_calloc(size, sizeof(char *) + 1);
+	while (global->copy_env[i])
+	{
+		if (ft_strncmp(global->copy_env[i], "OLDPWD", 6) == 0)
+			new_copy_env[i] = ft_strdup(new_path);
+		else
+			new_copy_env[i] = ft_strdup(global->copy_env[i]);
+		i++;
+	}
+	new_copy_env[i] = NULL;
+	free_args(global->copy_env);
+	free(new_path);
+	return (new_copy_env);
+}
+
+char	**update_pwd(t_global *global)
 {
 	int		i;
 	int		size;
@@ -55,7 +80,8 @@ void	change_dir(t_global *global, char *next_path)
 		printf("bash: cd: %s: No such file or directory\n", global->args[1]);
 		g_exit_status = 1;
 	}
-	global->copy_env = update_env(global);
+	global->copy_env = update_pwd(global);
+	global->copy_env = update_oldpwd(global);
 }
 
 int	ft_old_path(t_global *global)

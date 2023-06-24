@@ -6,7 +6,7 @@
 /*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 15:24:16 by mimoreir          #+#    #+#             */
-/*   Updated: 2023/06/17 16:59:20 by asousa-n         ###   ########.fr       */
+/*   Updated: 2023/06/24 13:01:42 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,23 @@
 void	rmv_spaces(char *str, int i, int j, int space)
 {
 	int	len;
-	int	indquotes;
-	int	insquotes;
+	int	count;
 
-	insquotes = 0;
-	indquotes = 0;
 	len = ft_strlen(str);
+	while (str[i] == ' ' || str[i] == '\t')
+			i++;
 	while (i < len)
 	{
-		switch_quotes(str[i], &indquotes, &insquotes);
-		if (str[0] == ' ')
-			i++;
-		if ((str[i] == ' ' && !space) || indquotes || insquotes)
-		{
-			str[j++] = str[i];
-			space = (str[i] == ' ');
-		}
-		else if (str[i] != ' ')
+		count = verify_quotes(str[i]);
+		if (count == 1 || ((str[i] != ' ' && str[i] != '\t') && count == 0))
 		{
 			str[j++] = str[i];
 			space = 0;
+		}
+		else if (((str[i] == ' ' || str[i] == '\t') && !space) && count == 0)
+		{
+			str[j++] = ' ';
+			space = 1;
 		}
 		i++;
 	}
@@ -85,13 +82,13 @@ bool	repeat_red(char *input)
 	while (input[i])
 	{
 		count = verify_quotes(input[i]);
-		if ((input[i] == '<' || input[i] == '>' || input[i] == '|') \
+		if ((input[i] == '<' || input[i] == '>') \
 			&& count == 0)
 		{
 			if (input[i + 1] == ' ')
 			{
 				if (input[i + 2] == '<' || input[i +2] == '>' \
-					|| input[i + 2] == '|')
+					|| input[i +2] == '|')
 				{
 					printf("bash: syntax error near unexpected token \
 						`%c' \n", input[i + 2]);

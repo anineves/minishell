@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_in.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asousa-n <asousa-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 11:31:53 by asousa-n          #+#    #+#             */
-/*   Updated: 2023/06/23 22:43:20 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/24 13:46:09 by asousa-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	ft_heredoc(t_global *global)
 
 	buf = NULL;
 	global->fd_heredoc = open("here_doc", O_CREAT | O_TRUNC | O_RDWR, 0644);
+	init_heredoc_signals();
 	while (1)
 	{
 		buf = readline("> ");
@@ -35,8 +36,8 @@ void	ft_heredoc(t_global *global)
 		write(global->fd_heredoc, "\n", 1);
 		free(buf);
 	}
-		global->fd_heredoc = open("here_doc", O_RDWR | 0644);
-		global->fd_input = global->fd_heredoc;
+	global->fd_heredoc = open("here_doc", O_RDWR | 0644);
+	global->fd_input = global->fd_heredoc;
 }
 
 void	red_in_heredoc(t_global *global)

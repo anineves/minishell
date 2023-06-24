@@ -30,7 +30,8 @@ SRC = main.c \
 	expander.c \
 	execute_utils.c \
 	expander_utils.c \
-	create_data_utils.c
+	create_data_utils.c \
+	signal_utils.c
 
 
 OBJ = $(SRC:.c=.o)
